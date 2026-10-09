@@ -45,15 +45,16 @@
 @media(max-width:700px){.site-header .brand .company-emblem{width:120px}.site-header .company-logo{gap:13px}.site-header .company-wordmark{width:94px;font-size:8px;line-height:1.75}}
 @media(max-width:370px){.site-header .brand .company-emblem{width:100px}.site-header .company-logo{gap:11px}.site-header .company-wordmark{width:86px;font-size:7.5px}}
 
-/* Supplied 3200 × 1800 company photograph, shown in full at every breakpoint. */
-.hero-visual{height:auto;aspect-ratio:16 / 9}
+/* Shorter, right-aligned crop keeps the cars prominent and trims the foreground. */
+.hero-visual{height:auto;aspect-ratio:2.55;overflow:hidden}
+.hero-visual img{width:105%!important;max-width:none;left:auto!important;right:0!important;object-fit:cover;object-position:right 71%}
 @media(max-width:700px){
   .hero-image-top{display:none}
   .hero-image-bottom{position:relative;inset:auto;padding:17px 15px;align-items:center;background:#101010}
   .hero-visual{aspect-ratio:auto;overflow:visible;padding-top:0}
-  .hero-visual:before{content:"";display:block;aspect-ratio:16 / 9}
-  .hero-visual img{height:auto!important;aspect-ratio:16 / 9;bottom:auto!important}
-  .hero-image-shade{bottom:auto;height:auto;aspect-ratio:16 / 9;background:linear-gradient(0deg,#0002,transparent 50%)}
+  .hero-visual:before{content:"";display:block;aspect-ratio:2.3}
+  .hero-visual img{height:calc((100vw - 18px) / 2.3)!important;aspect-ratio:auto;bottom:auto!important;object-position:right 71%}
+  .hero-image-shade{bottom:auto;height:auto;aspect-ratio:2.3;background:linear-gradient(0deg,#0002,transparent 50%)}
   .hero-image-caption{max-width:240px;font-size:11px}
   .hero-image-caption .tiny-label{font-size:7px}
 }
