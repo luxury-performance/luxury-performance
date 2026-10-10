@@ -107,8 +107,7 @@ html[data-lxp-intro="wings"] .site-header .company-emblem{animation:intro-wings 
 /* Cinematic motion system — the original emblem, lettering and photography stay intact. */
 :root{--accent:#b7a27b;--ease-out:cubic-bezier(.22,.68,0,1.01)}
 .site-header{background:transparent;isolation:isolate;border-bottom:0;transition:box-shadow .45s}
-.site-header:before{content:'';position:absolute;inset:0;z-index:-1;background:#101010;transition:background .55s ease;-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
-.site-header.is-scrolled:before{background:rgba(10,11,11,.92);-webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15)}
+.site-header:before{content:'';position:absolute;inset:0;z-index:-1;background:rgb(16 16 16 / calc(1 - var(--glass-progress,0) * .32));-webkit-backdrop-filter:blur(calc(var(--glass-progress,0) * 20px)) brightness(calc(1 - var(--glass-progress,0) * .25));backdrop-filter:blur(calc(var(--glass-progress,0) * 20px)) brightness(calc(1 - var(--glass-progress,0) * .25))}
 .site-header.is-scrolled{border-bottom:0;box-shadow:0 12px 36px #0000000c}
 .site-header .company-logo{transition:transform .55s var(--ease-out)}
 .site-header.is-scrolled .company-logo{transform:scale(.87)}
