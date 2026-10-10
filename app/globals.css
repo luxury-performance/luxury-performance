@@ -37,13 +37,16 @@
 .hero-visual img{object-fit:contain;object-position:center;animation:none}
 @media(max-width:900px){.site-header{height:102px}.mobile-menu{top:102px}.company-logo{width:160px;gap:8px}.company-logo .company-wordmark{font-size:7px}}
 @media(max-width:700px){.hero-visual{height:auto;aspect-ratio:1320 / 1623}.hero-visual img{object-position:center}.site-header{height:100px}.mobile-menu{top:100px}.company-logo{width:160px}}
-/* Header uses the horizontal company signature; footer keeps the stacked lockup. */
-.site-header .company-logo{width:auto;flex-direction:row;gap:20px}
-.site-header .brand .company-emblem{width:160px;flex-shrink:0}
-.site-header .company-wordmark{width:120px;white-space:normal;font-size:10px;line-height:1.7;letter-spacing:.16em}
-@media(max-width:900px){.site-header .company-logo{gap:16px}.site-header .company-wordmark{width:108px;font-size:9px}}
-@media(max-width:700px){.site-header .brand .company-emblem{width:120px}.site-header .company-logo{gap:13px}.site-header .company-wordmark{width:94px;font-size:8px;line-height:1.75}}
-@media(max-width:370px){.site-header .brand .company-emblem{width:100px}.site-header .company-logo{gap:11px}.site-header .company-wordmark{width:86px;font-size:7.5px}}
+/* Equal side columns keep the emblem centered independently of navigation width. */
+.site-header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:24px}
+.site-header .desktop-nav{grid-column:1;grid-row:1;justify-self:start;gap:clamp(16px,2vw,32px);white-space:nowrap}
+.site-header .brand{grid-column:2;grid-row:1;justify-self:center}
+.site-header .company-logo{width:160px;gap:0}
+.site-header .brand .company-emblem{width:100%}
+.site-header .header-contact{grid-column:3;grid-row:1;justify-self:end;white-space:nowrap}
+.site-header .menu-toggle{grid-column:1;grid-row:1;justify-self:start}
+@media(max-width:900px){.site-header .company-logo{width:140px}}
+@media(max-width:700px){.site-header .company-logo{width:120px}}
 
 /* Shorter, right-aligned crop keeps the cars prominent and trims the foreground. */
 .hero-visual{height:auto;aspect-ratio:2.55;overflow:hidden}
@@ -69,3 +72,34 @@
     mask-image:linear-gradient(to bottom,transparent 35%,#000 80%);
   }
 }
+
+/* One-session brand entrance. The page is usable by default, even without JavaScript. */
+.brand-intro{display:none;position:fixed;inset:0;z-index:200;color:#fff;isolation:isolate;touch-action:none;overscroll-behavior:contain}
+html[data-lxp-intro] .brand-intro{display:block}
+html[data-lxp-intro] body{background:#101010}
+.intro-backdrop{position:absolute;inset:0;background:#101010;transition:opacity .72s cubic-bezier(.2,.6,.2,1)}
+.intro-topline,.intro-bottomline{position:absolute;left:var(--gutter);right:var(--gutter);display:flex;align-items:center;justify-content:space-between;font-size:8px;font-weight:500;letter-spacing:.18em}
+.intro-topline{top:40px;color:#777}
+.intro-bottomline{bottom:32px;color:#777}
+.intro-bottomline button{background:none;color:#b6b6af;font-size:10px;letter-spacing:.04em;padding:12px 0 12px 20px;display:flex;gap:25px;align-items:center}
+.intro-bottomline button:hover{color:#fff}
+.intro-bottomline button:focus-visible{outline:1px solid #777;outline-offset:8px}
+.intro-bottomline button span{font-size:18px}
+.intro-mark-position{position:absolute;left:50%;top:46%;width:min(64vw,600px);transform:translate(-50%,-50%)}
+.intro-mark{width:100%;transform-origin:center;will-change:transform,opacity}
+.intro-mark svg{width:100%;display:block;overflow:visible}
+.intro-letter-guides{stroke:#fff;stroke-opacity:.12;stroke-width:1;fill:none}
+.intro-trace{stroke:#fff;fill:none;stroke-dasharray:1;stroke-dashoffset:1;stroke-linecap:butt;stroke-linejoin:miter}
+.intro-caption{position:absolute;top:calc(46% + min(8.24vw,77px) + 44px);left:0;right:0;display:flex;justify-content:center;align-items:center;gap:20px;color:#999991;font-size:8px;letter-spacing:.2em}
+.intro-caption-rule{width:35px;height:1px;background:#444}
+.intro-topline,.intro-bottomline,.intro-caption{transition:opacity .28s}
+html[data-lxp-intro="tracing"] #site-shell,html[data-lxp-intro="formed"] #site-shell{opacity:0}
+#site-shell{transition:opacity .8s cubic-bezier(.2,.6,.2,1)}
+html[data-lxp-intro="travelling"] .intro-backdrop,html[data-lxp-intro="wings"] .intro-backdrop{opacity:0}
+html[data-lxp-intro="travelling"] .intro-topline,html[data-lxp-intro="travelling"] .intro-caption,html[data-lxp-intro="wings"] .intro-topline,html[data-lxp-intro="wings"] .intro-caption{opacity:0}
+html[data-lxp-intro="wings"] .intro-bottomline{opacity:0}
+html[data-lxp-intro="travelling"] .site-header .company-emblem{clip-path:inset(0 50%)}
+html[data-lxp-intro="wings"] .site-header .company-emblem{animation:intro-wings .45s cubic-bezier(.2,.65,.2,1) both}
+@keyframes intro-wings{from{clip-path:inset(0 50%)}to{clip-path:inset(0 0)}}
+@media(max-width:700px){.intro-mark-position{width:76vw}.intro-caption{top:calc(46% + 9.8vw + 32px);font-size:6px;gap:12px;letter-spacing:.16em}.intro-caption-rule{width:20px}.intro-topline{top:30px;font-size:6px}.intro-bottomline{bottom:22px;font-size:6px;letter-spacing:.12em}.intro-bottomline button{font-size:10px;gap:16px}}
+@media(prefers-reduced-motion:reduce){html[data-lxp-intro] .brand-intro{display:none}html[data-lxp-intro] #site-shell{opacity:1;animation:none;transition:none}html[data-lxp-intro] .site-header .company-emblem{clip-path:none;animation:none}}

@@ -34,10 +34,10 @@ export function Header() {
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
-      <Link className="brand" href="/" onClick={() => setOpen(false)} aria-label="Luxury Performance home"><BrandLogo priority /></Link>
       <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <Link key={link.name} href={link.href} aria-current={pathname === link.href ? 'page' : undefined} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link.name}</Link>)}</nav>
-      <Link className="header-contact" href="/contact">Let’s talk <ArrowUpRight size={16} /></Link>
       <button ref={toggle} className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
+      <Link className="brand" href="/" onClick={() => setOpen(false)} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false} /></Link>
+      <Link className="header-contact" href="/contact">Let’s talk <ArrowUpRight size={16} /></Link>
     </header>
     {open && <div ref={panel} className="mobile-menu" id="mobile-navigation"><nav aria-label="Mobile navigation">{[...links, { name: 'Let’s talk', href: '/contact' }].map((link, index) => <Link key={link.name} href={link.href} onClick={() => setOpen(false)} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><small>0{index + 1}</small>{link.name}<ArrowUpRight /></Link>)}</nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br /><span>Dubai, United Arab Emirates</span></div></div>}
   </>;
