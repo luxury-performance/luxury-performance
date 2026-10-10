@@ -13,9 +13,16 @@ export function Header() {
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const update = () => header.current?.classList.toggle('is-scrolled', window.scrollY > 32);
-    update(); window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const progress = Math.min(1, Math.max(0, window.scrollY / 160));
+      header.current?.style.setProperty('--glass-progress', String(progress));
+      header.current?.classList.toggle('is-scrolled', window.scrollY > 32);
+    };
+    const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update(); window.addEventListener('scroll', scroll, { passive: true });
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); };
   }, []);
   useEffect(() => {
     if (!open) return;
