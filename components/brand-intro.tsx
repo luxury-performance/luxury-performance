@@ -87,10 +87,11 @@ export function BrandIntro() {
       if (!emblem || !mark.current) { finish(); return; }
       const destination = emblem.getBoundingClientRect();
       const source = mark.current.getBoundingClientRect();
-      // Position of the original LXP lettering within the unmodified wing emblem.
-      const dx = destination.left + destination.width * .5 - (source.left + source.width / 2);
-      const dy = destination.top + destination.height * .65 - (source.top + source.height / 2);
-      const scale = destination.width * .14 / source.width;
+      // Measured lettering bounds in the original 2172 × 724 PNG: (933, 421)–(1235, 499).
+      // Align the lettering itself, including its off-centre position inside the wings.
+      const dx = destination.left + destination.width * (1084 / 2172) - (source.left + source.width / 2);
+      const dy = destination.top + destination.height * (460 / 724) - (source.top + source.height / 2);
+      const scale = destination.width * (302 / 2172) / source.width;
       root.dataset.lxpIntro = 'travelling';
       const flight = mark.current.animate([
         { transform: 'translate3d(0,0,0) scale(1)', opacity: 1 },

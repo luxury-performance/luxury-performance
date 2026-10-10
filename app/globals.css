@@ -118,7 +118,7 @@ html[data-lxp-intro] .reading-progress{opacity:0}
 .hero{overflow:clip}
 .hero-heading{padding-top:clamp(30px,4vw,65px);padding-bottom:35px}
 .hero h1{letter-spacing:-.073em}
-.hero h1>span:not(.hero-asterisk){background:linear-gradient(120deg,#e8e8e1,#8d8d87);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero h1>span:not(.hero-asterisk){background:linear-gradient(120deg,#e8e8e1,#8d8d87);background-clip:text;-webkit-background-clip:text;color:transparent;padding:.12em .08em .12em 0;margin:-.12em -.08em -.12em 0}
 html[data-lxp-intro] .hero .hero-kicker,.hero-arrived .hero-kicker{animation:cinema-rise .9s var(--ease-out) both}
 html[data-lxp-intro] .hero h1,.hero-arrived h1{animation:cinema-rise 1.15s .06s var(--ease-out) both}
 html[data-lxp-intro] .hero .hero-intro,.hero-arrived .hero-intro{animation:cinema-rise 1s .18s var(--ease-out) both}
