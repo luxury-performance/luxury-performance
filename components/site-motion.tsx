@@ -35,18 +35,16 @@ export function SiteMotion() {
       el.addEventListener('pointerleave', reset);
       return () => { el.removeEventListener('pointermove', move); el.removeEventListener('pointerleave', reset); reset(); };
     });
-    const entrance = () => {
-      if (!root.dataset.lxpIntro || root.dataset.lxpIntro === 'wings') hero?.classList.add('hero-arrived');
-    };
-    const introObserver = new MutationObserver(entrance);
-    introObserver.observe(root, { attributes: true, attributeFilter: ['data-lxp-intro'] });
-    entrance(); update();
+    // Arm the entrance while the intro still covers the page. CSS pauses it until
+    // the wings reveal, so the finished hero never flashes before animating.
+    if (root.dataset.lxpIntro) hero?.classList.add('hero-arrived');
+    update();
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', onScroll);
     const resetMotion = () => { if (motion.matches) hero?.style.setProperty('--hero-drift', '0px'); };
     motion.addEventListener('change', resetMotion);
     return () => {
-      cancelAnimationFrame(frame); introObserver.disconnect(); pointers.forEach(clean => clean());
+      cancelAnimationFrame(frame); pointers.forEach(clean => clean());
       removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll);
       motion.removeEventListener('change', resetMotion);
     };
