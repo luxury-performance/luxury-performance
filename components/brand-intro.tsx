@@ -30,6 +30,7 @@ export function BrandIntro() {
     const animations: Animation[] = [];
     let finished = false;
     let cancelled = false;
+    let keyboardInteraction = false;
 
     shell?.setAttribute('inert', '');
     overlay.current?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
@@ -39,6 +40,7 @@ export function BrandIntro() {
       finished = true;
       timers.forEach(clearTimeout);
       animations.forEach(animation => animation.cancel());
+      const introHadFocus = overlay.current?.contains(document.activeElement);
       delete root.dataset.lxpIntro;
       shell?.removeAttribute('inert');
       if (completed) {
@@ -47,13 +49,20 @@ export function BrandIntro() {
         delete root.dataset.lxpReload;
       }
       window.removeEventListener('scroll', keepReloadAtTop);
-      if (overlay.current?.contains(document.activeElement)) {
-        const target = previousFocus && previousFocus !== document.body ? previousFocus : document.querySelector<HTMLElement>('.site-header .brand');
-        target?.focus({ preventScroll: true });
+      if (introHadFocus) {
+        // Automatic playback must not turn the logo into a focused control.
+        const target = previousFocus?.isConnected && previousFocus !== document.body && !overlay.current?.contains(previousFocus)
+          ? previousFocus
+          : keyboardInteraction ? document.querySelector<HTMLElement>('.site-header .brand') : null;
+        if (target) target.focus({ preventScroll: true });
+        else (document.activeElement as HTMLElement | null)?.blur();
       }
     }
     const delay = (ms: number) => new Promise<void>(resolve => timers.push(setTimeout(resolve, ms)));
-    function escape(event: KeyboardEvent) { if (event.key === 'Escape') finish(); }
+    function onKeyDown(event: KeyboardEvent) {
+      if (['Tab', 'Enter', ' ', 'Escape'].includes(event.key)) keyboardInteraction = true;
+      if (event.key === 'Escape') finish();
+    }
     function reduceMotion() { if (motion.matches) finish(); }
     const screen = overlay.current;
     const preventScroll = (event: WheelEvent) => event.preventDefault();
@@ -61,7 +70,7 @@ export function BrandIntro() {
     const skip = screen?.querySelector('button');
     const skipIntro = () => finish();
     skip?.addEventListener('click', skipIntro);
-    document.addEventListener('keydown', escape);
+    document.addEventListener('keydown', onKeyDown);
     motion.addEventListener('change', reduceMotion);
     // Always release the interface if an image or animation fails.
     timers.push(setTimeout(() => finish(), 4200));
@@ -112,7 +121,7 @@ export function BrandIntro() {
       finish(false);
       skip?.removeEventListener('click', skipIntro);
       screen?.removeEventListener('wheel', preventScroll);
-      document.removeEventListener('keydown', escape);
+      document.removeEventListener('keydown', onKeyDown);
       motion.removeEventListener('change', reduceMotion);
     };
   }, []);
