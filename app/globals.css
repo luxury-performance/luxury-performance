@@ -146,13 +146,13 @@ html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:cin
 .flow-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .flow-heading h2{font-size:clamp(32px,3.7vw,61px);line-height:1.14;margin-top:26px}
 .flow-heading h2>span{color:#777970}
-.flow-stage{position:absolute;inset:20% -5% -15%;overflow:hidden}
+.flow-stage{position:absolute;inset:22% 3% 8%;overflow:hidden}
 .flow-stage canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.4s;display:block}
-.flow-fallback{position:absolute;inset:0;background:url('/brand/flow-scene.svg') center/cover no-repeat;opacity:.35;transition:opacity 1.4s}
+.flow-fallback{position:absolute;inset:0;background:url('/artwork/aero-sculpture.svg') center/contain no-repeat;opacity:1;transition:opacity 1.4s}
 .flow-ready canvas{opacity:1}
 .flow-ready .flow-fallback{opacity:0}
 .flow-stage[data-failed] canvas{display:none}
-.flow-stage[data-failed] .flow-fallback{opacity:.35}
+.flow-stage[data-failed] .flow-fallback{opacity:1}
 .flow-bottom{position:absolute;z-index:2;bottom:38px;left:var(--gutter);right:var(--gutter);display:flex;align-items:end;justify-content:space-between;gap:24px}
 .flow-bottom p{font-size:11px;color:#a8aaa1;line-height:1.8}
 .flow-bottom p>span{color:#656960}
@@ -219,14 +219,14 @@ html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:cin
 .mobile-menu nav a:nth-child(2){animation-delay:.04s}.mobile-menu nav a:nth-child(3){animation-delay:.08s}.mobile-menu nav a:nth-child(4){animation-delay:.12s}.mobile-menu nav a:nth-child(5){animation-delay:.16s}
 @keyframes menu-arrive{from{opacity:0;clip-path:inset(0 0 100%)}to{opacity:1;clip-path:inset(0)}}
 @media(max-width:900px){
-  .signature-flow{height:680px;min-height:0}.flow-heading{top:42px}.flow-stage{inset:18% -18% -4%}.flow-heading h2{font-size:43px}.flow-bottom{bottom:28px}.flow-pause{display:none}
+  .signature-flow{height:680px;min-height:0}.flow-heading{top:42px}.flow-stage{inset:25% 0 16%}.flow-heading h2{font-size:43px}.flow-bottom{bottom:28px}.flow-pause{display:none}
   .expertise-sticky{padding-top:60px;padding-bottom:60px}.expertise-heading h2{font-size:44px}.intro{padding-top:80px;padding-bottom:80px}
 }
 @media(max-width:700px){
   .hero-heading{padding-top:27px;padding-bottom:28px}.hero-visual img{transform:none;will-change:auto}.hero-visual{overflow:hidden}.hero h1{font-size:15.3vw}.hero-image-bottom{z-index:1}
   html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:hero-mobile-arrive 1s both}.intro{padding-top:68px;padding-bottom:72px}
   .signature-flow{height:620px}.flow-heading{top:36px;right:var(--gutter)}.flow-heading .tiny-label{font-size:7px;letter-spacing:.12em}.flow-heading h2{font-size:35px;margin-top:22px}
-  .flow-stage{inset:27% -12% 15%}.flow-fallback{background-size:cover;opacity:.5}.flow-bottom{bottom:26px;gap:25px;align-items:start;flex-direction:column}.flow-bottom p{font-size:10px}.flow-next{font-size:10px;padding-bottom:8px;gap:24px}
+  .flow-stage{inset:30% -8% 24%}.flow-fallback{background-size:contain;opacity:1}.flow-bottom{bottom:26px;gap:25px;align-items:start;flex-direction:column}.flow-bottom p{font-size:10px}.flow-next{font-size:10px;padding-bottom:8px;gap:24px}
   .expertise-sticky{padding:54px var(--gutter) 60px}.expertise-heading{margin-bottom:24px;gap:14px}.expertise-heading h2{font-size:36px}.chapter-counter{font-size:33px;white-space:nowrap}.chapter-counter>span{font-size:10px}
   .expertise-heading .eyebrow{font-size:7px}.expertise-grid{gap:25px}.expertise-tab{padding-top:17px;padding-bottom:17px}.expertise-tab>span:nth-child(2){font-size:17px}.expertise-image{height:300px}
   .programmes-section{padding-top:65px;padding-bottom:65px}.programme-image img{transform:none;filter:none}.partners-strip{padding-top:34px;padding-bottom:40px}
@@ -272,3 +272,5 @@ body{background:#101010}
 #main{background:var(--paper)}
 /* Animated transforms must not become browser scroll anchors during the entrance. */
 html{overflow-anchor:none}
+
+.about-manifesto .about-emblem{width:185px;height:auto;object-fit:contain;filter:none;mix-blend-mode:normal}

@@ -38,8 +38,8 @@ export function SignatureFlow() {
     return () => { disposed = true; version++; observer.disconnect(); scene.current?.dispose(); scene.current = null; motion.removeEventListener('change', preference); desktop.removeEventListener('change', preference); };
   }, []);
   return <section className="signature-flow" aria-labelledby="flow-title">
-    <Reveal className="flow-heading"><div className="tiny-label"><span className="flow-dot" /> The shape of our thinking</div><h2 id="flow-title">Nothing ordinary.<br /><span>Not even the details.</span></h2></Reveal>
+    <Reveal className="flow-heading"><div className="tiny-label"><span className="flow-dot" /> Form meets force</div><h2 id="flow-title">Shaped by air.<br /><span>Defined by purpose.</span></h2></Reveal>
     <div ref={stage} className={`flow-stage ${ready ? 'flow-ready' : ''}`} aria-hidden="true"><div className="flow-fallback" /></div>
-    <div className="flow-bottom"><p>One continuous idea.<br /><span>Performance. In every line.</span></p><a href="#expertise" className="flow-next">Explore our expertise <ArrowDown size={17} /></a>{ready && <button className="flow-pause" aria-label={paused ? 'Play artwork animation' : 'Pause artwork animation'} aria-pressed={paused} onClick={() => { scene.current?.pause(!paused); setPaused(!paused); }}>{paused ? <Play size={13} /> : <Pause size={13} />}<span>{paused ? 'Play motion' : 'Pause motion'}</span></button>}</div>
+    <div className="flow-bottom"><p>Sculpted for movement.<br /><span>Precision in every surface.</span></p><a href="#expertise" className="flow-next">Explore our expertise <ArrowDown size={17} /></a>{ready && <button className="flow-pause" aria-label={paused ? 'Play artwork animation' : 'Pause artwork animation'} aria-pressed={paused} onClick={() => { scene.current?.pause(!paused); setPaused(!paused); }}>{paused ? <Play size={13} /> : <Pause size={13} />}<span>{paused ? 'Play motion' : 'Pause motion'}</span></button>}</div>
   </section>;
 }
