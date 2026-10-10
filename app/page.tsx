@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { Eyebrow, ArrowLink } from '@/components/ui';
+import { SignatureFlow } from '@/components/signature-flow';
 import { Expertise } from '@/components/expertise';
 import { Reveal } from '@/components/reveal';
 import { ProgrammeCard } from '@/components/programme-card';
@@ -16,7 +17,8 @@ export default function Home() {
       <div className="hero-foot"><span>Performance. Design. Individuality.</span><span>Luxury Performance — A division of The Luxury Group</span></div>
     </section>
     <section className="intro section-pad"><Reveal><Eyebrow number="01">A different kind of drive</Eyebrow><div className="intro-grid"><div className="intro-side"><span className="large-plus">+</span><p>Not just what you drive.<br />How it makes you feel.</p></div><div><h2>Exceptional comes<br />as standard.<br /><span className="text-muted">Individual is up to you.</span></h2><div className="intro-copy"><p>We bring the world’s most exciting automotive brands to people who care about every detail. Performance, carbon, wheels and more — thoughtfully selected, expertly supported, unmistakably yours.</p><ArrowLink href="/about">Meet Luxury Performance</ArrowLink></div></div></div></Reveal></section>
-    <section className="expertise-section section-pad" id="expertise"><Reveal><div className="section-heading"><Eyebrow number="02">Our expertise</Eyebrow><h2>Every detail.<br /><span className="text-muted">A difference.</span></h2></div><Expertise /></Reveal></section>
+    <SignatureFlow />
+    <Expertise />
     <section className="programmes-section section-pad"><Reveal><div className="section-heading horizontal"><div><Eyebrow number="03">Selected programmes</Eyebrow><h2>Extraordinary,<br /><span className="text-muted">from every angle.</span></h2></div><ArrowLink href="/programmes">Explore all programmes</ArrowLink></div><div className="programme-grid home-programmes">{programmes.slice(0, 2).map((programme, index) => <ProgrammeCard key={programme.slug} programme={programme} index={index} />)}</div></Reveal></section>
     <section className="partners-strip section-pad"><span className="tiny-label">Exceptional names. A shared obsession.</span><div className="partners-logos" aria-label="Brands: NOVITEC, TECHART, FI Exhaust and Valvetronic"><span className="partner-novitec">NOVITEC</span><span className="partner-techart">TECHART</span><span className="partner-fi">Fi<span>EXHAUST</span></span><span className="partner-valvetronic">VALVETRONIC<small>DESIGNS</small></span></div></section>
     <section className="world-section"><div className="world-image"><Image src="/images/workshop.webp" fill sizes="(max-width: 800px) 100vw, 55vw" alt="Porsche in a specialist performance workshop" /></div><div className="world-copy"><Reveal><Eyebrow dark number="04">The Luxury Performance approach</Eyebrow><h2>Good parts.<br />Great judgement.</h2><p>The difference is knowing what works together. We connect you with genuine components, informed advice and installation support — from the first idea to the finer details.</p><div className="world-principles"><span>01 / Listen first</span><span>02 / Specify with purpose</span><span>03 / Support every detail</span></div><ArrowLink href="/about" light>Discover our world</ArrowLink></Reveal></div></section>

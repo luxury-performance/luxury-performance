@@ -9,8 +9,14 @@ const links = [{ name: 'Expertise', href: '/#expertise' }, { name: 'Programmes',
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const update = () => header.current?.classList.toggle('is-scrolled', window.scrollY > 32);
+    update(); window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -33,7 +39,7 @@ export function Header() {
   }, [open]);
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
-    <header className="site-header">
+    <header ref={header} className={`site-header ${open ? 'menu-is-open' : ''}`}>
       <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <Link key={link.name} href={link.href} aria-current={pathname === link.href ? 'page' : undefined} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link.name}</Link>)}</nav>
       <button ref={toggle} className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
       <Link className="brand" href="/" onClick={() => setOpen(false)} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false} /></Link>

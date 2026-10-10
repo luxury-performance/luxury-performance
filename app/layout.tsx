@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { BrandIntro } from '@/components/brand-intro';
 import { introBootstrap } from '@/lib/intro-bootstrap';
+import { SiteMotion } from '@/components/site-motion';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import './globals.css';
@@ -15,5 +16,5 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: '#101010' };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><BrandIntro /><div id="site-shell"><Header /><main id="main">{children}</main><Footer /></div></body></html>;
+  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><BrandIntro /><div id="site-shell"><Header /><SiteMotion /><main id="main">{children}</main><Footer /></div></body></html>;
 }
