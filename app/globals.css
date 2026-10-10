@@ -120,10 +120,10 @@ html[data-lxp-intro] .reading-progress{opacity:0}
 .hero-heading{padding-top:clamp(30px,4vw,65px);padding-bottom:35px}
 .hero h1{letter-spacing:-.073em}
 .hero h1>span:not(.hero-asterisk){background:linear-gradient(120deg,#e8e8e1,#8d8d87);background-clip:text;-webkit-background-clip:text;color:transparent}
-.hero-arrived .hero-kicker{animation:cinema-rise .9s var(--ease-out) both}
-.hero-arrived h1{animation:cinema-rise 1.15s .06s var(--ease-out) both}
-.hero-arrived .hero-intro{animation:cinema-rise 1s .18s var(--ease-out) both}
-.hero-arrived .hero-visual{animation:cinema-photo 1.5s .12s var(--ease-out) both}
+html[data-lxp-intro] .hero .hero-kicker,.hero-arrived .hero-kicker{animation:cinema-rise .9s var(--ease-out) both}
+html[data-lxp-intro] .hero h1,.hero-arrived h1{animation:cinema-rise 1.15s .06s var(--ease-out) both}
+html[data-lxp-intro] .hero .hero-intro,.hero-arrived .hero-intro{animation:cinema-rise 1s .18s var(--ease-out) both}
+html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:cinema-photo 1.5s .12s var(--ease-out) both}
 .hero-visual{isolation:isolate}
 .hero-visual img{transform:translate3d(var(--pointer-x,0px),calc(var(--pointer-y,0px) + var(--hero-drift,0px)),0) scale(1.035);transition:transform 1.2s var(--ease-out);will-change:transform}
 .hero-visual:after{content:'';position:absolute;inset:0;border:1px solid #ffffff12;pointer-events:none}
@@ -131,7 +131,7 @@ html[data-lxp-intro] .reading-progress{opacity:0}
 .hero-scroll:hover{transform:translateY(4px);border-color:#b7a27b;background:#b7a27b18}
 .hero-foot{border-bottom:1px solid #ffffff12;color:#a3a39a}
 @keyframes cinema-rise{from{opacity:0;transform:translateY(24px);clip-path:inset(0 0 100%)}to{opacity:1;transform:none;clip-path:inset(0)}}
-@keyframes cinema-photo{from{opacity:.2;clip-path:inset(7% 3% 0)}to{opacity:1;clip-path:inset(0)}}
+@keyframes cinema-photo{from{opacity:0;clip-path:inset(7% 3% 0)}to{opacity:1;clip-path:inset(0)}}
 .page-arrival{animation:page-arrive .65s ease both}
 @keyframes page-arrive{from{opacity:.3}to{opacity:1}}
 .reveal{transition:opacity 1s ease,transform 1.1s var(--ease-out)}
@@ -225,7 +225,7 @@ html[data-lxp-intro] .reading-progress{opacity:0}
 }
 @media(max-width:700px){
   .hero-heading{padding-top:27px;padding-bottom:28px}.hero-visual img{transform:none;will-change:auto}.hero-visual{overflow:hidden}.hero h1{font-size:15.3vw}.hero-image-bottom{z-index:1}
-  .hero-arrived .hero-visual{animation:page-arrive 1s both}.intro{padding-top:68px;padding-bottom:72px}
+  html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:hero-mobile-arrive 1s both}.intro{padding-top:68px;padding-bottom:72px}
   .signature-flow{height:620px}.flow-heading{top:36px;right:var(--gutter)}.flow-heading .tiny-label{font-size:7px;letter-spacing:.12em}.flow-heading h2{font-size:35px;margin-top:22px}
   .flow-stage{inset:27% -12% 15%}.flow-fallback{background-size:cover;opacity:.5}.flow-bottom{bottom:26px;gap:25px;align-items:start;flex-direction:column}.flow-bottom p{font-size:10px}.flow-next{font-size:10px;padding-bottom:8px;gap:24px}
   .expertise-sticky{padding:54px var(--gutter) 60px}.expertise-heading{margin-bottom:24px;gap:14px}.expertise-heading h2{font-size:36px}.chapter-counter{font-size:33px;white-space:nowrap}.chapter-counter>span{font-size:10px}
@@ -253,4 +253,17 @@ html[data-lxp-intro] .reading-progress{opacity:0}
   .scroll-chapters .expertise-tab{padding-top:18px;padding-bottom:18px}
   .scroll-chapters .expertise-detail{margin-top:18px}
   .scroll-chapters .expertise-items{margin-top:12px}
+}
+
+
+/* One coordinated handoff: header first, then the prepared page and hero. */
+#main,.site-footer{transition:opacity .6s ease}
+html[data-lxp-intro]:not([data-lxp-intro="wings"]) #main,
+html[data-lxp-intro]:not([data-lxp-intro="wings"]) .site-footer{opacity:0}
+html[data-lxp-intro]:not([data-lxp-intro="wings"]) .hero :is(.hero-kicker,h1,.hero-intro,.hero-visual){animation-play-state:paused}
+@keyframes hero-mobile-arrive{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  #main,.site-footer{transition:none}
+  html[data-lxp-intro] #main,html[data-lxp-intro] .site-footer{opacity:1}
+  html[data-lxp-intro] .hero :is(.hero-kicker,h1,.hero-intro,.hero-visual){animation:none!important}
 }
