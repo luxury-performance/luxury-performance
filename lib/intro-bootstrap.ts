@@ -1,3 +1,3 @@
-// Play on each full page load; client-side navigation keeps the existing layout.
+// A reload starts a new entrance at the top. Fresh deep links retain their anchors.
 // Progressive enhancement: never hide the website when scripting is unavailable.
-export const introBootstrap = `(function(){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.lxpIntro='tracing';setTimeout(function(){delete document.documentElement.dataset.lxpIntro},5000)}}catch(e){}})()`;
+export const introBootstrap = `(function(){try{var nav=performance.getEntriesByType('navigation')[0];if(nav&&nav.type==='reload'){document.documentElement.dataset.lxpReload='true';history.scrollRestoration='manual';if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);scrollTo({top:0,left:0,behavior:'instant'});addEventListener('pageshow',function(){scrollTo({top:0,left:0,behavior:'instant'});},{once:true})}if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.lxpIntro='tracing';setTimeout(function(){delete document.documentElement.dataset.lxpIntro},5000)}}catch(e){}})()`;
