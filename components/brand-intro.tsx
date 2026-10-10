@@ -18,6 +18,12 @@ export function BrandIntro() {
     pending.current = true;
     root.dataset.lxpIntro = 'tracing';
     const shell = document.getElementById('site-shell');
+    const resetReload = root.dataset.lxpReload === 'true';
+    const keepReloadAtTop = () => {
+      if (resetReload && window.scrollY !== 0) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    };
+    keepReloadAtTop();
+    if (resetReload) window.addEventListener('scroll', keepReloadAtTop, { passive: true });
     const previousFocus = document.activeElement as HTMLElement | null;
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -35,7 +41,12 @@ export function BrandIntro() {
       animations.forEach(animation => animation.cancel());
       delete root.dataset.lxpIntro;
       shell?.removeAttribute('inert');
-      if (completed) pending.current = false;
+      if (completed) {
+        pending.current = false;
+        keepReloadAtTop();
+        delete root.dataset.lxpReload;
+      }
+      window.removeEventListener('scroll', keepReloadAtTop);
       if (overlay.current?.contains(document.activeElement)) {
         const target = previousFocus && previousFocus !== document.body ? previousFocus : document.querySelector<HTMLElement>('.site-header .brand');
         target?.focus({ preventScroll: true });
@@ -78,8 +89,8 @@ export function BrandIntro() {
       const source = mark.current.getBoundingClientRect();
       // Position of the original LXP lettering within the unmodified wing emblem.
       const dx = destination.left + destination.width * .5 - (source.left + source.width / 2);
-      const dy = destination.top + destination.height * .615 - (source.top + source.height / 2);
-      const scale = destination.width * .155 / source.width;
+      const dy = destination.top + destination.height * .65 - (source.top + source.height / 2);
+      const scale = destination.width * .14 / source.width;
       root.dataset.lxpIntro = 'travelling';
       const flight = mark.current.animate([
         { transform: 'translate3d(0,0,0) scale(1)', opacity: 1 },

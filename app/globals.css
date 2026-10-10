@@ -29,7 +29,7 @@
 /* Full company signature; preserve breathing room around the original emblem. */
 .site-header{height:112px;position:sticky;top:0}
 .company-logo{display:flex;flex-direction:column;align-items:center;gap:9px;width:180px;flex-shrink:0}
-.brand .company-emblem,.footer-brand .company-emblem{display:block;width:100%;height:auto;object-fit:contain;filter:invert(1);mix-blend-mode:screen}
+.brand .company-emblem,.footer-brand .company-emblem{display:block;width:100%;height:auto;object-fit:contain;filter:none;mix-blend-mode:normal}
 .company-logo .company-wordmark{display:block;font-size:8px;font-weight:400;line-height:1.5;letter-spacing:.17em;text-transform:uppercase;white-space:nowrap}
 .footer-brand .company-logo{gap:9px}
 /* Keep the entire photograph visible, including at intermediate screen widths. */
@@ -106,10 +106,10 @@ html[data-lxp-intro="wings"] .site-header .company-emblem{animation:intro-wings 
 
 /* Cinematic motion system — the original emblem, lettering and photography stay intact. */
 :root{--accent:#b7a27b;--ease-out:cubic-bezier(.22,.68,0,1.01)}
-.site-header{background:transparent;isolation:isolate;border-bottom-color:transparent;transition:border-color .45s,box-shadow .45s}
-.site-header:before{content:'';position:absolute;inset:0;z-index:-1;background:#101010;transition:background .45s,backdrop-filter .45s;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}
-.site-header.is-scrolled:before{background:rgba(15,15,14,.76);-webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15)}
-.site-header.is-scrolled{border-bottom-color:#ffffff1a;box-shadow:0 12px 36px #0000000c}
+.site-header{background:transparent;isolation:isolate;border-bottom:0;transition:box-shadow .45s}
+.site-header:before{content:'';position:absolute;inset:0;z-index:-1;background:#101010;transition:background .55s ease;-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
+.site-header.is-scrolled:before{background:rgba(10,11,11,.92);-webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15)}
+.site-header.is-scrolled{border-bottom:0;box-shadow:0 12px 36px #0000000c}
 .site-header .company-logo{transition:transform .55s var(--ease-out)}
 .site-header.is-scrolled .company-logo{transform:scale(.87)}
 .site-header.menu-is-open:before{background:#101010}
@@ -130,7 +130,7 @@ html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:cin
 .hero-scroll{transition:background .25s,border-color .25s,transform .4s var(--ease-out)}
 .hero-scroll:hover{transform:translateY(4px);border-color:#b7a27b;background:#b7a27b18}
 .hero-foot{border-bottom:1px solid #ffffff12;color:#a3a39a}
-@keyframes cinema-rise{from{opacity:0;transform:translateY(24px);clip-path:inset(0 0 100%)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes cinema-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes cinema-photo{from{opacity:0;clip-path:inset(7% 3% 0)}to{opacity:1;clip-path:inset(0)}}
 .page-arrival{animation:page-arrive .65s ease both}
 @keyframes page-arrive{from{opacity:.3}to{opacity:1}}
@@ -238,9 +238,9 @@ html[data-lxp-intro] .hero .hero-visual,.hero-arrived .hero-visual{animation:cin
   .hero-visual img,.programme-image img,.programme-card:hover .programme-image img,.world-section:hover .world-image img,.location-banner:hover img{transform:none!important;will-change:auto}
   .reveal-pending .eyebrow{opacity:1;transform:none}.reading-progress{display:none}
 }
-/* Invert the source's luminance mask: only the white emblem remains on translucent glass. */
-.site-header .company-logo{mix-blend-mode:normal}
-.site-header .company-emblem{mix-blend-mode:normal;mask-image:linear-gradient(#fff,#fff),url('/brand/emblem.png');mask-mode:alpha,luminance;mask-size:100% 100%;mask-repeat:no-repeat;mask-composite:subtract}
+/* Use the supplied transparent white logo directly, without compositing tricks. */
+.site-header .company-logo,.site-header .company-emblem{mix-blend-mode:normal}
+.site-header .company-emblem{filter:none;mask-image:none}
 .flow-stage{inset:clamp(225px,18vw,270px) -5% 14%;mask-image:linear-gradient(to bottom,transparent,#000 13%,#000 77%,transparent)}
 @media(max-width:900px){.flow-stage{inset:27% -18% 17%}}
 @media(max-width:700px){.flow-stage{inset:31% -12% 23%}}
@@ -267,3 +267,9 @@ html[data-lxp-intro]:not([data-lxp-intro="wings"]) .hero :is(.hero-kicker,h1,.he
   html[data-lxp-intro] #main,html[data-lxp-intro] .site-footer{opacity:1}
   html[data-lxp-intro] .hero :is(.hero-kicker,h1,.hero-intro,.hero-visual){animation:none!important}
 }
+
+/* Dark backing keeps the intro handoff and glass header from exposing the paper canvas. */
+body{background:#101010}
+#main{background:var(--paper)}
+/* Animated transforms must not become browser scroll anchors during the entrance. */
+html{overflow-anchor:none}
