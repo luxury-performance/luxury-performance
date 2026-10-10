@@ -1,8 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
-const SESSION_KEY = 'lxp-intro-seen-v1';
-
 const letters = {
   l: 'M8 10 H66 V182 A50 50 0 0 0 116 232 H312 V290 H116 A108 108 0 0 1 8 182 Z',
   x: 'M331.0000 10.0000 L413.0244 10.0000 L515.5147 112.4903 A12 12 0 0 0 532.4853 112.4903 L634.9756 10.0000 L717.0000 10.0000 L585.4853 141.5147 A12 12 0 0 0 585.4853 158.4853 L717.0000 290.0000 L634.9756 290.0000 L532.4853 187.5097 A12 12 0 0 0 515.5147 187.5097 L413.0244 290.0000 L331.0000 290.0000 L462.5147 158.4853 A12 12 0 0 0 462.5147 141.5147 Z',
@@ -30,18 +28,14 @@ export function BrandIntro() {
     shell?.setAttribute('inert', '');
     overlay.current?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
 
-    function finish(remember = true) {
+    function finish(completed = true) {
       if (finished) return;
       finished = true;
       timers.forEach(clearTimeout);
       animations.forEach(animation => animation.cancel());
       delete root.dataset.lxpIntro;
       shell?.removeAttribute('inert');
-      if (remember) {
-        pending.current = false;
-        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch {}
-        try { document.cookie = 'lxp_intro_seen=1; Path=/; SameSite=Lax'; } catch {}
-      }
+      if (completed) pending.current = false;
       if (overlay.current?.contains(document.activeElement)) {
         const target = previousFocus && previousFocus !== document.body ? previousFocus : document.querySelector<HTMLElement>('.site-header .brand');
         target?.focus({ preventScroll: true });

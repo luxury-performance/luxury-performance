@@ -1,3 +1,3 @@
-// Progressive enhancement: never hide the website when scripting or storage is unavailable.
-// The replay query is development-only, for reviewing the entrance in the local preview.
-export const introBootstrap = `(function(){try{var replay=${process.env.NODE_ENV === 'development'}&&new URLSearchParams(location.search).get('intro')==='1';var seen=document.cookie.split(';').some(function(c){return c.trim()==='lxp_intro_seen=1'})||sessionStorage.getItem('lxp-intro-seen-v1');if((replay||!seen)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.lxpIntro='tracing';setTimeout(function(){delete document.documentElement.dataset.lxpIntro},5000)}}catch(e){}})()`;
+// Play on each full page load; client-side navigation keeps the existing layout.
+// Progressive enhancement: never hide the website when scripting is unavailable.
+export const introBootstrap = `(function(){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.lxpIntro='tracing';setTimeout(function(){delete document.documentElement.dataset.lxpIntro},5000)}}catch(e){}})()`;
