@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { Eyebrow, ArrowLink } from '@/components/ui';
-import { SignatureFlow } from '@/components/signature-flow';
+import { PurosangueFilm } from '@/components/purosangue/film';
 import { Expertise } from '@/components/expertise';
 import { Reveal } from '@/components/reveal';
 import { ProgrammeCard } from '@/components/programme-card';
@@ -17,7 +17,7 @@ export default function Home() {
       <div className="hero-foot"><span>Performance. Design. Individuality.</span><span>Luxury Performance — A division of The Luxury Group</span></div>
     </section>
     <section className="intro section-pad"><Reveal><Eyebrow number="01">A different kind of drive</Eyebrow><div className="intro-grid"><div className="intro-side"><span className="large-plus">+</span><p>Not just what you drive.<br />How it makes you feel.</p></div><div><h2>Exceptional comes<br />as standard.<br /><span className="text-muted">Individual is up to you.</span></h2><div className="intro-copy"><p>We bring the world’s most exciting automotive brands to people who care about every detail. Performance, carbon, wheels and more — thoughtfully selected, expertly supported, unmistakably yours.</p><ArrowLink href="/about">Meet Luxury Performance</ArrowLink></div></div></div></Reveal></section>
-    <SignatureFlow />
+    <PurosangueFilm />
     <Expertise />
     <section className="programmes-section section-pad"><Reveal><div className="section-heading horizontal"><div><Eyebrow number="03">Selected programmes</Eyebrow><h2>Extraordinary,<br /><span className="text-muted">from every angle.</span></h2></div><ArrowLink href="/programmes">Explore all programmes</ArrowLink></div><div className="programme-grid home-programmes">{programmes.slice(0, 2).map((programme, index) => <ProgrammeCard key={programme.slug} programme={programme} index={index} />)}</div></Reveal></section>
     <section className="partners-strip section-pad"><span className="tiny-label">Exceptional names. A shared obsession.</span><div className="partners-logos" aria-label="Brands: NOVITEC, TECHART, FI Exhaust and Valvetronic"><span className="partner-novitec">NOVITEC</span><span className="partner-techart">TECHART</span><span className="partner-fi">Fi<span>EXHAUST</span></span><span className="partner-valvetronic">VALVETRONIC<small>DESIGNS</small></span></div></section>

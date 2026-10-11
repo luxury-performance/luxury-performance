@@ -1,0 +1,34 @@
+{
+  "purpose": "Illustrative automotive programme visualisation, not a fitment or installation instruction",
+  "asset_tool": "built-in image_gen",
+  "master": "public/images/purosangue-film/stock.png",
+  "after": "public/images/purosangue-film/novitec.png",
+  "after_prompt": "novitec-image-prompt.txt",
+  "after_generated_source": "exec-5e33913b-efbc-4107-b29f-322b130a471b.png",
+  "configuration_reference": "https://lxpforged.com/cdn/shop/files/IMG_0764_3.jpg?v=1767273869&width=1317",
+  "stock_photo_source": "https://cdn.motor1.com/images/mgl/7ZZq77/s1/ferrari-purosangue-rossa.jpg",
+  "image_dimensions": [
+    1672,
+    941
+  ],
+  "review_note": "The stock and modified images are AI-assisted illustrations based on photographs; exact physical fitment must be confirmed separately.",
+  "verification": {
+    "production_build": "passed",
+    "viewports": [
+      "1189x864",
+      "390x844",
+      "375x667"
+    ],
+    "horizontal_overflow": "none at mobile sizes",
+    "interactions": [
+      "chapter navigation",
+      "24 second playback completion",
+      "keyboard pause",
+      "comparison slider endpoints 0 and 100",
+      "direct comparison click",
+      "programme and vehicle prefilled in enquiry"
+    ],
+    "runtime_errors": "none in preview console",
+    "reduced_motion": "CSS and controller respect prefers-reduced-motion; not OS-emulated in browser QA"
+  }
+}

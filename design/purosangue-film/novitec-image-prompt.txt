@@ -1,0 +1,12 @@
+Use case: precise-object-edit.
+Create the AFTER frame of a website before/after animation. IMAGE 1 is the STOCK master frame. IMAGE 2 shows the actual NOVITEC ESTESO configuration and is the component design reference.
+EDIT IMAGE 1 IN PLACE. Match its EXACT camera, crop, canvas 1672 x 941, car position, angle, wheel centres, overall scale and lighting. Do not rotate the car, change perspective or reframe. Full car, nose left, rear right, rear-left three-quarter. The unchanged roof, glass, doors, lights and bonnet must align pixel for pixel with image 1 so the two images can be overlaid.
+Transform only these factory parts to match image 2:
+1. red painted ESTESO arch extensions replacing the black stock wheel arch trims, a broader athletic stance without resizing the body;
+2. black NOVITEC NF10 fine multi-spoke wheels exactly following image 2, yellow calipers, centres remain exactly in place;
+3. exposed dark carbon lower side and rear bumper inserts;
+4. carbon roof spoiler RACE and the small carbon rear tailgate spoiler lip matching image 2;
+5. four large black round exhaust outlets arranged in two paired assemblies.
+Preserve the same metallic red paint and realistic proportions. Subtle visible carbon weave, not exaggerated. Premium studio product photography, crisp surfaces and panel gaps, no plastic CGI appearance. Even soft light, no large blown highlights.
+Real alpha transparency outside the entire car, no floor, no cast shadows outside car, no scenery, no labels, no logos added, no typography or border. Preserve existing Ferrari badges.
+This is a faithful aligned automotive image edit for a visualisation, not a different car. Do NOT use image 2's crop or composition; only its upgrade designs.
