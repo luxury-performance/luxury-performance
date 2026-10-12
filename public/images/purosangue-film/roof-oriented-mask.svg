@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <defs><filter id="edge"><feGaussianBlur stdDeviation="3"/></filter></defs>
+  <!-- Include the roof-facing opening and the complete replacement footprint. -->
+  <path fill="white" filter="url(#edge)" d="M1130 206Q1255 185 1375 207L1420 224 1430 285 1184 288 1133 242Z"/>
+</svg>

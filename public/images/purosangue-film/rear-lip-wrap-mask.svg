@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <defs><filter id="edge"><feGaussianBlur stdDeviation=".8"/></filter><linearGradient id="join"><stop offset="0" stop-color="white"/><stop offset=".8" stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient></defs>
+  <!-- Extend only the outer segment; preserve the previously approved thin central lip. -->
+  <path fill="url(#join)" filter="url(#edge)" d="M1165 413Q1163 378 1190 356Q1213 341 1291 341L1291 359Q1220 359 1203 367Q1182 377 1178 398L1175 413Z"/>
+</svg>

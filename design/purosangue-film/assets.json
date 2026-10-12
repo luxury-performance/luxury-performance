@@ -3,10 +3,12 @@
   "asset_tool": "built-in image_gen",
   "master": "public/images/purosangue-film/stock.png",
   "after": "components/purosangue/film.tsx (composite)",
-  "after_prompt": "clean-spoilers-prompt.txt; roof-blade-prompt.txt",
+  "after_prompt": "clean-spoilers-prompt.txt; spoiler-orientation-wrap-prompt.txt",
   "after_generated_source": {
     "rear_lip": "exec-477dc084-0a73-4bf6-9985-dcd7d9dcc0ad.png",
-    "roof_blade": "exec-95e12224-4953-42bb-a7c5-11aa02351039.png"
+    "roof_blade": "exec-bbfec08c-8210-4b7b-87a0-82a7dcdc7cfd.png",
+    "rear_lip_outer_wrap": "exec-bbfec08c-8210-4b7b-87a0-82a7dcdc7cfd.png",
+    "orientation_draft": "exec-ff7e1bf8-5c33-4c19-a5d0-289c588b759f.png"
   },
   "configuration_reference": "https://lxpforged.com/cdn/shop/files/IMG_0764_3.jpg?v=1767273869&width=1317",
   "stock_photo_source": "https://cdn.motor1.com/images/mgl/7ZZq77/s1/ferrari-purosangue-rossa.jpg",
@@ -103,6 +105,22 @@
         1280,
         215
       ]
+    },
+    "spoiler_orientation_and_wrap": {
+      "production_build": "passed",
+      "desktop_checks": [
+        "Roof opening now faces the roof; convex trailing edge over rear glass",
+        "No factory spoiler peeking behind replacement",
+        "Rear outer extension follows outer lamp corner; central thin cap retained",
+        "Both comparison endpoints verified visually at 0 and 100",
+        "Clean original body and prior wheel/arch/tailpipe layers retained"
+      ],
+      "browser_console_errors": [],
+      "roof_node": [
+        1270,
+        235
+      ],
+      "responsive_note": "Shared camera sizing unchanged; this revision checked in desktop close-ups and overview."
     }
   },
   "after_original": "public/images/purosangue-film/novitec.png",
@@ -111,11 +129,12 @@
     941
   ],
   "after_refinement": {
-    "base": "The original stock image stays visible throughout the animation; no full-frame generated body replacement.",
+    "base": "Original paint retained as the modified body layer; only the factory roof-spoiler footprint is removed. Original and modified layers use complementary reveal clipping.",
     "layers": [
       {
         "source": "public/images/purosangue-film/stock.png",
-        "role": "Unchanged paint, body lines, glass and clean black-trim reflections"
+        "role": "Unchanged paint, body lines, glass and clean black-trim reflections",
+        "mask": "public/images/purosangue-film/retained-body-mask.svg (modified view only)"
       },
       {
         "source": "public/images/purosangue-film/novitec.png",
@@ -123,20 +142,26 @@
         "role": "Original approved arches, wheels and tailpipes; carbon finish blended at 18% over clean factory trim"
       },
       {
-        "source": "public/images/purosangue-film/roof-race-fitted.png",
-        "mask": "public/images/purosangue-film/roof-mounted-mask.svg",
-        "role": "Complete roof spoiler footprint aligned one-to-one with the original car; factory supports and roof spoiler no longer show as a second assembly."
+        "source": "public/images/purosangue-film/spoilers-oriented-wrap.png",
+        "mask": "public/images/purosangue-film/roof-oriented-mask.svg",
+        "role": "Reoriented blade with concave roof-facing edge, visible opening and thin aft edge; original spoiler silhouette removed underneath."
       },
       {
         "source": "public/images/purosangue-film/rear-lip-fitted.png",
         "mask": "public/images/purosangue-film/rear-lip-mask.svg",
         "role": "Thin rear carbon cap; original red edge below remains visible"
+      },
+      {
+        "source": "public/images/purosangue-film/spoilers-oriented-wrap.png",
+        "mask": "public/images/purosangue-film/rear-lip-wrap-mask.svg",
+        "role": "Near-side lip extends around the outer rear light; previously approved central lip remains unchanged."
       }
     ],
     "prompt_tool": "built-in image_gen; composition uses CSS/SVG display masks without rewriting source bitmap files",
     "prompt_chain": [
       "clean-spoilers-prompt.txt",
-      "roof-blade-prompt.txt"
+      "roof-blade-prompt.txt",
+      "spoiler-orientation-wrap-prompt.txt"
     ],
     "product_references": [
       {
@@ -157,7 +182,12 @@
       }
     ],
     "note": "Illustrative reconstruction and compositing from product photos; not CAD geometry or installation guidance. Unchanged body paint and trim sourced from the original image.",
-    "reference_review": "User-supplied installed side view used to review placement and thickness: references/installed-side-user-reference.png."
+    "reference_review": "User-supplied installed side view used to review placement and thickness: references/installed-side-user-reference.png.",
+    "new_spoiler_source_dimensions": [
+      1671,
+      941
+    ],
+    "registration_note": "Source displayed in shared 1672x941 image rig with object-fit:contain; no independent spoiler transforms."
   },
   "after_previous": "public/images/purosangue-film/novitec-refined.png"
 }
