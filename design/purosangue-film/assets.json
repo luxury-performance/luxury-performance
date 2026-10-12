@@ -41,7 +41,15 @@
       ],
       "anchor_space": "1672 \u00d7 941 image coordinates; camera and annotation share one transform",
       "mobile_tracking_error_px_max": 0.27,
-      "comparison": "unchanged full-car view; product pointers hidden"
-    }
+      "comparison": "unchanged full-car view; product pointers hidden",
+      "markers": "small hollow points on wheel outer edge and tailpipe outer lip, clear of centre badge and exhaust openings"
+    },
+    "reveal_sequence": {
+      "reveal_ends": 0.18,
+      "first_zoom_begins": 0.22,
+      "full_car_hold_seconds_at_playback": 1.28,
+      "verified": "camera scale 1 and translation 0 when reveal finishes; all zoomed frames have full reveal"
+    },
+    "final_comparison": "dedicated final-scene button; desktop and compact-phone checked; slider endpoints 0 and 100"
   }
 }
