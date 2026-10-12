@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, MoveHorizontal, Pause, Play, RotateCcw, X } from 'lucide-react';
-import { clamp, filmChapters, filmFrame } from './motion';
+import { clamp, completeAt, filmChapters, filmFrame, type FilmGeometry } from './motion';
 import styles from './film.module.css';
 
 type FilmControl = { seek: (value: number) => void; play: () => void; stop: () => void; compare: (value: boolean) => void };
@@ -12,6 +12,9 @@ type FilmControl = { seek: (value: number) => void; play: () => void; stop: () =
 export function PurosangueFilm() {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const composition = useRef<HTMLDivElement>(null);
+  const rig = useRef<HTMLDivElement>(null);
+  const leader = useRef<SVGPathElement>(null);
   const control = useRef<FilmControl | null>(null);
   const [chapter, setChapter] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -32,14 +35,29 @@ export function PurosangueFilm() {
     let raf = 0, playRaf = 0, disposed = false, isComparing = false;
     let target = 0, progress = 0, selected = -1, start = 0, distance = 1;
     let headerHeight = 112;
+    let geometry: FilmGeometry = { width: 1, height: 1, rigWidth: 1, rigHeight: 1, rigX: 0, rigY: 0, small: false };
 
     function paint(value: number, instant = false) {
       progress = clamp(value);
-      const f = filmFrame(progress, mobile.matches);
+      const f = filmFrame(progress, geometry, isComparing);
       const simple = preference.matches || isComparing;
-      frameEl!.style.setProperty('--camera-scale', String(simple ? 1 : f.scale));
-      frameEl!.style.setProperty('--camera-x', `${simple ? 0 : f.x}%`);
-      frameEl!.style.setProperty('--camera-y', `${simple ? 0 : f.y}%`);
+      frameEl!.style.setProperty('--camera-scale', String(f.scale));
+      frameEl!.style.setProperty('--camera-x', `${f.x}px`);
+      frameEl!.style.setProperty('--camera-y', `${f.y}px`);
+      frameEl!.dataset.detail = String(Boolean(f.pin) && !isComparing);
+      if (f.pin) {
+        const { x, y } = f.pin;
+        // Labels stay readable while the point stays attached to the photographed part.
+        const labelX = clamp(x + (geometry.small ? 38 : 85), 8, geometry.width - (geometry.small ? 168 : 190));
+        const labelY = clamp(y + (geometry.small ? 46 : 70), 24, geometry.height - 35);
+        frameEl!.style.setProperty('--pin-x', `${x}px`);
+        frameEl!.style.setProperty('--pin-y', `${y}px`);
+        frameEl!.style.setProperty('--label-x', `${labelX}px`);
+        frameEl!.style.setProperty('--label-y', `${labelY}px`);
+        const visible = x > 6 && x < geometry.width - 6 && y > 8 && y < geometry.height - 10;
+        frameEl!.style.setProperty('--pin-visible', visible ? '1' : '0');
+        leader.current?.setAttribute('d', `M ${x} ${y} L ${labelX - 12} ${labelY + 7} L ${labelX - 3} ${labelY + 7}`);
+      }
       frameEl!.style.setProperty('--upgrade-cut', `${(1 - f.reveal) * 100}%`);
       frameEl!.style.setProperty('--reveal-position', `${f.reveal * 100}%`);
       frameEl!.style.setProperty('--scan-opacity', f.reveal > .01 && f.reveal < .99 ? '.65' : '0');
@@ -69,6 +87,10 @@ export function PurosangueFilm() {
       section!.style.setProperty('--film-header', `${headerHeight}px`);
       start = section!.getBoundingClientRect().top + window.scrollY - headerHeight;
       distance = Math.max(1, section!.offsetHeight - frameEl!.offsetHeight);
+      const area = composition.current;
+      const car = rig.current;
+      if (area && car) geometry = { width: area.clientWidth, height: area.clientHeight, rigWidth: car.offsetWidth, rigHeight: car.offsetHeight, rigX: car.offsetLeft, rigY: car.offsetTop, small: mobile.matches };
+      paint(progress, preference.matches);
       onScroll();
     }
 
@@ -91,9 +113,9 @@ export function PurosangueFilm() {
       if (playRaf) { stop(); return; }
       if (preference.matches) return;
       isComparing = false; setComparing(false);
-      const from = progress >= .89 ? 0 : progress;
+      const from = progress >= .90 ? 0 : progress;
       const started = performance.now();
-      const duration = (1 - from) * 24000;
+      const duration = (1 - from) * 32000;
       setPlaying(true);
       const tick = (now: number) => {
         if (disposed) return;
@@ -109,17 +131,17 @@ export function PurosangueFilm() {
 
     function compare(value: boolean) {
       stop();
-      isComparing = value; setComparing(value); target = .94;
+      isComparing = value; setComparing(value); target = completeAt;
       cancelAnimationFrame(raf); raf = 0;
-      if (!preference.matches) window.scrollTo({ top: start + distance * .94, behavior: 'instant' });
-      paint(.94, true);
+      if (!preference.matches) window.scrollTo({ top: start + distance * completeAt, behavior: 'instant' });
+      paint(completeAt, true);
     }
 
     function onPreference() {
       stop(); setReduced(preference.matches);
       section!.dataset.motion = preference.matches ? 'reduced' : 'full';
       measure();
-      if (preference.matches) { target = .94; paint(target, true); }
+      if (preference.matches) { target = completeAt; paint(target, true); }
     }
     function onKey(event: KeyboardEvent) {
       const interactive = event.target instanceof HTMLElement && event.target.closest('button, input, a, textarea, select');
@@ -130,6 +152,8 @@ export function PurosangueFilm() {
     onPreference();
     const resize = new ResizeObserver(measure);
     resize.observe(section); resize.observe(frameEl);
+    if (composition.current) resize.observe(composition.current);
+    if (rig.current) resize.observe(rig.current);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', measure);
     window.addEventListener('wheel', stop, { passive: true });
@@ -157,7 +181,7 @@ export function PurosangueFilm() {
         <button className={styles.compareButton} disabled={!imageReady} aria-pressed={comparing} onClick={() => control.current?.compare(!comparing)}>{comparing ? <X size={14} /> : <MoveHorizontal size={15} />}<span>{comparing ? 'Close comparison' : 'Before / after'}</span></button>
       </div>
 
-      <div className={styles.composition}>
+      <div ref={composition} className={styles.composition}>
         <div className={styles.word} aria-hidden="true">PUROSANGUE</div>
         <div className={styles.copy} key={chapter}>
           <p className={styles.kicker}>{comparing ? 'Two expressions. One extraordinary car.' : current.kicker}</p>
@@ -166,7 +190,7 @@ export function PurosangueFilm() {
         </div>
 
         <div className={styles.floor} aria-hidden="true"><span /><span /></div>
-        <div className={styles.carRig}>
+        <div ref={rig} className={styles.carRig}>
           <div className={styles.camera}>
             <div className={styles.carShadow} aria-hidden="true" />
             <Image className={styles.carImage} src="/images/purosangue-film/stock.png" alt="Original red Ferrari Purosangue, shown from the rear left" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, stock: true }))} />
@@ -180,8 +204,12 @@ export function PurosangueFilm() {
           </div>
         </div>
 
-        <div className={styles.callout} aria-hidden="true"><span className={styles.pin} /><span className={styles.calloutRule} /><span>{current.detail}</span></div>
-        <div className={styles.sceneIndex} aria-hidden="true"><span>0{chapter + 1}</span><i>/ 05</i></div>
+        <div className={styles.annotation} aria-hidden="true">
+          <svg className={styles.leader}><path ref={leader} /></svg>
+          <span className={styles.pin} />
+          <span className={styles.callout}>{current.detail}</span>
+        </div>
+        <div className={styles.sceneIndex} aria-hidden="true"><span>0{chapter + 1}</span><i>/ 0{filmChapters.length}</i></div>
         <span className={styles.sceneCaption}>{chapter === 0 ? 'ORIGINAL CONFIGURATION' : 'NOVITEC / DESIGN VISUALISATION'}</span>
       </div>
 

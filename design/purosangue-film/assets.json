@@ -15,6 +15,7 @@
   "verification": {
     "production_build": "passed",
     "viewports": [
+      "1280x720",
       "1189x864",
       "390x844",
       "375x667"
@@ -22,13 +23,25 @@
     "horizontal_overflow": "none at mobile sizes",
     "interactions": [
       "chapter navigation",
-      "24 second playback completion",
+      "seven-chapter navigation and playback completion (32-second timeline)",
       "keyboard pause",
       "comparison slider endpoints 0 and 100",
       "direct comparison click",
       "programme and vehicle prefilled in enquiry"
     ],
-    "runtime_errors": "none in preview console",
-    "reduced_motion": "CSS and controller respect prefers-reduced-motion; not OS-emulated in browser QA"
+    "runtime_errors": "none in production preview console",
+    "reduced_motion": "CSS and controller respect prefers-reduced-motion; not OS-emulated in browser QA",
+    "product_focus": {
+      "parts": [
+        "ESTESO rear arch extension",
+        "NF10 wheel",
+        "black tailpipes",
+        "carbon roof spoiler",
+        "carbon rear lip spoiler"
+      ],
+      "anchor_space": "1672 \u00d7 941 image coordinates; camera and annotation share one transform",
+      "mobile_tracking_error_px_max": 0.27,
+      "comparison": "unchanged full-car view; product pointers hidden"
+    }
   }
 }
