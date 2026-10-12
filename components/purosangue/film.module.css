@@ -35,7 +35,7 @@
 .annotation{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .25s}
 .stage[data-detail=true] .annotation{opacity:var(--pin-visible,0)}
 .leader{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke:#f2eee9;stroke-width:1;filter:drop-shadow(0 1px 3px #0008)}
-.pin{position:absolute;left:var(--pin-x);top:var(--pin-y);width:8px;height:8px;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:50%;background:#eee8dc;box-shadow:0 0 0 5px #0005,0 0 0 6px #ffffff70}
+.pin{position:absolute;left:var(--pin-x);top:var(--pin-y);width:5px;height:5px;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:50%;background:#ffffff18;box-shadow:0 0 0 2px #0004}
 .callout{position:absolute;left:var(--label-x);top:var(--label-y);font-size:10px;line-height:15px;letter-spacing:.035em;color:#f1eee7;padding:0 5px;background:#111317d9;box-shadow:0 0 18px 8px #1113175c;white-space:nowrap}
 .sceneIndex{position:absolute;z-index:3;right:0;top:8%;display:flex;gap:9px;align-items:baseline;color:#e5e6df}
 .sceneIndex>span{font-size:36px;line-height:1;font-weight:300;letter-spacing:-.07em;font-variant-numeric:tabular-nums}
@@ -83,7 +83,7 @@
  .copy{top:5%;max-width:280px}.kicker{font-size:7px;margin-bottom:13px}.copy h2{font-size:38px}.description{font-size:12px;max-width:245px;line-height:1.7;margin-top:13px}
  .carRig{width:113%;left:50%;top:68%}.word{top:53%;font-size:15vw;letter-spacing:-.065em}
  .sceneIndex{top:7%;right:0}.sceneIndex>span{font-size:25px}.sceneIndex i{font-size:7px}
- .callout{font-size:9px;letter-spacing:0}.pin{width:7px;height:7px}
+ .callout{font-size:9px;letter-spacing:0}.pin{width:5px;height:5px}
  .sceneCaption{bottom:7%;font-size:8px}.floor{inset:54% -50% -15%}
  .controlTop{min-height:35px;gap:15px;padding-bottom:16px}.play{font-size:8px;padding:0 11px;min-height:32px}.replay{height:32px;width:32px}.transport{gap:7px}.scrollHint{display:none}.enquire{font-size:9px;gap:13px}
  .chapters>button{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:7px;padding:14px 3px 14px 0;font-size:8px;line-height:1.5}.chapterNumber{font-size:7px}.chapters>button[aria-current]{color:#fff}

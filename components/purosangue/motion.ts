@@ -8,13 +8,15 @@ type Chapter = { name: string; at: number; kicker: string; title: string; descri
 
 export const filmChapters: readonly Chapter[] = [
   { name: 'Original', at: .04, kicker: 'Ferrari Purosangue', title: 'Exceptional.\nFrom the start.', description: 'An extraordinary foundation. A new expression waiting to take shape.', detail: 'The original silhouette' },
-  { name: 'Widebody', at: .25, kicker: '01 / ESTESO', title: 'A presence\nall its own.', description: 'Follow the painted rear arch extension: a wider shoulder, shaped around the original body.', detail: 'ESTESO rear arch extension', focus: { pin: [963, 446], centre: [991, 490], bounds: [620, 490] } },
-  { name: 'Wheels', at: .40, kicker: '02 / NF10', title: 'The detail\nthat defines it.', description: 'The forged wheel takes centre stage. Fine spokes, a deep profile and a distinct stance.', detail: 'NOVITEC NF10 forged wheel', focus: { pin: [988, 641], centre: [988, 635], bounds: [510, 430] } },
-  { name: 'Tailpipes', at: .54, kicker: '03 / Exhaust finish', title: 'A sharper\nfinal note.', description: 'Black tailpipe finishers sit within the carbon rear surround. Look closely at the outlet detail.', detail: 'Black tailpipe finishers', focus: { pin: [1284, 641], centre: [1334, 625], bounds: [450, 330] } },
+  { name: 'Widebody', at: .29, kicker: '01 / ESTESO', title: 'A presence\nall its own.', description: 'Follow the painted rear arch extension: a wider shoulder, shaped around the original body.', detail: 'ESTESO rear arch extension', focus: { pin: [963, 446], centre: [991, 490], bounds: [620, 490] } },
+  { name: 'Wheels', at: .40, kicker: '02 / NF10', title: 'The detail\nthat defines it.', description: 'The forged wheel takes centre stage. Fine spokes, a deep profile and a distinct stance.', detail: 'NOVITEC NF10 forged wheel', focus: { pin: [1085, 710], centre: [988, 635], bounds: [510, 430] } },
+  { name: 'Tailpipes', at: .54, kicker: '03 / Exhaust finish', title: 'A sharper\nfinal note.', description: 'Black tailpipe finishers sit within the carbon rear surround. Look closely at the outlet detail.', detail: 'Black tailpipe finishers', focus: { pin: [1354, 642], centre: [1334, 625], bounds: [450, 330] } },
   { name: 'Roof spoiler', at: .68, kicker: '04 / Upper carbon', title: 'Above\nexpectation.', description: 'The carbon roof spoiler extends the roofline above the rear glass.', detail: 'Carbon roof spoiler', focus: { pin: [1260, 226], centre: [1260, 263], bounds: [500, 310] } },
   { name: 'Rear spoiler', at: .82, kicker: '05 / Rear carbon', title: 'Every line.\nConsidered.', description: 'A separate carbon lip follows the tailgate edge, directly above the rear lights.', detail: 'Carbon rear lip spoiler', focus: { pin: [1425, 348], centre: [1398, 384], bounds: [500, 320] } },
-  { name: 'Complete', at: .97, kicker: 'Purosangue by NOVITEC', title: 'Entirely\nyour expression.', description: 'A complete vision, specified around you. Explore the difference, then make it yours.', detail: 'The complete expression' },
+  { name: 'Complete', at: .97, kicker: 'Purosangue by NOVITEC', title: 'Entirely\nyour expression.', description: 'The complete transformation. Compare the original car with the NOVITEC build, then make it yours.', detail: 'The complete expression' },
 ];
+// Finish the full-car reveal, hold it, then move into the first detail.
+export const filmTiming = { reveal: [.105, .18], widebodyZoom: [.22, .29] } as const;
 export const completeAt = filmChapters[filmChapters.length - 1].at;
 export const clamp = (v: number, low = 0, high = 1) => Math.max(low, Math.min(high, v));
 export function ease(from: number, to: number, p: number) {
@@ -39,13 +41,14 @@ function cameraFor(index: number, g: FilmGeometry) {
 export function filmFrame(p: number, g: FilmGeometry, overview = false) {
   let chapter = 0;
   for (let i = 1; i < filmChapters.length; i++) {
-    if (p >= (filmChapters[i - 1].at + filmChapters[i].at) / 2) chapter = i;
+    const begins = i === 1 ? filmTiming.widebodyZoom[0] : (filmChapters[i - 1].at + filmChapters[i].at) / 2;
+    if (p >= begins) chapter = i;
   }
   let camera = cameraFor(0, g);
   for (let i = 1; i < filmChapters.length; i++) {
     const to = cameraFor(i, g);
     const midpoint = (filmChapters[i - 1].at + filmChapters[i].at) / 2;
-    const t = ease(midpoint - .035, midpoint + .035, p);
+    const t = i === 1 ? ease(...filmTiming.widebodyZoom, p) : ease(midpoint - .035, midpoint + .035, p);
     camera = { scale: camera.scale + (to.scale - camera.scale) * t, x: camera.x + (to.x - camera.x) * t, y: camera.y + (to.y - camera.y) * t };
   }
   if (overview) camera = { scale: 1, x: 0, y: 0 };
@@ -54,5 +57,5 @@ export function filmFrame(p: number, g: FilmGeometry, overview = false) {
     x: g.rigX + camera.x + (focus.pin[0] / 1672 - .5) * g.rigWidth * camera.scale,
     y: g.rigY + camera.y + (focus.pin[1] / 941 - .5) * g.rigHeight * camera.scale,
   } : null;
-  return { ...camera, chapter, pin, reveal: ease(.105, .18, p), light: ease(0, .10, p), brightness: .65 + .35 * ease(0, .10, p), word: focus ? .2 : 1 };
+  return { ...camera, chapter, pin, reveal: ease(...filmTiming.reveal, p), light: ease(0, .10, p), brightness: .65 + .35 * ease(0, .10, p), word: focus ? .2 : 1 };
 }
