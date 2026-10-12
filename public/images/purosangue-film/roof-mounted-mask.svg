@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <defs><filter id="edge"><feGaussianBlur stdDeviation=".65"/></filter></defs>
+  <!-- Replace the whole original spoiler footprint, including supports and contact shadow. -->
+  <path fill="white" filter="url(#edge)" d="M1130 206Q1255 185 1375 207L1420 224 1430 285 1184 288 1133 242Z"/>
+</svg>
