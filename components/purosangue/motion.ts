@@ -57,5 +57,5 @@ export function filmFrame(p: number, g: FilmGeometry, overview = false) {
     x: g.rigX + camera.x + (focus.pin[0] / 1672 - .5) * g.rigWidth * camera.scale,
     y: g.rigY + camera.y + (focus.pin[1] / 941 - .5) * g.rigHeight * camera.scale,
   } : null;
-  return { ...camera, chapter, pin, reveal: ease(...filmTiming.reveal, p), light: ease(0, .10, p), brightness: .65 + .35 * ease(0, .10, p), word: focus ? .2 : 1 };
+  return { ...camera, chapter, pin, reveal: ease(...filmTiming.reveal, p), light: ease(0, .10, p), brightness: .65 + .35 * ease(0, .10, p), word: focus ? .55 : 1 };
 }

@@ -64,7 +64,7 @@ export function PurosangueFilm() {
       frameEl!.style.setProperty('--scan-opacity', f.reveal > .01 && f.reveal < .99 ? '.65' : '0');
       frameEl!.style.setProperty('--light-x', `${-120 + f.light * 290}%`);
       frameEl!.style.setProperty('--car-light', String(simple ? 1 : f.brightness));
-      frameEl!.style.setProperty('--word-opacity', String(simple ? .08 : f.word * .08));
+      frameEl!.style.setProperty('--word-opacity', String(simple ? .20 : f.word * .20));
       frameEl!.style.setProperty('--film-progress', String(progress));
       frameEl!.dataset.chapter = String(f.chapter);
       frameEl!.dataset.instant = String(instant || preference.matches);
@@ -196,7 +196,7 @@ export function PurosangueFilm() {
             <div className={styles.carShadow} aria-hidden="true" />
             <Image className={styles.carImage} src="/images/purosangue-film/stock.png" alt="Original red Ferrari Purosangue, shown from the rear left" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, stock: true }))} />
             <div className={styles.upgraded} style={comparing ? { clipPath: `inset(0 ${100 - split}% 0 0)` } : undefined}>
-              <Image className={styles.carImage} src="/images/purosangue-film/novitec.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
+              <Image className={styles.carImage} src="/images/purosangue-film/novitec-refined.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
             </div>
             <div className={styles.lightMask} aria-hidden="true"><span /></div>
             <span className={styles.revealLine} aria-hidden="true" />
