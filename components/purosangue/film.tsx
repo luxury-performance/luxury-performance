@@ -21,9 +21,9 @@ export function PurosangueFilm() {
   const [comparing, setComparing] = useState(false);
   const [split, setSplit] = useState(50);
   const [reduced, setReduced] = useState(false);
-  const [loaded, setLoaded] = useState({ stock: false, novitec: false });
+  const [loaded, setLoaded] = useState({ stock: false, novitec: false, spoilers: false, roof: false });
   const titleId = useId();
-  const imageReady = loaded.stock && loaded.novitec;
+  const imageReady = loaded.stock && loaded.novitec && loaded.spoilers && loaded.roof;
   const current = filmChapters[chapter];
   const complete = chapter === filmChapters.length - 1;
 
@@ -196,7 +196,9 @@ export function PurosangueFilm() {
             <div className={styles.carShadow} aria-hidden="true" />
             <Image className={styles.carImage} src="/images/purosangue-film/stock.png" alt="Original red Ferrari Purosangue, shown from the rear left" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, stock: true }))} />
             <div className={styles.upgraded} style={comparing ? { clipPath: `inset(0 ${100 - split}% 0 0)` } : undefined}>
-              <Image className={styles.carImage} src="/images/purosangue-film/novitec-refined.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
+              <Image className={`${styles.carImage} ${styles.upgradeParts}`} src="/images/purosangue-film/novitec.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
+              <Image className={`${styles.carImage} ${styles.roofParts}`} src="/images/purosangue-film/roof-race-fitted.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, roof: true }))} />
+              <Image className={`${styles.carImage} ${styles.spoilerParts}`} src="/images/purosangue-film/rear-lip-fitted.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, spoilers: true }))} />
             </div>
             <div className={styles.lightMask} aria-hidden="true"><span /></div>
             <span className={styles.revealLine} aria-hidden="true" />

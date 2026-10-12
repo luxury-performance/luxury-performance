@@ -2,9 +2,12 @@
   "purpose": "Illustrative automotive programme visualisation, not a fitment or installation instruction",
   "asset_tool": "built-in image_gen",
   "master": "public/images/purosangue-film/stock.png",
-  "after": "public/images/purosangue-film/novitec-refined.png",
-  "after_prompt": "original-local-refinement-prompt.txt",
-  "after_generated_source": "exec-a44ff600-172e-474f-9f98-a5d2655197e9.png",
+  "after": "components/purosangue/film.tsx (composite)",
+  "after_prompt": "clean-spoilers-prompt.txt; roof-blade-prompt.txt",
+  "after_generated_source": {
+    "rear_lip": "exec-477dc084-0a73-4bf6-9985-dcd7d9dcc0ad.png",
+    "roof_blade": "exec-95e12224-4953-42bb-a7c5-11aa02351039.png"
+  },
   "configuration_reference": "https://lxpforged.com/cdn/shop/files/IMG_0764_3.jpg?v=1767273869&width=1317",
   "stock_photo_source": "https://cdn.motor1.com/images/mgl/7ZZq77/s1/ferrari-purosangue-rossa.jpg",
   "image_dimensions": [
@@ -79,20 +82,82 @@
         687
       ],
       "wheel_node_review": "Visually confirmed on the lower-right rim spoke, clear of badge and tire"
+    },
+    "node_labels": "Title Case for each product name; NOVITEC, ESTESO, NF10 and RACE retain their brand capitalization.",
+    "localized_composite": {
+      "production_build": "passed",
+      "viewport": "1280x720",
+      "checks": [
+        "All four image layers loaded",
+        "Rear lip zoom: thin cap with original red painted edge visible below",
+        "Roof blade zoom: reduced and positioned behind painted roof surround",
+        "Original and NOVITEC comparison endpoints reach 0 and 100",
+        "Product nodes use Title Case; roof pin updated for localized blade"
+      ],
+      "console_errors": [],
+      "mobile": "Existing responsive geometry retained; current browser viewport override did not apply, so this image revision was not visually rechecked at mobile size."
     }
   },
   "after_original": "public/images/purosangue-film/novitec.png",
   "after_image_dimensions": [
-    1671,
+    1672,
     941
   ],
   "after_refinement": {
-    "base": "Original clean NOVITEC artwork, without intermediate carbon edits",
-    "changes": [
-      "Extend thin rear lip above outermost visible rear lamp",
-      "Clean black carbon rear diffuser and exhaust surrounds",
-      "Clean black carbon lower side panels"
+    "base": "The original stock image stays visible throughout the animation; no full-frame generated body replacement.",
+    "layers": [
+      {
+        "source": "public/images/purosangue-film/stock.png",
+        "role": "Unchanged paint, body lines, glass and clean black-trim reflections"
+      },
+      {
+        "source": "public/images/purosangue-film/novitec.png",
+        "mask": "public/images/purosangue-film/upgrade-parts-mask.svg",
+        "role": "Original approved arches, wheels and tailpipes; carbon finish blended at 18% over clean factory trim"
+      },
+      {
+        "source": "public/images/purosangue-film/roof-race-fitted.png",
+        "mask": "public/images/purosangue-film/roof-parts-mask.svg",
+        "role": "Carbon blade only, reduced and positioned within the rear-glass opening; original painted roof surround retained",
+        "display_transform": {
+          "scale": 0.78,
+          "translate_percentage": [
+            18.72,
+            6.8
+          ]
+        }
+      },
+      {
+        "source": "public/images/purosangue-film/rear-lip-fitted.png",
+        "mask": "public/images/purosangue-film/rear-lip-mask.svg",
+        "role": "Thin rear carbon cap; original red edge below remains visible"
+      }
     ],
-    "prompt_tool": "built-in image_gen"
-  }
+    "prompt_tool": "built-in image_gen; composition uses CSS/SVG display masks without rewriting source bitmap files",
+    "prompt_chain": [
+      "clean-spoilers-prompt.txt",
+      "roof-blade-prompt.txt"
+    ],
+    "product_references": [
+      {
+        "part": "F6 666 82",
+        "url": "https://lxpforged.com/products/novitec-esteso-roofspoiler-race-visible-carbon-not-with-electric-inside-rear-mirror-purosangue",
+        "images": [
+          "references/roof-race-product.png",
+          "references/roof-race-installed.png"
+        ]
+      },
+      {
+        "part": "F6 666 28",
+        "url": "https://lxpforged.com/products/novitec-rearspoiler-visible-carbon-purosangue",
+        "images": [
+          "references/rear-lip-product.png",
+          "references/rear-lip-installed.png"
+        ]
+      }
+    ],
+    "note": "Illustrative reconstruction and compositing from product photos; not CAD geometry or installation guidance. Unchanged body paint and trim sourced from the original image.",
+    "reference_review": "User-supplied installed side view used to review placement and thickness: references/installed-side-user-reference.png."
+  },
+  "after_previous": "public/images/purosangue-film/novitec-refined.png"
 }

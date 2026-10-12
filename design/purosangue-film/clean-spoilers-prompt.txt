@@ -1,0 +1,10 @@
+Use case: precise-object-edit.
+Edit target: image 1 is the CLEAN stock Ferrari Purosangue, rear-left three-quarter studio view, transparent background.
+References: image 2 is the actual NOVITEC ESTESO Roof Spoiler RACE loose product; image 3 is that exact roof spoiler installed. Image 4 is the actual three-piece carbon rear lip; image 5 is its installed closeup.
+Replace ONLY the upper roof spoiler and add ONLY the rear tailgate lip on image 1. Match their precise shapes to the product photos rather than inventing new tuning parts.
+
+ROOF: Remove the original red rounded roof bridge. Install the thin, broad swept carbon blade from images 2-3. Its shape has a concave curved inside/forward edge, angular folded triangular outer tips and a crisp diagonal crease on the near end. It lies above the rear glass, leaving an OPEN AIR GAP under the central span. The rear-facing edge must be a THIN edge, NOT a huge solid vertical black rectangle or a chunky box. The near triangular end is broad and low, the middle is a graceful thin wing spanning across the glass. Reproduce the reference's open light construction and mounting, adapted to the target's camera, rather than a flattened oval shell.
+
+REAR LIP: Add the slim three-piece strip following the curved top edge of the tailgate exactly as images 4-5. Smooth uninterrupted edge with a fine highlight, very low, flush, thin bevel, no chunky tube. Central strip and two sharply tapered short ends separated by neat diagonal joins along the tailgate seams. Near end wraps above the OUTERMOST left rear light. Carbon is smooth glossy dark charcoal with subtle fine even weave. NO mottling, chips, irregular bumps, wavy highlights, torn red patches, jagged edges or serration.
+
+Preserve image 1's exact camera, car location, scale, 1672x941 canvas and alpha transparency. Do not change the paint, wheels, lights, windows outside the spoiler footprint, panel lines, body edges, diffuser or exhaust. Keep clean smooth studio reflections on every surface. This is a surgical part replacement for compositing: absolutely no all-over stylization or sharpening. No text or ground shadow.

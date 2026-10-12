@@ -28,6 +28,11 @@
 .carRig{--rig-width:94%;--rig-top:61;position:absolute;width:min(var(--rig-width),calc((100cqh - var(--rig-top) * 1cqh - 24px) * 1672 / 340));aspect-ratio:1672/941;left:56%;top:calc(var(--rig-top) * 1%);transform:translate(-50%,-50%);pointer-events:none}
 .camera{width:100%;height:100%;position:relative;transform:translate3d(var(--camera-x),var(--camera-y),0) scale(var(--camera-scale));transform-origin:50% 50%;will-change:transform;filter:brightness(var(--car-light))}
 .carImage{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;user-select:none}
+.upgradeParts,.spoilerParts,.roofParts{mask-size:100% 100%;mask-repeat:no-repeat}
+.upgradeParts{mask-image:url('/images/purosangue-film/upgrade-parts-mask.svg')}
+/* Fit the blade behind the painted roof edge, inside the rear-glass opening. */
+.roofParts{mask-image:url('/images/purosangue-film/roof-parts-mask.svg');transform-origin:0 0;transform:translate(18.72%,6.8%) scale(.78)}
+.spoilerParts{mask-image:url('/images/purosangue-film/rear-lip-mask.svg')}
 .upgraded{position:absolute;inset:0;clip-path:inset(0 var(--upgrade-cut) 0 0);will-change:clip-path}
 .carShadow{position:absolute;left:7%;right:7%;top:75%;height:9%;border-radius:50%;background:#000;filter:blur(18px);opacity:.75;transform:rotate(-3deg)}
 .lightMask{position:absolute;inset:0;mask-image:url('/images/purosangue-film/stock.png');mask-size:100% 100%;pointer-events:none;mix-blend-mode:screen;opacity:.12}
