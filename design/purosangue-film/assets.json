@@ -90,12 +90,19 @@
       "checks": [
         "All four image layers loaded",
         "Rear lip zoom: thin cap with original red painted edge visible below",
-        "Roof blade zoom: reduced and positioned behind painted roof surround",
         "Original and NOVITEC comparison endpoints reach 0 and 100",
         "Product nodes use Title Case; roof pin updated for localized blade"
       ],
       "console_errors": [],
       "mobile": "Existing responsive geometry retained; current browser viewport override did not apply, so this image revision was not visually rechecked at mobile size."
+    },
+    "roof_registration": {
+      "change": "Removed independent 0.78 scale and translation; spoiler and body now share source coordinates. Replacement mask covers original supports and contact shadow.",
+      "visual_review": "Roof zoom checked at 1280x720: near end joins painted roof edge; no displaced red factory blade behind it.",
+      "node": [
+        1280,
+        215
+      ]
     }
   },
   "after_original": "public/images/purosangue-film/novitec.png",
@@ -117,15 +124,8 @@
       },
       {
         "source": "public/images/purosangue-film/roof-race-fitted.png",
-        "mask": "public/images/purosangue-film/roof-parts-mask.svg",
-        "role": "Carbon blade only, reduced and positioned within the rear-glass opening; original painted roof surround retained",
-        "display_transform": {
-          "scale": 0.78,
-          "translate_percentage": [
-            18.72,
-            6.8
-          ]
-        }
+        "mask": "public/images/purosangue-film/roof-mounted-mask.svg",
+        "role": "Complete roof spoiler footprint aligned one-to-one with the original car; factory supports and roof spoiler no longer show as a second assembly."
       },
       {
         "source": "public/images/purosangue-film/rear-lip-fitted.png",

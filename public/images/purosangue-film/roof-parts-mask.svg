@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
-  <defs><filter id="edge"><feGaussianBlur stdDeviation=".55"/></filter></defs>
-  <!-- Include the blade and its contact shadow so the original supports do not bleed through. -->
-  <path fill="white" filter="url(#edge)" d="M1138 212Q1260 185 1369 209L1412 225 1401 245 1387 263 1220 263 1191 253 1158 250Q1145 234 1138 212Z"/>
-</svg>
