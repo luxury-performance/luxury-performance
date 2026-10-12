@@ -42,7 +42,7 @@
       "anchor_space": "1672 \u00d7 941 image coordinates; camera and annotation share one transform",
       "mobile_tracking_error_px_max": 0.27,
       "comparison": "unchanged full-car view; product pointers hidden",
-      "markers": "Small solid white points on wheel outer edge and tailpipe outer lip, clear of centre badge and exhaust openings"
+      "markers": "Small solid white points on a lower-right wheel spoke and tailpipe outer lip, clear of centre badge and exhaust openings"
     },
     "reveal_sequence": {
       "reveal_ends": 0.18,
@@ -64,6 +64,21 @@
         "full background name fits mobile viewport"
       ],
       "console_errors": []
+    },
+    "overview_framing": {
+      "sizing": "Width constrained by available composition height; tire has at least 24px clearance above controls",
+      "source_bottom_y": 810,
+      "viewports": [
+        "1453x864",
+        "1280x720",
+        "390x844"
+      ],
+      "mobile_horizontal_overflow": false,
+      "wheel_node": [
+        1040,
+        687
+      ],
+      "wheel_node_review": "Visually confirmed on the lower-right rim spoke, clear of badge and tire"
     }
   },
   "after_original": "public/images/purosangue-film/novitec.png",
