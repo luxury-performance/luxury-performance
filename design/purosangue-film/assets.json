@@ -3,12 +3,10 @@
   "asset_tool": "built-in image_gen",
   "master": "public/images/purosangue-film/stock.png",
   "after": "components/purosangue/film.tsx (composite)",
-  "after_prompt": "clean-spoilers-prompt.txt; spoiler-orientation-wrap-prompt.txt",
+  "after_prompt": "clean-spoilers-prompt.txt; spoiler-orientation-wrap-prompt.txt (first pass only; roof explicitly selected by user)",
   "after_generated_source": {
     "rear_lip": "exec-477dc084-0a73-4bf6-9985-dcd7d9dcc0ad.png",
-    "roof_blade": "exec-bbfec08c-8210-4b7b-87a0-82a7dcdc7cfd.png",
-    "rear_lip_outer_wrap": "exec-bbfec08c-8210-4b7b-87a0-82a7dcdc7cfd.png",
-    "orientation_draft": "exec-ff7e1bf8-5c33-4c19-a5d0-289c588b759f.png"
+    "roof_blade": "exec-ff7e1bf8-5c33-4c19-a5d0-289c588b759f.png"
   },
   "configuration_reference": "https://lxpforged.com/cdn/shop/files/IMG_0764_3.jpg?v=1767273869&width=1317",
   "stock_photo_source": "https://cdn.motor1.com/images/mgl/7ZZq77/s1/ferrari-purosangue-rossa.jpg",
@@ -120,7 +118,8 @@
         1270,
         235
       ],
-      "responsive_note": "Shared camera sizing unchanged; this revision checked in desktop close-ups and overview."
+      "responsive_note": "Shared camera sizing unchanged; this revision checked in desktop close-ups and overview.",
+      "status": "Superseded: user rejected generated roof and long outer wrap."
     }
   },
   "after_original": "public/images/purosangue-film/novitec.png",
@@ -142,19 +141,14 @@
         "role": "Original approved arches, wheels and tailpipes; carbon finish blended at 18% over clean factory trim"
       },
       {
-        "source": "public/images/purosangue-film/spoilers-oriented-wrap.png",
+        "source": "public/images/purosangue-film/roof-user-selected.png",
         "mask": "public/images/purosangue-film/roof-oriented-mask.svg",
-        "role": "Reoriented blade with concave roof-facing edge, visible opening and thin aft edge; original spoiler silhouette removed underneath."
+        "role": "Exact roof spoiler from the user-selected image, used without raster edits or independent transforms."
       },
       {
         "source": "public/images/purosangue-film/rear-lip-fitted.png",
         "mask": "public/images/purosangue-film/rear-lip-mask.svg",
         "role": "Thin rear carbon cap; original red edge below remains visible"
-      },
-      {
-        "source": "public/images/purosangue-film/spoilers-oriented-wrap.png",
-        "mask": "public/images/purosangue-film/rear-lip-wrap-mask.svg",
-        "role": "Near-side lip extends around the outer rear light; previously approved central lip remains unchanged."
       }
     ],
     "prompt_tool": "built-in image_gen; composition uses CSS/SVG display masks without rewriting source bitmap files",
@@ -184,10 +178,25 @@
     "note": "Illustrative reconstruction and compositing from product photos; not CAD geometry or installation guidance. Unchanged body paint and trim sourced from the original image.",
     "reference_review": "User-supplied installed side view used to review placement and thickness: references/installed-side-user-reference.png.",
     "new_spoiler_source_dimensions": [
-      1671,
+      1672,
       941
     ],
-    "registration_note": "Source displayed in shared 1672x941 image rig with object-fit:contain; no independent spoiler transforms."
+    "registration_note": "Exact 1672x941 selected source shares the image rig. Prior thin rear lip restored; rejected outer-light extension removed."
   },
-  "after_previous": "public/images/purosangue-film/novitec-refined.png"
+  "after_previous": "public/images/purosangue-film/novitec-refined.png",
+  "user_selected_roof": {
+    "source": "/Users/lxp/.codex/generated_images/01a10b5c-176d-7801-894b-173b30211381/exec-ff7e1bf8-5c33-4c19-a5d0-289c588b759f.png",
+    "project_asset": "public/images/purosangue-film/roof-user-selected.png",
+    "raster_processing": "None; byte-for-byte copy",
+    "rear_lip": "Restored previously approved thin rear-lip-fitted.png with original rear-lip-mask.svg; removed extra wrap layer.",
+    "verification": {
+      "source_sha256": "6d469f220838ecdfc52544072b65a84fdc6e2b115ca835730fd0410609287802",
+      "production_build": "passed",
+      "visual_checks": [
+        "Exact selected roof image in roof detail chapter",
+        "Previous thin rear lip restored; outer wrap absent"
+      ],
+      "console_errors": []
+    }
+  }
 }
