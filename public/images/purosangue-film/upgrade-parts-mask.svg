@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <defs><filter id="edge" x="-2%" y="-2%" width="104%" height="104%"><feGaussianBlur stdDeviation="1"/></filter></defs>
+  <g filter="url(#edge)">
+    <!-- Subtle carbon finish over the original clean black panels. -->
+    <path fill="white" opacity=".18" d="M305 646 391 618 437 608 656 608 817 645 850 661 849 711 309 700Z"/>
+    <path fill="white" opacity=".18" d="M1159 650Q1192 583 1237 555Q1280 534 1395 540L1437 576 1550 577 1589 552 1609 525 1641 576 1632 665 1545 716 1455 750 1210 729Z"/>
+    <!-- ESTESO arches and wheels, excluding the unchanged body above them. -->
+    <path fill="white" d="M68 632Q62 523 113 452Q135 417 179 415Q246 411 278 472Q316 544 328 642L341 677 337 748 65 748Z"/>
+    <path fill="white" d="M817 654 830 541Q841 475 895 440Q938 413 998 423Q1084 425 1121 499L1137 500 1177 690 1168 825 820 825Z"/>
+    <!-- Black tailpipe outlets replace the chrome factory tips. -->
+    <path fill="white" d="M1233 615Q1264 596 1357 604L1378 663 1241 688 1219 651Z"/>
+    <path fill="white" d="M1594 574 1636 573 1645 637 1598 650Z"/>
+  </g>
+</svg>

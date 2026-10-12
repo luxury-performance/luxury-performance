@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <defs><filter id="edge"><feGaussianBlur stdDeviation=".45"/></filter></defs>
+  <!-- A thin carbon cap: retain the original red painted edge directly beneath. -->
+  <path fill="white" filter="url(#edge)" d="M1194 359Q1227 344 1291 342L1537 333 1587 337 1587 353 1554 353 1491 351 1371 353 1285 358 1202 365Z"/>
+</svg>
