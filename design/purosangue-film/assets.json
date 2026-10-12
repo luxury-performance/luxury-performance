@@ -2,9 +2,9 @@
   "purpose": "Illustrative automotive programme visualisation, not a fitment or installation instruction",
   "asset_tool": "built-in image_gen",
   "master": "public/images/purosangue-film/stock.png",
-  "after": "public/images/purosangue-film/novitec.png",
-  "after_prompt": "novitec-image-prompt.txt",
-  "after_generated_source": "exec-5e33913b-efbc-4107-b29f-322b130a471b.png",
+  "after": "public/images/purosangue-film/novitec-refined.png",
+  "after_prompt": "original-local-refinement-prompt.txt",
+  "after_generated_source": "exec-a44ff600-172e-474f-9f98-a5d2655197e9.png",
   "configuration_reference": "https://lxpforged.com/cdn/shop/files/IMG_0764_3.jpg?v=1767273869&width=1317",
   "stock_photo_source": "https://cdn.motor1.com/images/mgl/7ZZq77/s1/ferrari-purosangue-rossa.jpg",
   "image_dimensions": [
@@ -42,7 +42,7 @@
       "anchor_space": "1672 \u00d7 941 image coordinates; camera and annotation share one transform",
       "mobile_tracking_error_px_max": 0.27,
       "comparison": "unchanged full-car view; product pointers hidden",
-      "markers": "small hollow points on wheel outer edge and tailpipe outer lip, clear of centre badge and exhaust openings"
+      "markers": "Small solid white points on wheel outer edge and tailpipe outer lip, clear of centre badge and exhaust openings"
     },
     "reveal_sequence": {
       "reveal_ends": 0.18,
@@ -50,6 +50,34 @@
       "full_car_hold_seconds_at_playback": 1.28,
       "verified": "camera scale 1 and translation 0 when reveal finishes; all zoomed frames have full reveal"
     },
-    "final_comparison": "dedicated final-scene button; desktop and compact-phone checked; slider endpoints 0 and 100"
+    "final_comparison": "dedicated final-scene button; desktop and compact-phone checked; slider endpoints 0 and 100",
+    "original_refinement": {
+      "build": "passed",
+      "viewports": [
+        "1280x720",
+        "390x844"
+      ],
+      "checks": [
+        "new transparent asset loaded",
+        "tailpipe marker remains on outer lip",
+        "before/after slider reaches both endpoints",
+        "full background name fits mobile viewport"
+      ],
+      "console_errors": []
+    }
+  },
+  "after_original": "public/images/purosangue-film/novitec.png",
+  "after_image_dimensions": [
+    1671,
+    941
+  ],
+  "after_refinement": {
+    "base": "Original clean NOVITEC artwork, without intermediate carbon edits",
+    "changes": [
+      "Extend thin rear lip above outermost visible rear lamp",
+      "Clean black carbon rear diffuser and exhaust surrounds",
+      "Clean black carbon lower side panels"
+    ],
+    "prompt_tool": "built-in image_gen"
   }
 }
