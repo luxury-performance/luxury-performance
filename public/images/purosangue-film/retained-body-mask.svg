@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941">
+  <!-- Remove the factory spoiler silhouette before drawing the replacement; retain the clean original body everywhere else. -->
+  <path fill="white" fill-rule="evenodd" d="M0 0H1672V941H0Z M1130 209Q1255 189 1375 210L1416 227 1413 267 1184 273 1136 241Z"/>
+</svg>
