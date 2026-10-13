@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { CartButton } from './shop/cart-provider';
 import { BrandLogo } from './brand-logo';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, X } from 'lucide-react';
 import { brandMenu, vehicleMenu, limitedStock } from '@/lib/shop-navigation';
 import styles from './header-menus.module.css';
 import { MenuCards, MenuLogo } from './shop-menu-cards';
@@ -12,7 +12,7 @@ import { VehicleMenu } from './vehicle-menu';
 
 type ShopMenu = 'brands' | 'vehicles';
 const menus = [{ key: 'brands' as const, label: 'Shop by brand', intro: 'The names behind the details.', items: brandMenu }, { key: 'vehicles' as const, label: 'Shop by vehicle', intro: 'Find the parts for your car.', items: vehicleMenu }];
-const links = [{ name: 'Shop all parts', href: '/shop' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
+const links = [{ name: 'Home', href: '/' }, { name: 'Shop all parts', href: '/shop' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our partners', href: '/partners' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
 function BrandMenu({ close }: { close: () => void }) {
   return <><MenuCards items={brandMenu} close={close}/><div className={styles.limitedStock}><span className={styles.stockLabel}>From our stock</span><Link href={limitedStock.href} onClick={close}><MenuLogo item={limitedStock}/><span>{limitedStock.name}<small>{limitedStock.note}</small></span><ArrowUpRight size={16}/></Link></div></>;
 }
@@ -53,7 +53,10 @@ export function Header() {
     if (!open) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panel.current?.querySelector<HTMLButtonElement>('button')?.focus();
+    const background = Array.from(document.querySelectorAll<HTMLElement>('#main, footer'));
+    const previousInert = background.map(element => element.inert);
+    background.forEach(element => { element.inert = true; });
+    panel.current?.querySelector<HTMLElement>('a,button')?.focus();
     function onKey(event: KeyboardEvent) {
       if (event.key === 'Escape') { setOpen(false); toggle.current?.focus(); }
       if (event.key === 'Tab') {
@@ -65,12 +68,13 @@ export function Header() {
       }
     }
     document.addEventListener('keydown', onKey);
-    return () => { document.body.style.overflow = previous; document.removeEventListener('keydown', onKey); };
+    return () => { document.body.style.overflow = previous; background.forEach((element, index) => { element.inert = previousInert[index]; }); document.removeEventListener('keydown', onKey); };
   }, [open]);
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
     <header ref={header} className={`site-header ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''}`}>
-      <nav aria-label="Main navigation" className={`desktop-nav ${styles.desktop}`}>
+      <button ref={toggle} className={`menu-toggle ${styles.burger}`} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="full-navigation" onClick={() => { setOpen(!open); setShopMenu(null); setMobileSection(null); }}><span aria-hidden="true"><i/><i/></span></button>
+      <nav aria-label="Main navigation" inert={open} className={`desktop-nav ${styles.desktop}`}>
         {menus.map(menu => <div key={menu.key} className={styles.menuGroup}><button ref={el => { triggerRefs.current[menu.key] = el; }} className={styles.trigger} aria-expanded={shopMenu === menu.key} aria-controls={`shop-menu-${menu.key}`} onClick={() => setShopMenu(shopMenu === menu.key ? null : menu.key)} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); setShopMenu(menu.key); requestAnimationFrame(() => dropdown.current?.querySelector<HTMLElement>('a,button:not([aria-label^="Close"])')?.focus()); } }}>{menu.label}<ChevronDown size={12}/></button>
         {shopMenu === menu.key && activeMenu && <div className={styles.dropdown} id={`shop-menu-${menu.key}`} ref={dropdown}>
           <div className={styles.menuHeading}><div><span className="tiny-label">{menu.key === 'brands' ? 'Our partners' : 'Your next specification'}</span><h2>{menu.intro}</h2></div><button className={styles.close} aria-label={`Close ${menu.label.toLowerCase()}`} onClick={() => { setShopMenu(null); triggerRefs.current[menu.key]?.focus(); }}><X size={19}/></button></div>
@@ -79,13 +83,12 @@ export function Header() {
         </div>}</div>)}
         <Link href="/shop" onClick={close} aria-current={pathname === '/shop' ? 'page' : undefined}>Shop all</Link>
       </nav>
-      <button ref={toggle} className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { setOpen(!open); setShopMenu(null); }}>{open ? <X/> : <Menu/>}</button>
-      <Link className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
-      <div className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
+      <Link inert={open} className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
+      <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
     </header>
-    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="mobile-navigation"><nav aria-label="Mobile navigation">
+    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="full-navigation"><nav aria-label="Full navigation"><div className={styles.mobileLinks}><span className={styles.sectionLabel}>Explore Luxury Performance</span>{links.map(link => <Link key={link.name} href={link.href} onClick={close} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}<ArrowUpRight size={20}/></Link>)}</div><div className={styles.fullShop}><span className={styles.sectionLabel}>Find your next detail</span>
       {menus.map(menu => <div key={menu.key} className={styles.mobileGroup}><button className={styles.mobileTrigger} aria-expanded={mobileSection === menu.key} aria-controls={`mobile-shop-${menu.key}`} onClick={() => setMobileSection(mobileSection === menu.key ? null : menu.key)}>{menu.label}<ChevronDown size={19}/></button><div id={`mobile-shop-${menu.key}`} hidden={mobileSection !== menu.key}>{mobileSection === menu.key && (menu.key === 'brands' ? <BrandMenu close={close}/> : <VehicleMenu close={close}/>)}<Link className={styles.mobileAll} href={menu.key === 'brands' ? '/partners' : '/shop'} onClick={close}>{menu.key === 'brands' ? 'Explore all partners' : 'All vehicles & parts'}<ArrowUpRight size={14}/></Link></div></div>)}
-      <div className={styles.mobileLinks}>{links.map(link => <Link key={link.name} href={link.href} onClick={close}>{link.name}<ArrowUpRight size={17}/></Link>)}</div>
+      </div>
     </nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br/><span>Dubai, United Arab Emirates</span></div></div>}
   </>;
 }
