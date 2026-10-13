@@ -56,9 +56,9 @@ export function Header() {
     const background = Array.from(document.querySelectorAll<HTMLElement>('#main, footer'));
     const previousInert = background.map(element => element.inert);
     background.forEach(element => { element.inert = true; });
-    panel.current?.querySelector<HTMLElement>('a,button')?.focus();
+    panel.current?.querySelector<HTMLElement>('a,button')?.focus({ preventScroll: true });
     function onKey(event: KeyboardEvent) {
-      if (event.key === 'Escape') { setOpen(false); toggle.current?.focus(); }
+      if (event.key === 'Escape') { setOpen(false); toggle.current?.focus({ preventScroll: true }); }
       if (event.key === 'Tab') {
         const controls = Array.from(panel.current?.querySelectorAll<HTMLElement>('a,button') ?? []).filter(el => el.getClientRects().length);
         const elements = [toggle.current, ...controls].filter(Boolean) as HTMLElement[];
