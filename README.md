@@ -67,3 +67,8 @@ Choose the company website domain/hosting separately from the Shopify store. Set
 - Expertise tab interaction and arrow-key navigation checked.
 - Programme filters, contextual enquiry prefill, WhatsApp URL/message composition, mobile menu/Escape/route changes, 404 recovery and reduced-motion behaviour checked.
 - No enquiry messages were sent during testing.
+
+
+## Shopify shop preview
+
+The integrated shop starts at `/shop`. See `SHOP-MIGRATION.md` for the inventory bridge, supported purchase flow, supplier taxonomy and domain migration gates.

@@ -6,6 +6,8 @@ import { SiteMotion } from '@/components/site-motion';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import './globals.css';
+import './shop.css';
+import { CartProvider } from '@/components/shop/cart-provider';
 const montserrat = localFont({ src: './Montserrat-Variable.ttf', variable: '--font-montserrat', display: 'swap' });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3002'),
@@ -16,5 +18,5 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: '#101010' };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><BrandIntro /><div id="site-shell"><Header /><SiteMotion /><main id="main">{children}</main><Footer /></div></body></html>;
+  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><CartProvider><BrandIntro /><div id="site-shell"><Header /><SiteMotion /><main id="main">{children}</main><Footer /></div></CartProvider></body></html>;
 }

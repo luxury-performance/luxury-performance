@@ -1,0 +1,6 @@
+Header logo sources
+
+NOVITEC, Valvetronic Designs, TECHART, FI Exhaust, Ferrari, Lamborghini, Porsche, McLaren, Rolls-Royce, Mercedes-Benz, BMW: reused from LXP’s existing Shopify theme assets and cdn.shopify.com/s/files/1/0701/4472/0949/files/.
+URBAN: official Urban Automotive profile https://linktr.ee/urbanautomotive, profile image https://ugc.production.linktr.ee/X20HnJlIT5WrRv391SKf_M45DJz3C7pECNzgn
+Audi: https://github.com/vehiclespecs/brand-logos/blob/main/audi-logo.svg; repository licence saved as vehicle-logos-LICENSE.
+All marks identify their respective brands; ownership remains with those brands. Original assets are saved without raster editing; presentation sizing is CSS.

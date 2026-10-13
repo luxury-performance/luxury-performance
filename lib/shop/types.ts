@@ -1,0 +1,11 @@
+export type Money = { amount: string; currencyCode: string };
+export type Photo = { url: string; altText: string | null };
+export type CatalogProduct = { id: string; title: string; handle: string; vendor: string; productType: string; tags: string[]; featuredImage: Photo | null; priceRange: { minVariantPrice: Money }; availableForSale: boolean };
+export type Variant = { id: string; title: string; sku: string | null; availableForSale: boolean; currentlyNotInStock: boolean; requiresShipping: boolean; price: Money; image: Photo | null; selectedOptions: { name: string; value: string }[] };
+export type Product = CatalogProduct & { description: string; descriptionHtml: string; seo: { title: string | null; description: string | null }; images: { nodes: Photo[] }; variants: { nodes: Variant[]; pageInfo: { hasNextPage: boolean } } };
+export type InstallationService = { handle: string; title: string; variantId: string; price: Money };
+export type CartLine = { installation?: InstallationService & { quantity: number; included: boolean }; id: string; quantity: number; attributes: { key: string; value: string }[]; cost: { totalAmount: Money }; merchandise: Variant & { product: { title: string; handle: string; featuredImage: Photo | null } } };
+export type Cart = { id?: string; checkoutUrl: string; totalQuantity: number; cost: { subtotalAmount: Money }; lines: { nodes: CartLine[]; pageInfo: { hasNextPage: boolean } } };
+export type OrderPlan = { stock: number; inCart: number; stocked: number; special: number };
+export type CartReply = { cart?: Cart | null; message?: string; confirmation?: OrderPlan; warnings?: { message: string }[] };
+export const money = (m: Money) => new Intl.NumberFormat('en-AE', { style: 'currency', currency: m.currencyCode, maximumFractionDigits: Number(m.amount) % 1 ? 2 : 0 }).format(Number(m.amount));
