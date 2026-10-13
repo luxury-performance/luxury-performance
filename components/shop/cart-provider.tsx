@@ -15,7 +15,7 @@ export function CartProvider({children}:{children:ReactNode}){
  const [cart,setCart]=useState<Cart|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState<{request:AddRequest;plan:OrderPlan}|null>(null);
  const drawer=useRef<HTMLDialogElement>(null),prompt=useRef<HTMLDialogElement>(null),active=useRef(false);
  const lock=useRef<{overflow:string;paddingRight:string}|null>(null);
- function lockScroll(){if(lock.current)return;lock.current={overflow:document.documentElement.style.overflow,paddingRight:document.body.style.paddingRight};const gap=innerWidth-document.documentElement.clientWidth;document.documentElement.style.overflow='hidden';if(gap)document.body.style.paddingRight=`${gap}px`;}
+ function lockScroll(){if(lock.current)return;lock.current={overflow:document.documentElement.style.overflow,paddingRight:document.body.style.paddingRight};const gap=getComputedStyle(document.documentElement).scrollbarGutter.includes('stable')?0:innerWidth-document.documentElement.clientWidth;document.documentElement.style.overflow='hidden';if(gap)document.body.style.paddingRight=`${gap}px`;}
  function unlockScroll(){if(drawer.current?.open||prompt.current?.open||!lock.current)return;document.documentElement.style.overflow=lock.current.overflow;document.body.style.paddingRight=lock.current.paddingRight;lock.current=null;}
  function show(el:HTMLDialogElement|null){if(el&&!el.open){lockScroll();el.showModal();}}
  function close(el:HTMLDialogElement|null){if(!el)return;el.classList.add('shop-closing');setTimeout(()=>{el.close();el.classList.remove('shop-closing');unlockScroll();},220);}

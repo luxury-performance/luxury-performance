@@ -274,3 +274,6 @@ body{background:#101010}
 html{overflow-anchor:none}
 
 .about-manifesto .about-emblem{width:185px;height:auto;object-fit:contain;filter:none;mix-blend-mode:normal}
+
+/* Keep the page width fixed when navigation or cart locks scrolling. */
+html{scrollbar-gutter:stable}
