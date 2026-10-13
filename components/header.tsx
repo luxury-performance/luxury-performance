@@ -1,57 +1,91 @@
-'use client';
+"use client";
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { CartButton } from './shop/cart-provider';
 import { BrandLogo } from './brand-logo';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
+import { brandMenu, vehicleMenu, limitedStock } from '@/lib/shop-navigation';
+import styles from './header-menus.module.css';
+import { MenuCards, MenuLogo } from './shop-menu-cards';
+import { VehicleMenu } from './vehicle-menu';
 
-const links = [{ name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our world', href: '/about' }, { name: 'Shop', href: 'https://lxpforged.com' }];
+type ShopMenu = 'brands' | 'vehicles';
+const menus = [{ key: 'brands' as const, label: 'Shop by brand', intro: 'The names behind the details.', items: brandMenu }, { key: 'vehicles' as const, label: 'Shop by vehicle', intro: 'Find the parts for your car.', items: vehicleMenu }];
+const links = [{ name: 'Shop all parts', href: '/shop' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
+function BrandMenu({ close }: { close: () => void }) {
+  return <><MenuCards items={brandMenu} close={close}/><div className={styles.limitedStock}><span className={styles.stockLabel}>From our stock</span><Link href={limitedStock.href} onClick={close}><MenuLogo item={limitedStock}/><span>{limitedStock.name}<small>{limitedStock.note}</small></span><ArrowUpRight size={16}/></Link></div></>;
+}
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [shopMenu, setShopMenu] = useState<ShopMenu | null>(null);
+  const [mobileSection, setMobileSection] = useState<ShopMenu | null>(null);
   const pathname = usePathname();
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
+  const triggerRefs = useRef<Partial<Record<ShopMenu, HTMLButtonElement | null>>>({});
+  const activeMenu = menus.find(menu => menu.key === shopMenu);
+  const close = () => { setOpen(false); setShopMenu(null); };
   useEffect(() => {
     let frame = 0;
-    const update = () => {
-      frame = 0;
-      const progress = Math.min(1, Math.max(0, window.scrollY / 160));
-      header.current?.style.setProperty('--glass-progress', String(progress));
-      header.current?.classList.toggle('is-scrolled', window.scrollY > 32);
-    };
+    const update = () => { frame = 0; const progress = Math.min(1, Math.max(0, window.scrollY / 160)); header.current?.style.setProperty('--glass-progress', String(progress)); header.current?.classList.toggle('is-scrolled', window.scrollY > 32); };
     const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     update(); window.addEventListener('scroll', scroll, { passive: true });
     return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); };
   }, []);
   useEffect(() => {
+    if (!shopMenu) return;
+    const outside = (event: PointerEvent) => { if (!header.current?.contains(event.target as Node)) setShopMenu(null); };
+    const key = (event: KeyboardEvent) => { if (event.key === 'Escape') { setShopMenu(null); triggerRefs.current[shopMenu]?.focus(); } };
+    const focus = (event: FocusEvent) => { if (!header.current?.contains(event.target as Node)) setShopMenu(null); };
+    document.addEventListener('pointerdown', outside); document.addEventListener('keydown', key); document.addEventListener('focusin', focus);
+    return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', key); document.removeEventListener('focusin', focus); };
+  }, [shopMenu]);
+  useEffect(() => {
+    const mq = matchMedia('(min-width: 1101px)');
+    const change = () => { setOpen(false); setShopMenu(null); };
+    mq.addEventListener('change', change);
+    return () => mq.removeEventListener('change', change);
+  }, []);
+  useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panel.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+    panel.current?.querySelector<HTMLButtonElement>('button')?.focus();
     function onKey(event: KeyboardEvent) {
       if (event.key === 'Escape') { setOpen(false); toggle.current?.focus(); }
       if (event.key === 'Tab') {
-        const elements = [toggle.current, ...(panel.current?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter(Boolean) as HTMLElement[];
+        const controls = Array.from(panel.current?.querySelectorAll<HTMLElement>('a,button') ?? []).filter(el => el.getClientRects().length);
+        const elements = [toggle.current, ...controls].filter(Boolean) as HTMLElement[];
         const first = elements[0], last = elements.at(-1);
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
     }
     document.addEventListener('keydown', onKey);
-    const mq = window.matchMedia('(min-width: 901px)');
-    const closeOnDesktop = () => { if (mq.matches) setOpen(false); };
-    mq.addEventListener('change', closeOnDesktop);
-    return () => { document.body.style.overflow = previous; document.removeEventListener('keydown', onKey); mq.removeEventListener('change', closeOnDesktop); };
+    return () => { document.body.style.overflow = previous; document.removeEventListener('keydown', onKey); };
   }, [open]);
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
-    <header ref={header} className={`site-header ${open ? 'menu-is-open' : ''}`}>
-      <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <Link key={link.name} href={link.href} aria-current={pathname === link.href ? 'page' : undefined} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link.name}</Link>)}</nav>
-      <button ref={toggle} className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
-      <Link className="brand" href="/" onClick={() => setOpen(false)} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false} /></Link>
-      <Link className="header-contact" href="/contact">Let’s talk <ArrowUpRight size={16} /></Link>
+    <header ref={header} className={`site-header ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''}`}>
+      <nav aria-label="Main navigation" className={`desktop-nav ${styles.desktop}`}>
+        {menus.map(menu => <div key={menu.key} className={styles.menuGroup}><button ref={el => { triggerRefs.current[menu.key] = el; }} className={styles.trigger} aria-expanded={shopMenu === menu.key} aria-controls={`shop-menu-${menu.key}`} onClick={() => setShopMenu(shopMenu === menu.key ? null : menu.key)} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); setShopMenu(menu.key); requestAnimationFrame(() => dropdown.current?.querySelector<HTMLElement>('a,button:not([aria-label^="Close"])')?.focus()); } }}>{menu.label}<ChevronDown size={12}/></button>
+        {shopMenu === menu.key && activeMenu && <div className={styles.dropdown} id={`shop-menu-${menu.key}`} ref={dropdown}>
+          <div className={styles.menuHeading}><div><span className="tiny-label">{menu.key === 'brands' ? 'Our partners' : 'Your next specification'}</span><h2>{menu.intro}</h2></div><button className={styles.close} aria-label={`Close ${menu.label.toLowerCase()}`} onClick={() => { setShopMenu(null); triggerRefs.current[menu.key]?.focus(); }}><X size={19}/></button></div>
+          {menu.key === 'brands' ? <BrandMenu close={close}/> : <VehicleMenu close={close}/>}
+          <div className={styles.menuFooter}><Link href={menu.key === 'brands' ? '/partners' : '/shop'} onClick={close}>{menu.key === 'brands' ? 'Explore all partners' : 'Explore all vehicles & parts'}<ArrowUpRight size={15}/></Link><Link href="/contact" onClick={close}>Need help with fitment?</Link></div>
+        </div>}</div>)}
+        <Link href="/shop" onClick={close} aria-current={pathname === '/shop' ? 'page' : undefined}>Shop all</Link>
+      </nav>
+      <button ref={toggle} className="menu-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { setOpen(!open); setShopMenu(null); }}>{open ? <X/> : <Menu/>}</button>
+      <Link className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
+      <div className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
     </header>
-    {open && <div ref={panel} className="mobile-menu" id="mobile-navigation"><nav aria-label="Mobile navigation">{[...links, { name: 'Let’s talk', href: '/contact' }].map((link, index) => <Link key={link.name} href={link.href} onClick={() => setOpen(false)} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><small>0{index + 1}</small>{link.name}<ArrowUpRight /></Link>)}</nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br /><span>Dubai, United Arab Emirates</span></div></div>}
+    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="mobile-navigation"><nav aria-label="Mobile navigation">
+      {menus.map(menu => <div key={menu.key} className={styles.mobileGroup}><button className={styles.mobileTrigger} aria-expanded={mobileSection === menu.key} aria-controls={`mobile-shop-${menu.key}`} onClick={() => setMobileSection(mobileSection === menu.key ? null : menu.key)}>{menu.label}<ChevronDown size={19}/></button><div id={`mobile-shop-${menu.key}`} hidden={mobileSection !== menu.key}>{mobileSection === menu.key && (menu.key === 'brands' ? <BrandMenu close={close}/> : <VehicleMenu close={close}/>)}<Link className={styles.mobileAll} href={menu.key === 'brands' ? '/partners' : '/shop'} onClick={close}>{menu.key === 'brands' ? 'Explore all partners' : 'All vehicles & parts'}<ArrowUpRight size={14}/></Link></div></div>)}
+      <div className={styles.mobileLinks}>{links.map(link => <Link key={link.name} href={link.href} onClick={close}>{link.name}<ArrowUpRight size={17}/></Link>)}</div>
+    </nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br/><span>Dubai, United Arab Emirates</span></div></div>}
   </>;
 }
