@@ -34,4 +34,4 @@
 .broll{position:relative;isolation:isolate;height:100svh;min-height:500px;overflow:hidden;background:#202020}.brollViewport{position:absolute;inset:0;overflow:hidden}.broll .photo{object-fit:cover}@media(max-width:700px){.broll .photo{object-fit:contain}.broll .overhead .photo{object-fit:cover}}
 
 
-@media(max-width:700px){.broll{height:calc(100svh - 76px);min-height:440px}.broll .photo{object-fit:cover}.broll .overhead .photo{object-fit:cover}}
+@media(max-width:700px){.broll{height:100svh;height:100dvh;min-height:440px}.broll .photo{object-fit:cover}.broll .overhead .photo{object-fit:cover}}
