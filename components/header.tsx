@@ -30,11 +30,11 @@ export function Header() {
   const close = () => { setOpen(false); setShopMenu(null); };
   useEffect(() => {
     let frame = 0;
-    const update = () => { frame = 0; const progress = Math.min(1, Math.max(0, window.scrollY / 160)); header.current?.style.setProperty('--glass-progress', String(progress)); header.current?.classList.toggle('is-scrolled', window.scrollY > 32); };
+    const update = () => { frame = 0; const progress = Math.min(1, Math.max(0, window.scrollY / 160)); header.current?.style.setProperty('--glass-progress', String(progress)); header.current?.classList.toggle('is-scrolled', window.scrollY > 32); const hero = pathname === '/' ? document.querySelector('#main section[aria-label="Luxury Performance automotive film"]') : null; header.current?.classList.toggle('is-past-hero', !hero || hero.getBoundingClientRect().bottom <= (header.current?.offsetHeight ?? 112)); };
     const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update(); window.addEventListener('scroll', scroll, { passive: true });
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); };
-  }, []);
+    update(); window.addEventListener('scroll', scroll, { passive: true }); window.addEventListener('resize', scroll);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll); };
+  }, [pathname]);
   useEffect(() => {
     if (!shopMenu) return;
     const outside = (event: PointerEvent) => { if (!header.current?.contains(event.target as Node)) setShopMenu(null); };
@@ -72,7 +72,7 @@ export function Header() {
   }, [open]);
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
-    <header ref={header} className={`site-header ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''}`}>
+    <header ref={header} className={`site-header ${pathname === '/' ? 'hero-header' : ''} ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''}`}>
       <button ref={toggle} className={`menu-toggle ${styles.burger}`} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="full-navigation" onClick={() => { setOpen(!open); setShopMenu(null); setMobileSection(null); }}><span aria-hidden="true"><i/><i/></span></button>
       <nav aria-label="Main navigation" inert={open} className={`desktop-nav ${styles.desktop}`}>
         {menus.map(menu => <div key={menu.key} className={styles.menuGroup}><button ref={el => { triggerRefs.current[menu.key] = el; }} className={styles.trigger} aria-expanded={shopMenu === menu.key} aria-controls={`shop-menu-${menu.key}`} onClick={() => setShopMenu(shopMenu === menu.key ? null : menu.key)} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); setShopMenu(menu.key); requestAnimationFrame(() => dropdown.current?.querySelector<HTMLElement>('a,button:not([aria-label^="Close"])')?.focus()); } }}>{menu.label}<ChevronDown size={12}/></button>

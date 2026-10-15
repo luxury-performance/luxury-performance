@@ -277,3 +277,9 @@ html{overflow-anchor:none}
 
 /* Keep the page width fixed when navigation or cart locks scrolling. */
 html{scrollbar-gutter:stable}
+
+/* Let the home film fill the viewport beneath the navigation. */
+.site-header.hero-header{position:fixed;inset:0 0 auto}
+.site-header.hero-header:before{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;transition:background .3s,backdrop-filter .3s}
+.site-header.hero-header.is-scrolled{box-shadow:none}
+.site-header.hero-header.is-past-hero:before,.site-header.hero-header.menu-is-open:before{background:#101010}
