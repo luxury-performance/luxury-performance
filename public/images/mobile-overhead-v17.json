@@ -1,0 +1,17 @@
+{
+  "mode": "built-in image_gen plus CSS alignment",
+  "prompt": "Precise composition edit of supplied tall9:20 photo. MOVE THE ENTIRE CAR DOWN by exactly 8 percent of total canvas height, about150pixels on this1870pixel-tall canvas. Do NOT resize, stretch, rotate or redesign car. Current car nose at y462 and tail1258, centre860; target nose y612 and tail1408, centre1010 (54% canvas height). Keep horizontal centrex420. Preserve exact Porsche pixels/details visually: white bumper crescent stops at hood seam, sculpted carbon hood with two narrow openings, tiny black TECHART shield, carbon roof, curved body and compact Rear Spoiler III. Keep same neutral dark textured floor and lighting, naturally reconstruct floor left behind and around moved car, seamless. Keep canvas dimensions/aspect unchanged. Only the car's vertical POSITION changes. No added vehicle fragments, no mirror strips or borders.",
+  "asset": "porsche-montage-portrait-v1/03-overhead-aligned-v17.webp",
+  "sharedCentre": [
+    0.5,
+    0.5416667
+  ],
+  "detectedPorscheCentre": [
+    0.494649,
+    0.552406
+  ],
+  "cssTranslationPercent": [
+    0.535,
+    -1.074
+  ]
+}
