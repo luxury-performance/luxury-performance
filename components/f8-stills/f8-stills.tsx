@@ -28,6 +28,7 @@ const carOrder: Car[] = ['f8', 'porsche', 'revuelto'];
 const mixedSequence = compositions.flatMap(shot => carOrder.map(car => ({ ...shot, duration: shot.duration, car })));
 const singleSequences = Object.fromEntries(carOrder.map(car => [car, compositions.map(shot => ({ ...shot, car }))])) as Record<Car, typeof mixedSequence>;
 const imageName = (car: Car, name: string) => {
+  if (name === '03-overhead') return name + '-aligned-v8';
   if (car === 'porsche' && name === '03-overhead') return name + '-neutral-v7';
   if (car === 'f8' && ['07-exhaust', '09-upper-rear'].includes(name)) return name + '-lettering-v1';
   if (car === 'f8' && name === '04-rear-three-quarter') return name + '-lettering-v1';
@@ -42,7 +43,7 @@ const imageName = (car: Car, name: string) => {
   return name;
 };
 const imageSource = (car: Car, name: string, thumbnail = false) => cars[car].assetRoot + '/' + imageName(car, name) + (thumbnail ? '-thumb' : '') + '.webp';
-const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}-height-v3.webp`;
+const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}${name === '03-overhead' ? '-aligned-v8' : '-height-v3'}.webp`;
 const number = (value: number) => String(value).padStart(2, '0');
 
 function subscribeMotion(callback: () => void) {
@@ -91,6 +92,8 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
     values[0] *= 3;
     values[1] *= 3;
     values[2] = 1 + (values[2] - 1) * 2.5;
+    // Overhead swaps share one camera magnification so the shorter car stays shorter.
+    if (shot.image === '03-overhead') values[2] = 1.03;
     if (shot.car === 'porsche' && shot.image === '07-exhaust') {
       // Preserve the approved tight crop and spoiler margin; glide without zoom.
       values[0] = 0.8 - p * 1.6;
