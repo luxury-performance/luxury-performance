@@ -39,3 +39,7 @@
 
 /* Match the regenerated portrait to the shared mobile overhead centre (50%, 54.17%). */
 @media(max-width:700px){.broll .overhead[data-car="porsche"] .photo{translate:.535% -1.074%}}
+
+/* Keep navigation readable over every frame without dimming the car below. */
+.broll:after{content:"";position:absolute;inset:0 0 auto;height:clamp(190px,28vh,300px);z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.48) 35%,rgba(0,0,0,.16) 68%,transparent 100%)}
+@media(max-width:700px){.broll:after{height:220px}}
