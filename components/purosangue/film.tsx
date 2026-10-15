@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, MoveHorizontal, Pause, Play, RotateCcw, X } from 'lucide-react';
-import { clamp, completeAt, filmChapters, filmFrame, type FilmGeometry } from './motion';
+import { clamp, completeAt, filmChapters, filmFrame, filmTiming, type FilmGeometry } from './motion';
 import styles from './film.module.css';
 
 type FilmControl = { seek: (value: number) => void; play: () => void; stop: () => void; compare: (value: boolean) => void };
@@ -33,19 +33,29 @@ export function PurosangueFilm() {
     if (!section || !frameEl) return;
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     const mobile = matchMedia('(max-width: 700px)');
-    let raf = 0, playRaf = 0, disposed = false, isComparing = false;
+    let raf = 0, playRaf = 0, seekRaf = 0, seeking = false, disposed = false, isComparing = false;
+    type CameraPose = { scale: number; x: number; y: number };
+    let cameraPose: CameraPose = { scale: 1, x: 0, y: 0 };
     let target = 0, progress = 0, selected = -1, start = 0, distance = 1;
     let headerHeight = 112;
     let geometry: FilmGeometry = { width: 1, height: 1, rigWidth: 1, rigHeight: 1, rigX: 0, rigY: 0, small: false };
 
-    function paint(value: number, instant = false) {
+    function paint(value: number, instant = false, mix = 1, fromPose: CameraPose = { scale: 1, x: 0, y: 0 }) {
       progress = clamp(value);
       const f = filmFrame(progress, geometry, isComparing);
+      if (mix < 1) {
+        f.scale = fromPose.scale + (f.scale - fromPose.scale) * mix;
+        f.x = fromPose.x + (f.x - fromPose.x) * mix;
+        f.y = fromPose.y + (f.y - fromPose.y) * mix;
+        f.pin = null;
+      }
+      cameraPose = { scale: f.scale, x: f.x, y: f.y };
       const simple = preference.matches || isComparing;
       frameEl!.style.setProperty('--camera-scale', String(f.scale));
       frameEl!.style.setProperty('--camera-x', `${f.x}px`);
       frameEl!.style.setProperty('--camera-y', `${f.y}px`);
-      frameEl!.dataset.detail = String(Boolean(f.pin) && !isComparing);
+      frameEl!.dataset.detail = String((Boolean(f.pin) || Math.abs(f.scale - 1) > .01) && !isComparing);
+      if (!f.pin) frameEl!.style.setProperty('--pin-visible', '0');
       if (f.pin) {
         const { x, y } = f.pin;
         // Labels stay readable while the point stays attached to the photographed part.
@@ -73,14 +83,17 @@ export function PurosangueFilm() {
 
     function render() {
       raf = 0;
-      if (disposed || isComparing) return;
+      if (disposed || isComparing || seeking) return;
       const delta = target - progress;
       paint(preference.matches || Math.abs(delta) < .0006 ? target : progress + delta * .14);
       if (Math.abs(target - progress) >= .0006) raf = requestAnimationFrame(render);
     }
 
     function stop() {
-      cancelAnimationFrame(playRaf); playRaf = 0; setPlaying(false);
+      cancelAnimationFrame(playRaf); playRaf = 0;
+      cancelAnimationFrame(seekRaf); seekRaf = 0; seeking = false;
+      delete frameEl!.dataset.transition;
+      setPlaying(false);
     }
 
     function measure() {
@@ -91,12 +104,12 @@ export function PurosangueFilm() {
       const area = composition.current;
       const car = rig.current;
       if (area && car) geometry = { width: area.clientWidth, height: area.clientHeight, rigWidth: car.offsetWidth, rigHeight: car.offsetHeight, rigX: car.offsetLeft, rigY: car.offsetTop, small: mobile.matches };
-      paint(progress, preference.matches);
+      paint(progress, preference.matches, seeking ? 0 : 1, cameraPose);
       onScroll();
     }
 
     function onScroll() {
-      if (preference.matches || isComparing) return;
+      if (preference.matches || isComparing || seeking) return;
       target = clamp((window.scrollY - start) / distance);
       if (!raf) raf = requestAnimationFrame(render);
     }
@@ -106,12 +119,58 @@ export function PurosangueFilm() {
       isComparing = false; setComparing(false);
       target = clamp(value);
       if (preference.matches) { paint(target, true); return; }
+      const from = progress;
+      const originalAt = filmChapters[0].at;
+      const revealEnd = filmTiming.reveal[1];
+      const fromOriginal = from < revealEnd;
+      const toOriginal = target < filmTiming.widebodyZoom[0];
+      if (!fromOriginal || !toOriginal) {
+        cancelAnimationFrame(raf); raf = 0;
+        seeking = true;
+        window.scrollTo({ top: start + target * distance, behavior: 'instant' });
+        type Step = { from: number; to: number; fromMix: number; toMix: number; duration: number; name: string; cameraFrom?: CameraPose };
+        const steps: Step[] = [];
+        if (!fromOriginal && !toOriginal) {
+          steps.push({ from: target, to: target, fromMix: 0, toMix: 1, cameraFrom: cameraPose, duration: 450, name: 'direct-detail' });
+        } else if (toOriginal) {
+          if (Math.abs(cameraPose.scale - 1) > .01) {
+            steps.push({ from: revealEnd, to: revealEnd, fromMix: 0, toMix: 1, cameraFrom: cameraPose, duration: 320, name: 'overview' });
+          }
+          steps.push({ from: revealEnd, to: target, fromMix: 0, toMix: 0, duration: 950, name: 'restore-original' });
+        } else {
+          steps.push({ from: Math.max(originalAt, from), to: revealEnd, fromMix: 0, toMix: 0, duration: 950, name: 'transform' });
+          if (Math.abs(filmFrame(target, geometry).scale - 1) > .01) {
+            steps.push({ from: target, to: target, fromMix: 0, toMix: 1, duration: 380, name: 'detail' });
+          }
+        }
+        let index = 0;
+        let began: number | null = null;
+        const tick = (now: number) => {
+          if (disposed || !seeking) return;
+          if (began === null) began = now;
+          const step = steps[index];
+          const t = clamp((now - began) / step.duration);
+          const eased = t * t * (3 - 2 * t);
+          frameEl!.dataset.transition = step.name;
+          paint(step.from + (step.to - step.from) * eased, false, step.fromMix + (step.toMix - step.fromMix) * eased, step.cameraFrom);
+          if (t >= 1) { index++; began = now; }
+          if (index < steps.length) seekRaf = requestAnimationFrame(tick);
+          else {
+            seekRaf = 0; seeking = false;
+            delete frameEl!.dataset.transition;
+            paint(target);
+          }
+        };
+        seekRaf = requestAnimationFrame(tick);
+        return;
+      }
       window.scrollTo({ top: start + target * distance, behavior: 'instant' });
       if (!raf) raf = requestAnimationFrame(render);
     }
 
     function play() {
       if (playRaf) { stop(); return; }
+      if (seeking) stop();
       if (preference.matches) return;
       isComparing = false; setComparing(false);
       const from = progress >= .90 ? 0 : progress;
@@ -164,7 +223,7 @@ export function PurosangueFilm() {
     document.addEventListener('visibilitychange', onVisibility);
     preference.addEventListener('change', onPreference);
     return () => {
-      disposed = true; cancelAnimationFrame(raf); cancelAnimationFrame(playRaf); resize.disconnect();
+      disposed = true; cancelAnimationFrame(raf); cancelAnimationFrame(playRaf); cancelAnimationFrame(seekRaf); resize.disconnect();
       window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', measure);
       window.removeEventListener('wheel', stop); window.removeEventListener('touchstart', stop);
       document.removeEventListener('keydown', onKey); document.removeEventListener('visibilitychange', onVisibility);

@@ -6,17 +6,18 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import { ArrowUpRight, Pause, Play } from 'lucide-react';
 import styles from './f8-stills.module.css';
 
+const carHoldMs = 2400;
 const compositions = [
-  { name: 'First impression', view: 'Low front three-quarter', image: '01-front-three-quarter', duration: 3800, origin: '50% 55%', from: [0, 0, 1], to: [0, -0.3, 1.035] },
-  { name: 'Form meets function', view: 'Rear wheel & body', image: '02-rear-wheel', duration: 2600, origin: '60% 50%', from: [-0.7, 0, 1.035], to: [0.7, 0, 1.035] },
-  { name: 'A different perspective', view: 'Direct overhead', image: '03-overhead', duration: 3800, origin: '50% 50%', from: [0, 0.6, 1.02], to: [0, -0.6, 1.035] },
-  { name: 'A lasting impression', view: 'Low rear three-quarter', image: '04-rear-three-quarter', duration: 3500, origin: '45% 55%', from: [0, 0, 1], to: [0, 0, 1.035] },
-  { name: 'Every detail matters', view: 'Front corner', image: '05-front-corner', duration: 2600, origin: '50% 50%', from: [-0.5, 0.3, 1.025], to: [0.5, -0.3, 1.04] },
-  { name: 'The silhouette', view: 'Side profile', image: '06-side-profile', duration: 3800, origin: '50% 50%', from: [-0.65, 0, 1.02], to: [0.65, 0, 1.02] },
-  { name: 'The finishing touch', view: 'Exhaust & diffuser', image: '07-exhaust', duration: 2600, origin: '50% 50%', from: [0.6, 0, 1.03], to: [-0.6, 0, 1.03] },
-  { name: 'Sculpted for motion', view: 'Elevated front three-quarter', image: '08-elevated-front', duration: 3500, origin: '50% 50%', from: [0, 0, 1.035], to: [0, 0, 1] },
-  { name: 'Carbon, in focus', view: 'Upper rear detail', image: '09-upper-rear', duration: 2600, origin: '50% 50%', from: [-0.6, 0, 1.03], to: [0.6, 0, 1.03] },
-  { name: 'Pure expression', view: 'Straight front', image: '10-straight-front', duration: 3500, origin: '50% 50%', from: [0, 0, 1], to: [0, 0, 1.04] },
+  { name: 'Pure expression', view: 'Straight front', image: '10-straight-front', duration: carHoldMs, origin: '50% 50%', from: [0, 0, 1], to: [0, 0, 1.04] },
+  { name: 'Form meets function', view: 'Rear wheel & body', image: '02-rear-wheel', duration: carHoldMs, origin: '60% 50%', from: [-0.7, 0, 1.035], to: [0.7, 0, 1.035] },
+  { name: 'Sculpted for motion', view: 'Elevated front three-quarter', image: '08-elevated-front', duration: carHoldMs, origin: '50% 50%', from: [0, 0, 1.035], to: [0, 0, 1] },
+  { name: 'The finishing touch', view: 'Exhaust & diffuser', image: '07-exhaust', duration: carHoldMs, origin: '50% 50%', from: [0.6, 0, 1.03], to: [-0.6, 0, 1.03] },
+  { name: 'A different perspective', view: 'Direct overhead', image: '03-overhead', duration: carHoldMs, origin: '50% 50%', from: [0, 0.6, 1.02], to: [0, -0.6, 1.035] },
+  { name: 'Every detail matters', view: 'Front corner', image: '05-front-corner', duration: carHoldMs, origin: '50% 50%', from: [-0.5, 0.3, 1.025], to: [0.5, -0.3, 1.04] },
+  { name: 'The silhouette', view: 'Side profile', image: '06-side-profile', duration: carHoldMs, origin: '50% 50%', from: [-0.65, 0, 1.02], to: [0.65, 0, 1.02] },
+  { name: 'Carbon, in focus', view: 'Upper rear detail', image: '09-upper-rear', duration: carHoldMs, origin: '50% 50%', from: [-0.6, 0, 1.03], to: [0.6, 0, 1.03] },
+  { name: 'A lasting impression', view: 'Low rear three-quarter', image: '04-rear-three-quarter', duration: carHoldMs, origin: '45% 55%', from: [0, 0, 1], to: [0, 0, 1.035] },
+  { name: 'First impression', view: 'Low front three-quarter', image: '01-front-three-quarter', duration: carHoldMs, origin: '50% 55%', from: [0, 0, 1], to: [0, -0.3, 1.035] },
 ] as const;
 const cars = {
   f8: { assetRoot: '/images/f8-montage-v1', name: 'Ferrari F8 Tributo', short: 'F8', make: 'ferrari', supplier: 'novitec', supplierName: 'NOVITEC', brand: 'Ferrari', edition: 'F8 TRIBUTO / N-LARGO', city: 'MARANELLO / ITALY', description: 'Red Ferrari F8 Tributo with NOVITEC N-LARGO bodywork' },
@@ -63,6 +64,7 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
   const starts = useMemo(() => shots.map((_, index) => shots.slice(0, index).reduce((total, shot) => total + shot.duration, 0)), [shots]);
   const cycleMs = shots.reduce((total, shot) => total + shot.duration, 0);
   const root = useRef<HTMLElement>(null);
+  const scrollViewport = useRef<HTMLDivElement>(null);
   const layers = useRef<(HTMLDivElement | null)[]>([]);
   const progress = useRef<HTMLSpanElement>(null);
   const elapsed = useRef(0);
@@ -92,7 +94,16 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
     values[1] *= 3;
     values[2] = 1 + (values[2] - 1) * 2.5;
     // Overhead swaps share one camera magnification so the shorter car stays shorter.
-    if (shot.image === '03-overhead') values[2] = window.matchMedia('(max-width: 700px)').matches ? 1.04 : 1.03;
+    if (shot.image === '03-overhead') {
+      const mobile = window.matchMedia('(max-width: 700px)').matches;
+      values[2] = mobile ? 1.04 : 1.03;
+      // A straight vertical glide keeps the reflected top fill aligned with the photograph.
+      if (!mobile) {
+        values[0] = 0;
+        values[1] = 1.2 - 2.4 * p;
+        values[2] = 1.04;
+      }
+    }
     if (shot.car === 'porsche' && shot.image === '07-exhaust') {
       // Preserve the approved tight crop and spoiler margin; glide without zoom.
       values[0] = 0.8 - p * 1.6;
@@ -137,6 +148,37 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
     return () => cancelAnimationFrame(raf);
   }, [running, draw]);
 
+  useEffect(() => {
+    const section = root.current;
+    const viewport = scrollViewport.current;
+    if (!bare || reduced || !section || !viewport) return;
+    let frame = 0;
+    let lastOffset = -1;
+    const update = () => {
+      frame = 0;
+      const height = section.offsetHeight;
+      const distance = Math.max(0, Math.min(-section.getBoundingClientRect().top, height));
+      const strength = window.matchMedia('(max-width: 700px)').matches ? 0.2 : 0.4;
+      const offset = Math.round(distance * strength * 100) / 100;
+      if (offset !== lastOffset) {
+        viewport.style.transform = `translate3d(0, ${offset}px, 0)`;
+        lastOffset = offset;
+      }
+      viewport.style.willChange = distance < height ? 'transform' : 'auto';
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      cancelAnimationFrame(frame);
+      viewport.style.transform = '';
+      viewport.style.willChange = '';
+    };
+  }, [bare, reduced]);
+
   function selectShot(index: number) {
     elapsed.current = starts[index];
     draw(elapsed.current);
@@ -149,9 +191,10 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
 
   if (bare) return <section ref={root} className={styles.broll} aria-label="Luxury Performance automotive film" data-active-shot={active + 1} data-active-car={shots[active].car} data-playing={running}>
     <h1 className="sr-only">Luxury Performance</h1>
-    <div className={styles.brollViewport}>
-      {shots.map((shot, index) => <div key={`${shot.car}-${shot.image}-${index}`} data-car={shot.car} ref={node => { layers.current[index] = node; }} className={`${styles.layer} ${shot.image === '03-overhead' ? styles.overhead : ''}`}
+    <div ref={scrollViewport} className={styles.brollViewport}>
+      {shots.map((shot, index) => <div key={`${shot.car}-${shot.image}-${index}`} data-car={shot.car} data-shot={shot.image} ref={node => { layers.current[index] = node; }} className={`${styles.layer} ${shot.image === '03-overhead' ? styles.overhead : ''}`}
         style={{ opacity: index === 0 ? 1 : 0, transformOrigin: shot.origin }} aria-hidden={index !== active}>
+        {['01-front-three-quarter', '03-overhead', '04-rear-three-quarter', '10-straight-front'].includes(shot.image) && <div className={styles.overheadTopFill} style={{ backgroundImage: `url(${imageSource(shot.car, shot.image)})` }} aria-hidden="true" />}
         <picture>
           <source media="(max-width: 700px)" srcSet={portraitImageSource(shot.car, shot.image)} />
           <Image src={imageSource(shot.car, shot.image)} alt={`${cars[shot.car].description}: ${shot.view}`} fill unoptimized loading="eager" sizes="100vw"
