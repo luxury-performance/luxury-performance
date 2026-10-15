@@ -1,7 +1,8 @@
 .study{background:#141414;color:#f1eee7}
 .hero{position:relative;isolation:isolate;height:auto;aspect-ratio:16/9;min-height:0;overflow:hidden;background:#202020}
 .viewport{position:absolute;inset:0;overflow:hidden}
-.layer{position:absolute;inset:0;will-change:transform,opacity;pointer-events:none}
+.layer{position:absolute;inset:0;pointer-events:none}
+.layer[aria-hidden=false]{will-change:transform,opacity}
 .photo{object-fit:contain;object-position:center}
 .shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#1117 0%,transparent 32%,transparent 63%,#111d 100%)}
 .heading{position:absolute;top:46px;left:var(--gutter);z-index:2}
@@ -23,7 +24,7 @@
 .error{position:absolute;bottom:110px;left:var(--gutter);font-size:12px;background:#151515;padding:12px 18px}
 @media(min-width:1600px){.heading{top:65px}.bottom{bottom:50px}}
 @media(max-width:700px){.hero{aspect-ratio:auto;height:calc(100svh - 78px);min-height:560px;max-height:800px}.viewport{inset:145px 0 92px}.heading{top:30px;left:24px}.eyebrow{font-size:6px;letter-spacing:.11em}.heading h1{font-size:45px;margin:17px 0 12px;line-height:.97}.explore{font-size:9px;gap:13px}.edition{right:24px;top:35px;font-size:6px}.edition>span:last-child{display:none}.bottom{bottom:28px;left:24px;right:24px;gap:12px}.caption>span{font-size:6px}.caption p{font-size:18px}.transport{gap:10px}.transport>button{width:38px;height:38px}.meter{gap:12px}.track{width:42px}.count{font-size:10px}.count i{font-size:8px;margin-left:5px}.reel{padding:28px 24px}.reelHeading{display:block;margin-bottom:20px}.reelHeading>span{display:block;font-size:9px;margin-top:8px}.shots{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.shotLabel{font-size:9px;gap:8px;padding:12px 0}.studyFoot{display:block;line-height:1.8}.studyFoot a{margin-top:12px}.error{left:24px;right:24px;font-size:10px}}
-@media(prefers-reduced-motion:reduce){.layer{will-change:auto}.thumbnail,.explore svg,.transport>button{transition:none}}
+@media(prefers-reduced-motion:reduce){.layer[aria-hidden=false]{will-change:auto}.thumbnail,.explore svg,.transport>button{transition:none}}
 
 @media(max-width:700px){.overhead .photo{object-fit:cover}}
 
@@ -34,4 +35,4 @@
 .broll{position:relative;isolation:isolate;height:100svh;min-height:500px;overflow:hidden;background:#202020}.brollViewport{position:absolute;inset:0;overflow:hidden}.broll .photo{object-fit:cover}@media(max-width:700px){.broll .photo{object-fit:contain}.broll .overhead .photo{object-fit:cover}}
 
 
-@media(max-width:700px){.broll{height:100svh;height:100dvh;min-height:440px}.broll .photo{object-fit:cover}.broll .overhead .photo{object-fit:cover}}
+@media(max-width:700px){.broll{height:100vh;height:100lvh;min-height:440px}.broll .photo{object-fit:cover}.broll .overhead .photo{object-fit:cover}}

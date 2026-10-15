@@ -42,7 +42,7 @@ const imageName = (car: Car, name: string) => {
   return name;
 };
 const imageSource = (car: Car, name: string, thumbnail = false) => cars[car].assetRoot + '/' + imageName(car, name) + (thumbnail ? '-thumb' : '') + '.webp';
-const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}-height-v2.webp`;
+const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}-height-v3.webp`;
 const number = (value: number) => String(value).padStart(2, '0');
 
 function subscribeMotion(callback: () => void) {
@@ -97,11 +97,16 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
       values[1] = 0;
       values[2] = 1;
     }
-    layers.current.forEach((layer, i) => {
-      if (!layer) return;
-      layer.style.opacity = i === index ? '1' : '0';
-      if (i === index) layer.style.transform = `translate3d(${values[0]}%, ${values[1]}%, 0) scale(${values[2]})`;
-    });
+    // Only change visibility when the shot changes, not on every animation frame.
+    if (current.current !== index) {
+      const previousLayer = layers.current[current.current];
+      if (previousLayer) previousLayer.style.opacity = '0';
+    }
+    const layer = layers.current[index];
+    if (layer) {
+      layer.style.opacity = '1';
+      layer.style.transform = `translate3d(${values[0]}%, ${values[1]}%, 0) scale(${values[2]})`;
+    }
     if (progress.current) progress.current.style.transform = `scaleX(${p})`;
     if (current.current !== index) {
       current.current = index;
