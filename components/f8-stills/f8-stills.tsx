@@ -28,17 +28,21 @@ const carOrder: Car[] = ['f8', 'porsche', 'revuelto'];
 const mixedSequence = compositions.flatMap(shot => carOrder.map(car => ({ ...shot, duration: shot.duration, car })));
 const singleSequences = Object.fromEntries(carOrder.map(car => [car, compositions.map(shot => ({ ...shot, car }))])) as Record<Car, typeof mixedSequence>;
 const imageName = (car: Car, name: string) => {
+  if (car === 'porsche' && name === '03-overhead') return name + '-neutral-v7';
+  if (car === 'f8' && ['07-exhaust', '09-upper-rear'].includes(name)) return name + '-lettering-v1';
+  if (car === 'f8' && name === '04-rear-three-quarter') return name + '-lettering-v1';
   const nlargo = ['01-front-three-quarter', '02-rear-wheel', '03-overhead', '04-rear-three-quarter', '06-side-profile', '08-elevated-front', '09-upper-rear'];
   if (car === 'porsche' && name === '07-exhaust') return name + '-approved-v4';
   if (car === 'porsche' && name === '02-rear-wheel') return name + '-matched-v2';
-  if (car === 'porsche' && name === '03-overhead') return name + '-proportions-v2';
+  if (car === 'porsche' && ['03-overhead', '08-elevated-front', '09-upper-rear', '10-straight-front'].includes(name)) return name + '-corrected-v5';
   if (car === 'revuelto' && name === '05-front-corner') return name + '-f8-angle-v2';
   if (car === 'f8' && nlargo.includes(name)) return name + '-nlargo-v3';
-  if (car === 'f8' && name === '07-exhaust') return name + '-matched-v2';
+  if (car === 'f8' && name === '07-exhaust') return name + '-reference-v3';
   if ((car === 'f8' && ['04-rear-three-quarter', '09-upper-rear'].includes(name)) || (car === 'revuelto' && ['04-rear-three-quarter', '09-upper-rear'].includes(name))) return name + '-lxp-plate';
   return name;
 };
 const imageSource = (car: Car, name: string, thumbnail = false) => cars[car].assetRoot + '/' + imageName(car, name) + (thumbnail ? '-thumb' : '') + '.webp';
+const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}-height-v2.webp`;
 const number = (value: number) => String(value).padStart(2, '0');
 
 function subscribeMotion(callback: () => void) {
@@ -142,7 +146,7 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
       {shots.map((shot, index) => <div key={`${shot.car}-${shot.image}-${index}`} ref={node => { layers.current[index] = node; }} className={`${styles.layer} ${shot.image === '03-overhead' ? styles.overhead : ''}`}
         style={{ opacity: index === 0 ? 1 : 0, transformOrigin: shot.origin }} aria-hidden={index !== active}>
         <picture>
-          <source media="(max-width: 700px)" srcSet={`/images/${shot.car}-montage-portrait-v1/${shot.image}.webp`} />
+          <source media="(max-width: 700px)" srcSet={portraitImageSource(shot.car, shot.image)} />
           <Image src={imageSource(shot.car, shot.image)} alt={`${cars[shot.car].description}: ${shot.view}`} fill unoptimized loading="eager" sizes="100vw"
           onLoad={() => imageReady(`${shot.car}-${shot.image}`)} onError={() => setFailed(true)} className={styles.photo} />
         </picture>
