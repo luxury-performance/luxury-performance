@@ -36,3 +36,6 @@
 
 
 @media(max-width:700px){.broll{height:100vh;height:100lvh;min-height:440px}.broll .photo{object-fit:cover}.broll .overhead .photo{object-fit:cover}}
+
+/* Match the regenerated portrait to the shared mobile overhead centre (50%, 54.17%). */
+@media(max-width:700px){.broll .overhead[data-car="porsche"] .photo{translate:.535% -1.074%}}
