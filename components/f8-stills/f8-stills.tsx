@@ -28,7 +28,7 @@ const carOrder: Car[] = ['f8', 'porsche', 'revuelto'];
 const mixedSequence = compositions.flatMap(shot => carOrder.map(car => ({ ...shot, duration: shot.duration, car })));
 const singleSequences = Object.fromEntries(carOrder.map(car => [car, compositions.map(shot => ({ ...shot, car }))])) as Record<Car, typeof mixedSequence>;
 const imageName = (car: Car, name: string) => {
-  if (car === 'porsche' && name === '03-overhead') return name + '-techart-v15';
+  if (car === 'porsche' && name === '03-overhead') return name + '-techart-v16';
   if (car === 'f8' && ['07-exhaust', '09-upper-rear'].includes(name)) return name + '-lettering-v1';
   if (car === 'f8' && name === '04-rear-three-quarter') return name + '-lettering-v1';
   const nlargo = ['01-front-three-quarter', '02-rear-wheel', '03-overhead', '04-rear-three-quarter', '06-side-profile', '08-elevated-front', '09-upper-rear'];
@@ -42,7 +42,7 @@ const imageName = (car: Car, name: string) => {
   return name;
 };
 const imageSource = (car: Car, name: string, thumbnail = false) => cars[car].assetRoot + '/' + imageName(car, name) + (thumbnail ? '-thumb' : '') + '.webp';
-const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}${name === '03-overhead' ? (car === 'porsche' ? '-techart-v15' : '-aligned-v8') : '-height-v3'}.webp`;
+const portraitImageSource = (car: Car, name: string) => `/images/${car}-montage-portrait-v1/${name}${name === '03-overhead' ? (car === 'porsche' ? '-techart-v16' : '-aligned-v8') : '-height-v3'}.webp`;
 const number = (value: number) => String(value).padStart(2, '0');
 
 function subscribeMotion(callback: () => void) {
