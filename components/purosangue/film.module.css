@@ -101,3 +101,11 @@
 }
 @media(max-height:690px) and (max-width:700px){.stage{padding-top:12px;padding-bottom:10px}.copy h2{font-size:29px}.copy{top:4%}.kicker{margin-bottom:8px}.description{font-size:8px;max-width:220px;margin-top:10px}.sceneIndex{top:5%}.carRig{--rig-width:94%;--rig-top:68}.word{font-size:13vw;top:55%}.callout{font-size:8px}.sceneCaption{bottom:2%}.controlTop{padding-bottom:10px}.chapters>button{padding-top:10px;padding-bottom:9px;gap:5px}.footline{font-size:5.5px;padding-top:8px}}
 @media(prefers-reduced-motion:reduce){.film[data-motion]{height:auto}.film .stage{position:relative;top:auto;min-height:680px;height:calc(100svh - var(--film-header))}.copy{animation:none}.camera,.upgraded,.callout{transition:none;will-change:auto}.lightMask{display:none}.word{opacity:.20}}
+
+/* Let detail close-ups rise behind the glass header instead of hitting the composition edge. */
+.film{overflow-x:clip;overflow-y:visible}
+.stage[data-detail=true]{overflow:visible;clip-path:inset(calc(-1 * var(--film-header)) 0 0)}
+.stage[data-detail=true] .composition{clip-path:none}
+
+/* Carry the readability shading through the unclipped upper image, avoiding a horizontal band. */
+@media(min-width:701px){.stage[data-detail=true] .composition:after{top:calc(-1 * (var(--film-header) + 90px));bottom:-100svh}}

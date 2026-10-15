@@ -111,7 +111,7 @@ html[data-lxp-intro="wings"] .site-header .company-emblem{animation:intro-wings 
 .site-header.is-scrolled{border-bottom:0;box-shadow:0 12px 36px #0000000c}
 .site-header .company-logo{transition:transform .55s var(--ease-out)}
 .site-header.is-scrolled .company-logo{transform:scale(.87)}
-.site-header.menu-is-open:before{background:#101010}
+.site-header.menu-is-open:before{background:rgba(16,16,16,.68);-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15)}
 .reading-progress{position:fixed;left:0;right:0;top:0;height:2px;background:var(--accent);z-index:80;transform:scaleX(var(--reading-progress,0));transform-origin:left;pointer-events:none}
 html[data-lxp-intro] .reading-progress{opacity:0}
 @supports not (backdrop-filter:blur(1px)){.site-header.is-scrolled:before{background:#151514f5}}
@@ -280,6 +280,24 @@ html{scrollbar-gutter:stable}
 
 /* Let the home film fill the viewport beneath the navigation. */
 .site-header.hero-header{position:fixed;inset:0 0 auto}
-.site-header.hero-header:before{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;transition:background .3s,backdrop-filter .3s}
+.site-header.hero-header:before{background:rgb(16 16 16 / calc(var(--hero-glass-progress,0) * .68));-webkit-backdrop-filter:blur(calc(var(--hero-glass-progress,0) * var(--nav-glass-blur))) saturate(calc(1 + var(--hero-glass-progress,0) * .15));backdrop-filter:blur(calc(var(--hero-glass-progress,0) * var(--nav-glass-blur))) saturate(calc(1 + var(--hero-glass-progress,0) * .15))}
 .site-header.hero-header.is-scrolled{box-shadow:none}
-.site-header.hero-header.is-past-hero:before,.site-header.hero-header.menu-is-open:before{background:#101010}
+.site-header.hero-header.is-past-hero:before{background:rgba(16,16,16,.68);-webkit-backdrop-filter:blur(20px) saturate(1.12);backdrop-filter:blur(20px) saturate(1.12)}
+.site-header.hero-header.menu-is-open:before{background:rgba(16,16,16,.68);-webkit-backdrop-filter:blur(24px) saturate(1.15);backdrop-filter:blur(24px) saturate(1.15)}
+
+/* The readability fade travels with the fixed header only while it overlaps the hero. */
+.site-header.hero-header:after{content:"";position:absolute;inset:0 0 auto;height:clamp(190px,28vh,300px);z-index:-2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,.36) 35%,rgba(0,0,0,.1) 68%,transparent);opacity:var(--hero-fade-opacity,1);transition:opacity .2s}
+.site-header.hero-header.is-past-hero:after,.site-header.hero-header.menu-is-open:after{opacity:0}
+@media(max-width:700px){.site-header.hero-header:after{height:220px}}
+
+/* Shared dark glass material for navigation surfaces. */
+:root{--nav-glass-background:rgba(16,16,16,.68);--nav-glass-blur:24px;--nav-glass-saturation:1.15}
+.site-header.menu-is-open:before,.site-header.hero-header.menu-is-open:before,.site-header.hero-header.is-past-hero:before{background:var(--nav-glass-background);-webkit-backdrop-filter:blur(var(--nav-glass-blur)) saturate(var(--nav-glass-saturation));backdrop-filter:blur(var(--nav-glass-blur)) saturate(var(--nav-glass-saturation))}
+
+/* Each open navigation has one continuous glass plane, including behind the header. */
+.navigation-glass-surface{position:fixed;inset:0;z-index:58;pointer-events:none;background:var(--nav-glass-background);-webkit-backdrop-filter:blur(var(--nav-glass-blur)) saturate(var(--nav-glass-saturation));backdrop-filter:blur(var(--nav-glass-blur)) saturate(var(--nav-glass-saturation))}
+.site-header.full-menu-is-open,.site-header.hero-header.full-menu-is-open{box-shadow:none;border-bottom:0}
+.site-header.full-menu-is-open:before,.site-header.hero-header.full-menu-is-open:before{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.site-header.shop-menu-is-open:before,.site-header.hero-header.shop-menu-is-open:before{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.navigation-shop-glass{bottom:auto;height:112px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.navigation-glass-surface{background:#101010}}
