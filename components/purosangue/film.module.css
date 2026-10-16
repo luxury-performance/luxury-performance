@@ -84,8 +84,8 @@
 @media(max-height:750px) and (min-width:701px){.stage{padding-top:17px;padding-bottom:12px}.copy{top:4%}.copy h2{font-size:34px}.kicker{margin-bottom:10px}.description{font-size:9px;max-width:220px;margin-top:12px}.carRig{--rig-width:79%;--rig-top:59;left:61%}.word{left:64%;top:10%;font-size:6.2vw}.sceneIndex{top:5%}.footline{padding-top:8px}.chapters>button{padding-top:12px;padding-bottom:11px}.controlTop{padding-bottom:12px}}
 @media(max-width:900px){.film{--film-header:102px}.stage{padding-left:25px;padding-right:25px}.signature{display:none}.copy h2{font-size:38px}.description{max-width:220px;font-size:9px}.carRig{--rig-width:113%;--rig-top:65;left:56%}.word{left:50%;top:45%;font-size:12vw}.chapterDot{display:none}.scrollHint{margin-left:5px}.footline{font-size:6px}.footline a{font-size:7px}}
 @media(max-width:700px){
- .film{--film-header:100px}.film[data-motion=full]{height:490svh}
- .stage{padding:16px 20px 15px;min-height:650px}
+ .film{--film-header:100px}.film[data-motion=full]{height:calc(var(--film-viewport-height,100svh) * 4.9)}
+ .stage{height:calc(var(--film-viewport-height,100svh) - var(--film-header));padding:16px 20px 15px;min-height:650px}
  .topline{font-size:8px;gap:8px;min-height:25px}.edition{gap:7px}.edition i{display:none}.compareButton{font-size:8px;gap:6px;padding-left:0}
  .stage[data-detail=true] .composition:after{background:linear-gradient(180deg,#0b0c0def, #0b0c0db0 23%, transparent 53%),linear-gradient(90deg,#0b0c0d55,transparent);inset:0 calc(-1 * var(--gutter))}
  .copy{top:5%;max-width:280px}.kicker{font-size:7px;margin-bottom:13px}.copy h2{font-size:38px}.description{font-size:12px;max-width:245px;line-height:1.7;margin-top:13px}
@@ -99,7 +99,7 @@
  .compareControl{width:220px;max-width:66%;gap:8px;font-size:7px}.compareLine>span{width:26px;height:26px}
 
 }
-@media(max-height:690px) and (max-width:700px){.stage{padding-top:12px;padding-bottom:10px}.copy h2{font-size:29px}.copy{top:4%}.kicker{margin-bottom:8px}.description{font-size:8px;max-width:220px;margin-top:10px}.sceneIndex{top:5%}.carRig{--rig-width:94%;--rig-top:68}.word{font-size:13vw;top:55%}.callout{font-size:8px}.sceneCaption{bottom:2%}.controlTop{padding-bottom:10px}.chapters>button{padding-top:10px;padding-bottom:9px;gap:5px}.footline{font-size:5.5px;padding-top:8px}}
+@media(max-width:700px){.film[data-compact=true] .stage{padding-top:12px;padding-bottom:10px}.film[data-compact=true] .copy h2{font-size:29px}.film[data-compact=true] .copy{top:4%}.film[data-compact=true] .kicker{margin-bottom:8px}.film[data-compact=true] .description{font-size:8px;max-width:220px;margin-top:10px}.film[data-compact=true] .sceneIndex{top:5%}.film[data-compact=true] .carRig{--rig-width:94%;--rig-top:68}.film[data-compact=true] .word{font-size:13vw;top:55%}.film[data-compact=true] .callout{font-size:8px}.film[data-compact=true] .sceneCaption{bottom:2%}.film[data-compact=true] .controlTop{padding-bottom:10px}.film[data-compact=true] .chapters>button{padding-top:10px;padding-bottom:9px;gap:5px}.film[data-compact=true] .footline{font-size:5.5px;padding-top:8px}}
 @media(prefers-reduced-motion:reduce){.film[data-motion]{height:auto}.film .stage{position:relative;top:auto;min-height:680px;height:calc(100svh - var(--film-header))}.copy{animation:none}.camera,.upgraded,.callout{transition:none;will-change:auto}.lightMask{display:none}.word{opacity:.20}}
 
 /* Let detail close-ups rise behind the glass header instead of hitting the composition edge. */
