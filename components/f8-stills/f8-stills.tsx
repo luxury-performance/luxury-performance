@@ -60,7 +60,10 @@ function subscribeIntro(callback: () => void) {
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-lxp-intro'] });
   return () => observer.disconnect();
 }
-const getIntroPending = () => document.documentElement.hasAttribute('data-lxp-intro');
+const getIntroPending = () => {
+  const phase = document.documentElement.dataset.lxpIntro;
+  return Boolean(phase && phase !== 'travelling' && phase !== 'wings');
+};
 const getIntroServerSnapshot = () => true;
 const getReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const getHidden = () => document.hidden;
@@ -86,7 +89,7 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
   const reduced = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerSnapshot);
   const hidden = useSyncExternalStore(subscribeVisibility, getHidden, getServerSnapshot);
   const introPending = useSyncExternalStore(subscribeIntro, getIntroPending, getIntroServerSnapshot);
-  // Keep the opening shot at time zero until the entire entrance has cleared.
+  // Start the opening shot as the backdrop fades, before the hero becomes visible.
   const running = playing && ready && !reduced && !hidden && inView && (!bare || !introPending);
 
   const draw = useCallback((time: number) => {
