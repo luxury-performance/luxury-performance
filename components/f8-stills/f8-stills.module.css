@@ -50,3 +50,10 @@
 
 /* Blend shifted front/rear shots into their own background instead of exposing a hard top gap. */
 @media(min-width:701px){.broll .layer[data-shot="01-front-three-quarter"] .photo,.broll .layer[data-shot="04-rear-three-quarter"] .photo,.broll .layer[data-shot="10-straight-front"] .photo{-webkit-mask-image:linear-gradient(180deg,transparent,#000 110px);mask-image:linear-gradient(180deg,transparent,#000 110px)}}
+
+/* Align the photographed centreline (x=830) with the 1672px canvas centre (x=836).
+   Match object-fit:cover's scale so the correction stays exact on wide and tall screens. */
+@media(min-width:701px){
+ .brollViewport{container-type:size}
+ .broll .overhead[data-car="porsche"] .photo,.broll .overhead[data-car="revuelto"] .photo{translate:max(calc(100cqw * 6 / 1672),calc(100cqh * 6 / 941)) clamp(28px,5vh,60px)}
+}
