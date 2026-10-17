@@ -55,6 +55,13 @@ function subscribeVisibility(callback: () => void) {
   document.addEventListener('visibilitychange', callback);
   return () => document.removeEventListener('visibilitychange', callback);
 }
+function subscribeIntro(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-lxp-intro'] });
+  return () => observer.disconnect();
+}
+const getIntroPending = () => document.documentElement.hasAttribute('data-lxp-intro');
+const getIntroServerSnapshot = () => true;
 const getReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const getHidden = () => document.hidden;
 const getServerSnapshot = () => false;
@@ -78,7 +85,9 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
   const [inView, setInView] = useState(true);
   const reduced = useSyncExternalStore(subscribeMotion, getReducedMotion, getServerSnapshot);
   const hidden = useSyncExternalStore(subscribeVisibility, getHidden, getServerSnapshot);
-  const running = playing && ready && !reduced && !hidden && inView;
+  const introPending = useSyncExternalStore(subscribeIntro, getIntroPending, getIntroServerSnapshot);
+  // Keep the opening shot at time zero until the entire entrance has cleared.
+  const running = playing && ready && !reduced && !hidden && inView && (!bare || !introPending);
 
   const draw = useCallback((time: number) => {
     const cycleTime = time % cycleMs;

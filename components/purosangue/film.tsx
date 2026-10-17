@@ -38,6 +38,14 @@ export function PurosangueFilm() {
     let cameraPose: CameraPose = { scale: 1, x: 0, y: 0 };
     let target = 0, progress = 0, selected = -1, start = 0, distance = 1;
     let headerHeight = 112;
+    let viewportWidth = window.innerWidth;
+    // Keep Safari's expanding browser controls out of the scroll timeline geometry.
+    function captureViewport() {
+      viewportWidth = window.innerWidth;
+      section!.style.setProperty('--film-viewport-height', `${window.innerHeight}px`);
+      section!.dataset.compact = String(mobile.matches && window.innerHeight <= 690);
+    }
+    captureViewport();
     let geometry: FilmGeometry = { width: 1, height: 1, rigWidth: 1, rigHeight: 1, rigX: 0, rigY: 0, small: false };
 
     function paint(value: number, instant = false, mix = 1, fromPose: CameraPose = { scale: 1, x: 0, y: 0 }) {
@@ -85,7 +93,7 @@ export function PurosangueFilm() {
       raf = 0;
       if (disposed || isComparing || seeking) return;
       const delta = target - progress;
-      paint(preference.matches || Math.abs(delta) < .0006 ? target : progress + delta * .14);
+      paint(preference.matches || mobile.matches || Math.abs(delta) < .0006 ? target : progress + delta * .14);
       if (Math.abs(target - progress) >= .0006) raf = requestAnimationFrame(render);
     }
 
@@ -104,8 +112,19 @@ export function PurosangueFilm() {
       const area = composition.current;
       const car = rig.current;
       if (area && car) geometry = { width: area.clientWidth, height: area.clientHeight, rigWidth: car.offsetWidth, rigHeight: car.offsetHeight, rigX: car.offsetLeft, rigY: car.offsetTop, small: mobile.matches };
-      paint(progress, preference.matches, seeking ? 0 : 1, cameraPose);
-      onScroll();
+      if (mobile.matches && !preference.matches && !isComparing && !seeking) {
+        target = clamp((window.scrollY - start) / distance);
+        paint(target);
+      } else {
+        paint(progress, preference.matches, seeking ? 0 : 1, cameraPose);
+        onScroll();
+      }
+    }
+
+    function onResize() {
+      if (mobile.matches && window.innerWidth === viewportWidth) return;
+      captureViewport();
+      measure();
     }
 
     function onScroll() {
@@ -215,7 +234,7 @@ export function PurosangueFilm() {
     if (composition.current) resize.observe(composition.current);
     if (rig.current) resize.observe(rig.current);
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', measure);
+    window.addEventListener('resize', onResize);
     window.addEventListener('wheel', stop, { passive: true });
     window.addEventListener('touchstart', stop, { passive: true });
     document.addEventListener('keydown', onKey);
@@ -224,7 +243,7 @@ export function PurosangueFilm() {
     preference.addEventListener('change', onPreference);
     return () => {
       disposed = true; cancelAnimationFrame(raf); cancelAnimationFrame(playRaf); cancelAnimationFrame(seekRaf); resize.disconnect();
-      window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', measure);
+      window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize);
       window.removeEventListener('wheel', stop); window.removeEventListener('touchstart', stop);
       document.removeEventListener('keydown', onKey); document.removeEventListener('visibilitychange', onVisibility);
       preference.removeEventListener('change', onPreference); control.current = null;
