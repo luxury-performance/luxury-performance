@@ -80,6 +80,7 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
   const elapsed = useRef(0);
   const current = useRef(0);
   const loaded = useRef(new Set<string>());
+  const dissolve = useRef<{ outgoing: number; started: number; duration: number } | null>(null);
   const [active, setActive] = useState(0);
   const vehicle = cars[shots[active].car];
   const [playing, setPlaying] = useState(true);
@@ -122,22 +123,41 @@ export function F8Stills({ car = 'f8', bare = false }: { car?: Car | 'mix'; bare
       values[1] = 0;
       values[2] = 1;
     }
-    // Only change visibility when the shot changes, not on every animation frame.
-    if (current.current !== index) {
+    const changed = current.current !== index;
+    if (changed) {
+      // Retain an opaque outgoing photograph beneath the incoming one, avoiding a dark dip.
+      const stale = dissolve.current && layers.current[dissolve.current.outgoing];
+      if (stale) { stale.style.opacity = '0'; stale.style.zIndex = '0'; }
       const previousLayer = layers.current[current.current];
-      if (previousLayer) previousLayer.style.opacity = '0';
+      if (previousLayer) {
+        previousLayer.style.opacity = bare && !reduced ? '1' : '0';
+        previousLayer.style.zIndex = '1';
+      }
+      dissolve.current = bare && !reduced ? {
+        outgoing: current.current,
+        started: time,
+        duration: shots[current.current].image === shot.image ? 140 : 260,
+      } : null;
     }
+    const transition = dissolve.current;
+    const fade = transition && !reduced ? Math.min(1, Math.max(0, (time - transition.started) / transition.duration)) : 1;
     const layer = layers.current[index];
     if (layer) {
-      layer.style.opacity = '1';
+      layer.style.opacity = String(fade);
+      layer.style.zIndex = '2';
       layer.style.transform = `translate3d(${values[0]}%, ${values[1]}%, 0) scale(${values[2]})`;
+    }
+    if (transition && fade === 1) {
+      const outgoing = layers.current[transition.outgoing];
+      if (outgoing) { outgoing.style.opacity = '0'; outgoing.style.zIndex = '0'; }
+      dissolve.current = null;
     }
     if (progress.current) progress.current.style.transform = `scaleX(${p})`;
     if (current.current !== index) {
       current.current = index;
       setActive(index);
     }
-  }, [car, shots, cycleMs, starts]);
+  }, [bare, reduced, car, shots, cycleMs, starts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.05 });
