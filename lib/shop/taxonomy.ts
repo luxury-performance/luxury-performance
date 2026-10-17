@@ -26,9 +26,13 @@ export function categoryOf(p: CatalogProduct) {
   const type = p.productType.toLowerCase(), tags = p.tags.join(' '), title = p.title.toLowerCase();
   if (supplierOf(p) === 'collectibles') return 'Collectibles';
   if (supplierOf(p) === 'valvetronic') {
-    if (/downpipe/.test(title)) return 'Downpipes';
-    if (/front pipe/.test(title) && !/exhaust system/.test(title)) return 'Front pipes';
-    if (/system|package/.test(title)) return 'Valved exhaust systems';
+    const name = title.replace(/[–—-]/g, ' ');
+    // Accessories can mention an exhaust system without being a system themselves.
+    if (/\b(?:replacement|controller|control box|control kit|harness|antenna|exhaust tips|valve motors?)\b/.test(name)) return 'Exhaust components';
+    if (/\bdown\s*pipes?\b/.test(name)) return 'Downpipes';
+    if (/\bfront pipes?\b/.test(name) && !/\bexhaust system\b/.test(name)) return 'Front pipes';
+    // Some genuine system names end at “Valved Sport Exhaust”, including the E46 M3.
+    if (/\b(?:valved (?:sport |axleback )?exhaust|exhaust (?:system|package))\b/.test(name)) return 'Valved exhaust systems';
     return 'Exhaust components';
   }
   if (/category_(aero|aerodynamic)/.test(tags) || /aero|spoiler|bumper|splitter|diffuser/.test(type)) return 'Aerodynamics';
