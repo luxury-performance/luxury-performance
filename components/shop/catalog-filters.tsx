@@ -14,9 +14,10 @@ type Props = {
   fits: string[];
   categories: { name: string; count: number }[];
   total: number;
+  bodies: { key: string; name: string }[];
 };
 
-export function CatalogFilters({ filters, basePath, makes, models, fits, categories, total }: Props) {
+export function CatalogFilters({ filters, basePath, makes, models, fits, categories, total, bodies }: Props) {
   const router = useRouter();
   const form = useRef<HTMLFormElement>(null);
   const [pending, startTransition] = useTransition();
@@ -41,6 +42,7 @@ export function CatalogFilters({ filters, basePath, makes, models, fits, categor
     {makes.length === 1 && <div className="shop-fixed-make">{label(makes[0])}</div>}
     {!!models.length && <label className="shop-field"><span>{filters.brand === 'techart' ? 'Porsche model' : 'Vehicle model'}</span><select name="model" value={selection.model || ''} onChange={event => apply({ model: event.target.value })}><option value="">All models</option>{models.map(v => <option key={v} value={v}>{label(v)}</option>)}</select></label>}
     {filters.brand === 'techart' && !!fits.length && <label className="shop-field"><span>Generation / fitment</span><select name="fit" value={selection.fit || ''} onChange={event => apply({ fit: event.target.value })}><option value="">All fitments</option>{fits.map(v => <option key={v} value={v}>{fitLabel(v)}</option>)}</select></label>}
+    {!!bodies.length && <label className="shop-field"><span>Body style</span><select name="body" value={selection.body || ''} onChange={event => apply({ body: event.target.value })}><option value="">All body styles</option>{bodies.map(body => <option key={body.key} value={body.key}>{body.name}</option>)}</select></label>}
     <fieldset className="shop-category-list"><legend>{filters.brand === 'valvetronic' ? 'Exhaust type' : 'Department'}</legend><label><input type="radio" name="category" value="" checked={!selection.category} onChange={() => apply({ category: '' })}/><span>All parts</span><small>{total}</small></label>{categories.map(c => <label key={c.name}><input type="radio" name="category" value={c.name} checked={selection.category === c.name} disabled={!c.count && selection.category !== c.name} onChange={() => apply({ category: c.name })}/><span>{c.name}</span><small>{c.count}</small></label>)}</fieldset>
     <label className="shop-field"><span>Sort by</span><select name="sort" value={selection.sort || ''} onChange={event => apply({ sort: event.target.value })}><option value="">Featured</option><option value="price-up">Price: low to high</option><option value="price-down">Price: high to low</option><option value="name">Name: A–Z</option></select></label>
   </form>;

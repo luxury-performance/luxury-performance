@@ -1,0 +1,29 @@
+.firstLine { display: inline-flex; align-items: center; gap: .17em; white-space: nowrap; }
+.badge { position: relative; display: inline-block; flex: none; width: .84em; height: 1.05em; perspective: 600px; perspective-origin: 50% 45%; }
+.rotor { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateY(0deg); }
+.core { position: absolute; inset: 0; background: linear-gradient(110deg,#090a0c 8%,#7a7d7f 36%,#d3d1c8 50%,#292c30 70%,#090a0c 94%); mask: var(--crest-mask) center / contain no-repeat; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.slices { display: contents; }
+.porscheCore { --crest-mask: url('/brand/crests/porsche-metal.webp'); }
+.techartCore { --crest-mask: url('/brand/crests/techart-black-lion.webp'); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.face img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 2px #0009); }
+.porsche { transform: translateZ(2px); }
+.techart { transform: rotateY(180deg) translateZ(2px); }
+.face::after { position: absolute; inset: 0; content: ''; pointer-events: none; opacity: 0; background: linear-gradient(115deg,transparent 28%,#fff9 47%,transparent 65%); mask: var(--crest-mask) center / contain no-repeat; }
+.porsche { --crest-mask: url('/brand/crests/porsche-metal.webp'); }
+.techart { --crest-mask: url('/brand/crests/techart-black-lion.webp'); }
+:global([data-active="true"]) .rotor { animation: crest-turn 6s cubic-bezier(.45,0,.2,1) infinite; }
+:global([data-active="true"]) .face::after { animation: crest-reflection 6s ease-in-out infinite; }
+:global(html[data-lxp-intro]) .rotor, :global(html[data-lxp-intro]) .face::after { animation: none; }
+@keyframes crest-turn {
+  0%, 38% { transform: rotateY(0deg); }
+  50%, 88% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
+}
+@keyframes crest-reflection {
+  0%, 38%, 50%, 88%, 100% { opacity: 0; }
+  44%, 94% { opacity: .22; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :global([data-active="true"]) .rotor, :global([data-active="true"]) .face::after { animation: none; }
+}

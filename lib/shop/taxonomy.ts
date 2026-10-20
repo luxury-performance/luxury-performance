@@ -43,7 +43,7 @@ export function categoryOf(p: CatalogProduct) {
   if (/category_(performance|engine)/.test(tags) || /performance|turbo|engine/.test(type)) return 'Performance';
   return /accessor/.test(type) ? 'Accessories' : 'Other parts';
 }
-export type Filters = { brand?: string; make?: string; model?: string; fit?: string; category?: string; q?: string; sort?: string; page?: string };
+export type Filters = { brand?: string; make?: string; model?: string; fit?: string; body?: string; category?: string; q?: string; sort?: string; page?: string };
 export function filterProducts(products: CatalogProduct[], f: Filters) {
   const result = products.filter(p => (!f.brand || supplierOf(p) === f.brand) && (!f.make || tagsFor(p, 'make').includes(f.make)) && (!f.model || tagsFor(p, 'model').includes(f.model)) && (!f.fit || tagsFor(p, 'fit').includes(f.fit)) && (!f.category || categoryOf(p) === f.category) && (!f.q || `${p.title} ${p.vendor} ${p.productType}`.toLowerCase().includes(f.q.toLowerCase())));
   if (f.sort === 'price-up') result.sort((a,b) => Number(a.priceRange.minVariantPrice.amount) - Number(b.priceRange.minVariantPrice.amount));
@@ -56,13 +56,14 @@ export function filterProducts(products: CatalogProduct[], f: Filters) {
 export function updateFilters(current: Filters, changes: Partial<Filters>): Filters {
   const next = { ...current, ...changes, page: undefined };
   if ('brand' in changes) return { brand: changes.brand };
-  if ('make' in changes) { next.model = undefined; next.fit = undefined; }
-  if ('model' in changes) next.fit = undefined;
+  if ('make' in changes) { next.model = undefined; next.fit = undefined; next.body = undefined; }
+  if ('model' in changes) { next.fit = undefined; next.body = undefined; }
+  if ('fit' in changes) next.body = undefined;
   return next;
 }
 export function filterUrl(basePath: string, filters: Filters) {
   const params = new URLSearchParams();
-  for (const key of ['brand', 'make', 'model', 'fit', 'category', 'q', 'sort', 'page'] as const) {
+  for (const key of ['brand', 'make', 'model', 'fit', 'body', 'category', 'q', 'sort', 'page'] as const) {
     const value = filters[key]?.trim();
     if (value) params.set(key, value);
   }
