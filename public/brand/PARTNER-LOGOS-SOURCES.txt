@@ -1,0 +1,19 @@
+Partner strip artwork — 24 October 2026
+
+NOVITEC, Valvetronic Designs and TECHART reuse the exact transparent artwork used in the homepage hero: novitec.svg, valvetronic.png and techart.svg.
+
+FI Exhaust: original vector downloaded from the official site, https://www.fi-exhaust.com/web/images/fi-logo.svg, linked in https://www.fi-exhaust.com/home.jsp?lang=en. Saved unchanged as fi-exhaust.svg.
+
+Marks remain the property of their respective brands.
+
+Additional partner artwork — 24 October 2026
+Gintani: official white/red artwork, https://gintani.com/images/gintani-logo.png, linked from https://gintani.com/ (2193×665 transparent PNG).
+Liberty Walk: existing LXP Forged artwork, https://lxpforged.com/cdn/shop/files/liberty-walk-seeklogo.png?v=1781862888&width=1600 (1600×2000 transparent PNG); shown in white using CSS.
+Voltrix: existing LXP Forged artwork, https://lxpforged.com/cdn/shop/files/PHOTO-2026-06-30-11-50-26.jpg?v=1782813175&width=1600 (1600×260 JPG); CSS inversion and screen blending remove its white canvas on the dark strip. Original image file preserved unchanged.
+FI Exhaust lettering: https://fi-exhaust.eu/img/logo-text.png, linked from the official European distributor https://fi-exhaust.eu/en (535×73 transparent PNG). Paired with the unchanged manufacturer SVG mark.
+
+Liberty Walk horizontal lockup: original symbol https://libertywalk.co.jp/wp-content/uploads/2022/08/lb_logo.png and lettering https://libertywalk.co.jp/wp-content/uploads/2022/08/2024-Liberty-walk-LOGO.png, both linked from the official homepage. Paired using CSS with the original proportions; black artwork displayed in white. Original files unchanged.
+Voltrix navigation rendering uses an SVG luminance-to-alpha filter on the unchanged existing JPG, allowing its lettering to appear without a background rectangle on glass.
+
+URBAN Automotive: transparent official SVG https://smgassets.blob.core.windows.net/customers/urban/dist/img/svgs/logo.svg, observed on https://www.urban-automotive.co.uk/. Saved unchanged as urban.svg (viewBox 643.6×101.8).
+LXP Used navigation: existing approved lettering-only lxp-white.svg, replacing the winged emblem at the owner's request.

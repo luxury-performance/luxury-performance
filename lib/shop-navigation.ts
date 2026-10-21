@@ -1,10 +1,14 @@
-export type ShopMenuItem = { name: string; href: string; logo?: string; logoClass?: string; note?: string };
+export type ShopMenuItem = { name: string; href: string; logo?: string; logoClass?: string; artwork?: string; note?: string };
 export const brandMenu: ShopMenuItem[] = [
-  { name: 'NOVITEC', href: '/partners/novitec#top', logo: 'novitec.png', logoClass: 'novitec' },
-  { name: 'Valvetronic Designs', href: '/partners/valvetronic#top', logo: 'valvetronic-logo.png', logoClass: 'valvetronic' },
-  { name: 'TECHART', href: '/partners/techart#top', logo: 'techart.webp', logoClass: 'techart' },
-  { name: 'FI Exhaust', href: '/partners/fi-exhaust#top', logo: 'fi-exhaust.jpg', logoClass: 'fi' },
+  { name: 'NOVITEC', href: '/partners/novitec#top', artwork: 'novitec' },
+  { name: 'Valvetronic Designs', href: '/partners/valvetronic#top', artwork: 'valvetronic' },
+  { name: 'TECHART', href: '/partners/techart#top', artwork: 'techart' },
+  { name: 'FI Exhaust', href: '/partners/fi-exhaust#top', artwork: 'fi-exhaust' },
+  { name: 'Gintani', href: '/contact?programme=Gintani', artwork: 'gintani' },
+  { name: 'Liberty Walk', href: '/contact?programme=Liberty%20Walk', artwork: 'liberty-walk' },
+  { name: 'Voltrix', href: '/contact?programme=Voltrix', artwork: 'voltrix' },
 ];
+export const usedParts: ShopMenuItem = { name: 'Used parts', href: '/collections/lxp-used', artwork: 'lxp', note: 'Previously owned components' };
 export const vehicleMenu: ShopMenuItem[] = [
   { name: 'Ferrari', href: '/shop?make=ferrari', logo: 'ferrari.png', logoClass: 'ferrari' },
   { name: 'Lamborghini', href: '/shop?make=lamborghini', logo: 'lamborghini.png', logoClass: 'lamborghini' },
@@ -16,5 +20,5 @@ export const vehicleMenu: ShopMenuItem[] = [
   { name: 'Audi', href: '/shop?make=audi', logo: 'audi.svg' },
 ];
 
-export const limitedStock: ShopMenuItem = { name: 'URBAN Automotive', href: '/partners/urban#top', logo: 'urban.png', logoClass: 'urban', note: 'Limited stock · 2 kits' };
+export const limitedStock: ShopMenuItem = { name: 'URBAN Automotive', href: '/partners/urban#top', artwork: 'urban', note: 'Limited stock · 2 kits' };
 export type VehicleModels = Record<string, { slug: string; name: string }[]>;

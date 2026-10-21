@@ -5,6 +5,7 @@ import { introBootstrap } from '@/lib/intro-bootstrap';
 import { SiteMotion } from '@/components/site-motion';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { WhatsAppWidget } from '@/components/whatsapp-widget';
 import './globals.css';
 import './shop.css';
 import { CartProvider } from '@/components/shop/cart-provider';
@@ -18,5 +19,5 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: '#101010' };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><CartProvider><BrandIntro /><div id="site-shell"><Header /><SiteMotion /><main id="main">{children}</main><Footer /></div></CartProvider></body></html>;
+  return <html lang="en" suppressHydrationWarning className={montserrat.variable}><body id="top"><script dangerouslySetInnerHTML={{ __html: introBootstrap }} /><CartProvider><BrandIntro /><div id="site-shell"><Header /><SiteMotion /><main id="main">{children}</main><Footer /><WhatsAppWidget /></div></CartProvider></body></html>;
 }

@@ -1,7 +1,7 @@
 export const contact = {
   phone: '+971 56 515 5886', telephone: '+971565155886', whatsapp: 'https://wa.me/971565155886',
-  email: 'info@lxpforged.com', address: '4th Street, Al Quoz Industrial 3, Dubai, UAE',
-  maps: 'https://www.google.com/maps/search/?api=1&query=Luxury+Performance+Al+Quoz+Industrial+3+Dubai',
+  email: 'info@luxuryperformance.com', address: '4th Street, Al Quoz Industrial 3, Dubai, UAE',
+  maps: 'https://maps.app.goo.gl/pbjT7EEoidhdy1cv8',
 };
 export const programmes = [
   { slug: 'novitec-ferrari', brand: 'NOVITEC', marque: 'Ferrari', title: 'An unmistakable presence.', image: 'ferrari', hero: 'hero', model: 'Ferrari programme', category: 'Performance / Aerodynamics',

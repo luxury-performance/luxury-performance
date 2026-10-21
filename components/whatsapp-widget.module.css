@@ -1,0 +1,48 @@
+.widget {
+  --widget-bottom: 24px;
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: calc(var(--widget-bottom) + var(--widget-lift, 0px) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid #ffffff38;
+  border-radius: 50%;
+  background: #18894e;
+  color: #fff;
+  box-shadow: 0 4px 22px #0003, inset 0 1px 0 #ffffff26;
+  transition: background 180ms, transform 180ms;
+}
+.widget:hover { background: #147540; transform: translateY(-2px); }
+.widget:focus-visible { outline: 2px solid #c9b594; outline-offset: 5px; }
+.label {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 14px;
+  border: 1px solid #ffffff20;
+  border-radius: 4px;
+  background: #181a19;
+  color: #fff;
+  box-shadow: 0 3px 15px #0002;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms, visibility 180ms;
+}
+.widget:hover .label, .widget:focus-visible .label { opacity: 1; visibility: visible; }
+:global(html[data-lxp-intro]) .widget,
+:global(body:has(.site-header.menu-is-open)) .widget,
+:global(body:has(dialog[open])) .widget { display: none; }
+@media (max-width: 700px) {
+  .widget { right: max(16px, env(safe-area-inset-right)); --widget-bottom: 20px; width: 52px; height: 52px; }
+  .widget svg { width: 26px; height: 26px; }
+}
+@media (hover: none) { .label { display: none; } }
+@media (prefers-reduced-motion: reduce) { .widget, .label { transition: none; } }

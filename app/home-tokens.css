@@ -3,11 +3,12 @@
   --home-paper: var(--paper);
   --home-ink: var(--ink);
   --home-dark: #161615;
+  --home-intro-bg: #101112;
   --home-white: #faf9f6;
-  --home-well: #eae9e3;
+  --home-well: #e2e5e7;
   --home-muted: #65655e;
   --home-light-muted: #c8c7be;
-  --home-rule: #d4d3ca;
+  --home-rule: #d3d6d8;
   --home-dark-rule: #41413b;
   --home-accent: #b89d65;
   --home-focus: #94702c;
@@ -26,4 +27,28 @@
   --home-space-4xl: 144px;
   --home-ease: cubic-bezier(.2,.7,.2,1);
   --home-short: 180ms;
+}
+
+/* A continuous dark canvas connects the partner strip to the introduction. */
+.intro.intro-dark { background: var(--home-intro-bg); color: var(--home-white); padding-top: 40px; }
+.intro-dark .eyebrow { color: var(--home-light-muted); }
+.intro-dark .intro-side p, .intro-dark .intro-copy p { color: #aaa9a1; }
+.intro-dark .text-muted { color: #a8a89f; }
+.intro-dark .arrow-disc { border-color: #ffffff40; }
+.intro-dark .large-plus { color: var(--home-accent); }
+@media (max-width: 700px) {
+  .intro.intro-dark { padding-top: 44px; }
+}
+
+.intro-dark .intro-copy { grid-template-columns: minmax(0, 1fr) auto; gap: 40px; margin-top: 36px; }
+.intro-dark .intro-body { max-width: 520px; }
+.intro-dark .intro-body p { font-size: 14px; line-height: 1.85; max-width: none; }
+.intro-dark .intro-body p + p { margin-top: 16px; }
+.intro-dark h2 { text-wrap: balance; }
+@media (max-width: 1000px) {
+  .intro-dark .intro-copy { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 700px) {
+  .intro-dark .intro-copy { margin-top: 28px; }
+  .intro-dark .intro-body p { font-size: 14px; }
 }

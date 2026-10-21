@@ -5,7 +5,7 @@ import { CartButton } from './shop/cart-provider';
 import { BrandLogo } from './brand-logo';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight, ChevronDown, X } from 'lucide-react';
-import { brandMenu, limitedStock } from '@/lib/shop-navigation';
+import { brandMenu, limitedStock, usedParts } from '@/lib/shop-navigation';
 import styles from './header-menus.module.css';
 import { MenuCards, MenuLogo } from './shop-menu-cards';
 import { VehicleMenu } from './vehicle-menu';
@@ -14,7 +14,16 @@ type ShopMenu = 'brands' | 'vehicles';
 const menus = [{ key: 'brands' as const, label: 'By brand' }, { key: 'vehicles' as const, label: 'By vehicle' }];
 const links = [{ name: 'Home', href: '/' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our partners', href: '/partners' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
 function BrandMenu({ close }: { close: () => void }) {
-  return <><MenuCards items={brandMenu} close={close}/><div className={styles.limitedStock}><span className={styles.stockLabel}>From our stock</span><Link href={limitedStock.href} onClick={close}><MenuLogo item={limitedStock}/><span>{limitedStock.name}<small>{limitedStock.note}</small></span><ArrowUpRight size={16}/></Link></div></>;
+  return <>
+    <MenuCards items={brandMenu} close={close} logoOnly />
+    <div className={styles.stockArea}>
+      <span className={styles.stockLabel}>From our stock</span>
+      <div className={styles.stockChoices}>{[usedParts, limitedStock].map(item => <Link key={item.name} href={item.href} onClick={close} className={styles.stockLink}>
+        <span className={styles.stockMark}><MenuLogo item={item}/></span>
+        <span>{item.name}<small>{item.note}</small></span><ArrowUpRight size={16}/>
+      </Link>)}</div>
+    </div>
+  </>;
 }
 function ShopContents({ selected, select, prefix, close, dismiss }: { selected: ShopMenu; select: (value: ShopMenu) => void; prefix: string; close: () => void; dismiss?: () => void }) {
   return <>
@@ -121,9 +130,9 @@ export function Header() {
     </header>
     {shopMenu && <div ref={shopGlass} className="navigation-glass-surface navigation-shop-glass" aria-hidden="true" />}
     {open && <div className="navigation-glass-surface" aria-hidden="true" />}
-    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="full-navigation"><nav aria-label="Full navigation"><div className={styles.mobileLinks}><span className={styles.sectionLabel}>Explore Luxury Performance</span>{links.map(link => <Link key={link.name} href={link.href} onClick={close} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}<ArrowUpRight size={20}/></Link>)}</div><div className={styles.fullShop}><span className={styles.sectionLabel}>Shop</span>
+    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="full-navigation"><nav aria-label="Full navigation"><div className={styles.fullShop}><span className={styles.sectionLabel}>Shop</span>
       <ShopContents selected={mobileSection} select={setMobileSection} prefix="full-shop" close={close}/>
-      </div>
+      </div><div className={styles.mobileLinks}><span className={styles.sectionLabel}>Explore Luxury Performance</span>{links.map(link => <Link key={link.name} href={link.href} onClick={close} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}<ArrowUpRight size={20}/></Link>)}</div>
     </nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br/><span>Dubai, United Arab Emirates</span></div></div>}
   </>;
 }
