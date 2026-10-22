@@ -9,6 +9,7 @@ type Brand = { slug: string; name: string };
 export function BrandHero({ brands, children }: { brands: Brand[]; children: ReactNode }) {
   const slides = Children.toArray(children);
   const root = useRef<HTMLElement>(null);
+  const context = useRef<HTMLHeadingElement>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -16,6 +17,35 @@ export function BrandHero({ brands, children }: { brands: Brand[]; children: Rea
   const [hovered, setHovered] = useState(false);
   const [soundPlaying, setSoundPlaying] = useState(false);
   const [announcement, setAnnouncement] = useState('');
+
+  // Keep the location line clear of the fixed navigation as the hero scrolls away.
+  useEffect(() => {
+    const hero = root.current;
+    const heading = context.current;
+    const header = document.querySelector<HTMLElement>('.site-header');
+    if (!hero || !heading || !header) return;
+    let frame = 0;
+    let headingTop = 0;
+    let headerHeight = 0;
+    let fadeDistance = 1;
+    let painted = '';
+    const update = () => {
+      frame = 0;
+      const opacity = Math.min(1, Math.max(0, (headingTop - window.scrollY - headerHeight - 8) / fadeDistance)).toFixed(3);
+      if (opacity !== painted) { heading.style.opacity = opacity; painted = opacity; }
+    };
+    const measure = () => {
+      headerHeight = header.offsetHeight;
+      headingTop = hero.getBoundingClientRect().top + window.scrollY + heading.offsetTop;
+      fadeDistance = Math.max(1, Math.min(32, heading.offsetTop - headerHeight - 8));
+      update();
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    measure();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', measure);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', measure); };
+  }, []);
 
   // Begin each full reading interval after the intro, and suspend it off screen.
   useEffect(() => {
@@ -65,7 +95,7 @@ export function BrandHero({ brands, children }: { brands: Brand[]; children: Rea
       const dx = point.clientX - start.x;
       if (Math.abs(dx) > 50 && Math.abs(point.clientY - start.y) < Math.abs(dx) * .6) select((active + (dx < 0 ? 1 : brands.length - 1)) % brands.length);
     }}>
-    <h1 className={styles.context}>Performance parts in Dubai <span aria-hidden="true">/</span> UAE &amp; GCC</h1>
+    <h1 ref={context} className={styles.context}>Performance parts in Dubai <span aria-hidden="true">/</span> UAE &amp; GCC</h1>
     <div className={styles.stage}>
       {slides.map((slide, index) => <div key={brands[index].slug} className={styles.layer} data-active={active === index} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${brands.length}: ${brands[index].name}`} aria-hidden={active !== index} inert={active !== index}>{slide}</div>)}
     </div>

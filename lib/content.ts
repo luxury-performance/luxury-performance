@@ -3,6 +3,12 @@ export const contact = {
   email: 'info@luxuryperformance.com', address: '4th Street, Al Quoz Industrial 3, Dubai, UAE',
   maps: 'https://maps.app.goo.gl/pbjT7EEoidhdy1cv8',
 };
+export const socialLinks = [
+  { name: 'Instagram', href: 'https://instagram.com/lxpforged', icon: 'instagram' },
+  { name: 'YouTube', href: 'https://www.youtube.com/@Ahmed.Amwell', icon: 'youtube' },
+  { name: 'WhatsApp', href: contact.whatsapp, icon: 'whatsapp' },
+] as const;
+
 export const programmes = [
   { slug: 'novitec-ferrari', brand: 'NOVITEC', marque: 'Ferrari', title: 'An unmistakable presence.', image: 'ferrari', hero: 'hero', model: 'Ferrari programme', category: 'Performance / Aerodynamics',
     intro: 'A more expressive Ferrari, without losing what makes it a Ferrari. Explore NOVITEC performance, aerodynamic and wheel programmes with guidance from Luxury Performance.',
