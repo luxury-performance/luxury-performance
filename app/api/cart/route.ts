@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { storefront, getProduct } from '@/lib/shop/storefront';
 import { CART_QUERY, CART_CREATE, CART_ADD, CART_UPDATE } from '@/lib/shop/queries';
-import { getStock } from '@/lib/shop/inventory';
+import { getVariantStock } from '@/lib/shop/inventory';
 import { allocateOrder, isSpecial } from '@/lib/shop/order-policy';
 import { installationFor, installationGroup, installationHandles, parentQuantity, linkedInstallationUpdates } from '@/lib/shop/installation';
 import { getInstallation, cartWithInstallations } from '@/lib/shop/installation-server';
@@ -52,7 +52,7 @@ export async function POST(request:Request){
       const product=await getProduct(body.handle,true), variant=product?.variants.nodes.find(v=>v.id===body.variantId);
       if(!product||!variant||!variant.availableForSale)return Response.json({message:'This option is no longer available.'},{status:409});
       if(installationHandles.includes(product.handle))return Response.json({message:'Add installation through its matching exhaust.'},{status:400});
-      const stock=(await getStock(product.handle)).find(v=>String(v.id)===variant.id.split('/').pop());
+      const stock=await getVariantStock(product,variant);
       if(!stock)throw new Error('Stock could not be checked. Please try again.');
       const lines=cart?.lines.nodes||[];
       const matching=lines.filter(l=>l.merchandise.id===variant.id);

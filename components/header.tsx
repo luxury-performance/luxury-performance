@@ -11,6 +11,7 @@ import { MenuCards, MenuLogo } from './shop-menu-cards';
 import { VehicleMenu } from './vehicle-menu';
 import { SocialLinks } from './social-links';
 import { contact } from '@/lib/content';
+import { brandHeroImages } from '@/lib/brand-hero-images';
 
 type ShopMenu = 'brands' | 'vehicles';
 const menus = [{ key: 'brands' as const, label: 'By brand' }, { key: 'vehicles' as const, label: 'By vehicle' }];
@@ -56,6 +57,7 @@ export function Header() {
   const [shopMenu, setShopMenu] = useState<ShopMenu | null>(null);
   const [mobileSection, setMobileSection] = useState<ShopMenu>('brands');
   const pathname = usePathname();
+  const overlaysHero = pathname === '/' || Object.keys(brandHeroImages).some(slug => pathname === `/partners/${slug}`);
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -65,11 +67,11 @@ export function Header() {
   const close = () => { setOpen(false); setShopMenu(null); };
   useEffect(() => {
     let frame = 0;
-    const update = () => { frame = 0; const progress = Math.min(1, Math.max(0, window.scrollY / 160)); header.current?.style.setProperty('--glass-progress', String(progress)); header.current?.classList.toggle('is-scrolled', window.scrollY > 32); const hero = pathname === '/' ? document.querySelector('[data-home-hero], #main section[aria-label="Luxury Performance automotive film"]') : null; const heroBottom = hero?.getBoundingClientRect().bottom ?? 0; const headerHeight = header.current?.offsetHeight ?? 112; header.current?.classList.toggle('is-past-hero', !hero || heroBottom <= headerHeight); const heroFade = Math.min(1, Math.max(0, (heroBottom - headerHeight) / 180)); header.current?.style.setProperty('--hero-fade-opacity', String(heroFade)); header.current?.style.setProperty('--hero-glass-progress', String(1 - heroFade)); };
+    const update = () => { frame = 0; const progress = Math.min(1, Math.max(0, window.scrollY / 160)); header.current?.style.setProperty('--glass-progress', String(progress)); header.current?.classList.toggle('is-scrolled', window.scrollY > 32); const hero = overlaysHero ? document.querySelector('[data-header-hero], [data-home-hero]') : null; const heroBottom = hero?.getBoundingClientRect().bottom ?? 0; const headerHeight = header.current?.offsetHeight ?? 112; header.current?.classList.toggle('is-past-hero', !hero || heroBottom <= headerHeight); const heroFade = Math.min(1, Math.max(0, (heroBottom - headerHeight) / 180)); header.current?.style.setProperty('--hero-fade-opacity', String(heroFade)); header.current?.style.setProperty('--hero-glass-progress', String(1 - heroFade)); };
     const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     update(); window.addEventListener('scroll', scroll, { passive: true }); window.addEventListener('resize', scroll);
     return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll); };
-  }, [pathname]);
+  }, [pathname, overlaysHero]);
   useEffect(() => {
     const nav = header.current;
     const content = dropdown.current;
@@ -119,7 +121,7 @@ export function Header() {
   }, [open]);
   return <>
     <a href="#main" className="skip-link">Skip to content</a>
-    <header ref={header} className={`site-header ${pathname === '/' ? 'hero-header' : ''} ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''} ${open ? 'full-menu-is-open' : shopMenu ? 'shop-menu-is-open' : ''}`}>
+    <header ref={header} className={`site-header ${overlaysHero ? 'hero-header' : ''} ${styles.header} ${open || shopMenu ? 'menu-is-open' : ''} ${open ? 'full-menu-is-open' : shopMenu ? 'shop-menu-is-open' : ''}`}>
       <button ref={toggle} className={`menu-toggle ${styles.burger}`} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="full-navigation" onClick={() => { setOpen(!open); setShopMenu(null); setMobileSection('brands'); }}><span aria-hidden="true"><i/><i/></span></button>
       <nav aria-label="Main navigation" inert={open} className={`desktop-nav ${styles.desktop}`}>
         <div className={styles.menuGroup}>

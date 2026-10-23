@@ -25,3 +25,17 @@
 .heroBody .heroBrand > img, .heroBody .heroBrand > svg { width: 100%; }
 .heroBody .heroBrand[data-brand-artwork="techart"] { width: min(560px, 100%); }
 @media (max-width: 700px) { .heroBody .heroBrand { width: min(250px, 100%); min-height: 48px; } .heroBody .heroBrand[data-brand-artwork="techart"] { width: min(290px, 100%); } }
+
+/* The three main partner pages share the homepage artwork and overlay navigation. */
+.fullBleedHero { --partner-header-height: 112px; height: 100svh; min-height: 740px; max-height: 1100px; }
+.heroPicture { display: block; position: absolute; inset: 0; }
+.fullBleedHero .heroContent { padding-top: calc(var(--partner-header-height) + 30px); }
+.fullBleedHero .heroImage { object-position: 65% 55%; }
+.fullBleedHero[data-brand="novitec"] .heroImage { object-position: 58% 60%; }
+@media(max-width:900px) { .fullBleedHero { --partner-header-height: 102px; } }
+@media(max-width:700px) {
+  .fullBleedHero { --partner-header-height: 100px; min-height: 800px; max-height: 980px; }
+  .fullBleedHero .heroContent { padding-top: calc(var(--partner-header-height) + 24px); }
+  .fullBleedHero[data-brand="techart"] .heroImage { object-position: 70% center; }
+  .fullBleedHero[data-brand="valvetronic"] .heroImage { object-position: center; }
+}
