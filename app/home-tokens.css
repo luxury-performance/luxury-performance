@@ -1,0 +1,29 @@
+/* Hallmark · theme: brand · Luxury Performance · source: app/globals.css and app/layout.tsx · v2.0.0 */
+:root {
+  --home-paper: var(--paper);
+  --home-ink: var(--ink);
+  --home-dark: #161615;
+  --home-white: #faf9f6;
+  --home-well: #eae9e3;
+  --home-muted: #65655e;
+  --home-light-muted: #c8c7be;
+  --home-rule: #d4d3ca;
+  --home-dark-rule: #41413b;
+  --home-accent: #b89d65;
+  --home-focus: #94702c;
+  --home-clear: transparent;
+  --home-font: var(--font-sans);
+  --home-container: 1440px;
+  --home-header-tablet: 102px;
+  --home-gap: 32px;
+  --home-space-xs: 8px;
+  --home-space-sm: 12px;
+  --home-space-md: 16px;
+  --home-space-lg: 24px;
+  --home-space-xl: 40px;
+  --home-space-2xl: 64px;
+  --home-space-3xl: 96px;
+  --home-space-4xl: 144px;
+  --home-ease: cubic-bezier(.2,.7,.2,1);
+  --home-short: 180ms;
+}

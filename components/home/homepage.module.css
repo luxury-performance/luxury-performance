@@ -1,0 +1,158 @@
+/* Hallmark · shape: Catalogue · genre: editorial · theme: brand · redesign: full
+ * paper: existing ivory · accent: existing warm brass · display: Montserrat · body: Montserrat
+ * hero: photographic showcase · nav: retained centred emblem and shop menu · footer: retained contact directory
+ * signature: genuine NOVITEC builds leading directly into the partner catalogue · axes: light/geometric-sans/warm · posture: Restrained · v2.0.0 */
+/* Hallmark · pre-emit critique: weakest: abstract presentation; changed to actual manufacturer photography and direct shopping paths. */
+/* Hallmark · hero-review: fix, mobile crop resolved with supplied portrait; finish-review: subagent, ship, one heading wrap resolved. */
+/* Hallmark · dismiss 28a: product images are below the fold; the actual hero image uses eager loading and high fetch priority. */
+/* Hallmark · adaptation: shared shell retained; checking new homepage files separately from unrelated existing page styles. */
+.container { width: calc(100% - var(--gutter) * 2); max-width: var(--home-container); margin-inline: auto; }
+.home { background: var(--home-paper); color: var(--home-ink); font-family: var(--home-font); font-size: 16px; }
+:global(html):has(.home), :global(body):has(.home) { overflow-x: clip; }
+.home h1, .home h2, .home h3, .hero h1 { min-width: 0; overflow-wrap: break-word; text-wrap: balance; font-weight: 400; letter-spacing: -.035em; }
+.home p, .hero p { line-height: 1.6; text-wrap: pretty; }
+.home a:focus-visible, .hero a:focus-visible { outline: 2px solid var(--home-focus); outline-offset: 5px; }
+.hero { background: var(--home-dark); color: var(--home-white); display: grid; grid-template-rows: auto minmax(0,1fr) auto; padding-top: 112px; height: 100svh; min-height: 700px; max-height: 1080px; }
+.heroLead { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(0,1fr); gap: var(--home-gap); align-items: end; padding-block: var(--home-gap); }
+.hero h1 { font-size: clamp(52px,5vw,76px); line-height: 1.06; }
+.heroAside { max-width: 370px; justify-self: end; padding-bottom: var(--home-space-xs); }
+.heroAside p { font-size: 16px; color: var(--home-light-muted); max-width: 34ch; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--home-space-lg); margin-top: var(--home-space-lg); }
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding-inline: var(--home-space-lg); background: var(--home-ink); color: var(--home-white); font-size: 14px; font-weight: 600; white-space: nowrap; transition: opacity var(--home-short) var(--home-ease); }
+.button:hover { opacity: .82; }
+.button:active { opacity: .65; }
+.hero .button, .dark .button { background: var(--home-white); color: var(--home-ink); }
+.textLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.textLink:hover { text-decoration-thickness: 2px; }
+.textLink:active { opacity: .7; }
+.heroFrame { position: relative; min-height: 0; }
+.heroPicture { position: absolute; inset: 0; display: block; }
+.heroPicture > img { object-fit: cover; object-position: center 65%; }
+.heroMark { position: absolute; top: var(--home-space-md); right: var(--home-space-lg); z-index: 2; display: inline-flex; align-items: center; justify-content: center; padding: var(--home-space-xs); min-height: 44px; }
+.heroMark img { display: block; width: clamp(120px,13vw,196px); height: auto; object-fit: contain; }
+.heroMark:hover { opacity: .8; }
+.heroCaption { display: flex; justify-content: space-between; align-items: center; gap: var(--home-space-lg); min-height: 64px; font-size: 13px; color: var(--home-light-muted); }
+.heroCaption a { display: inline-flex; align-items: center; min-height: 44px; color: var(--home-white); }
+.heroCaption a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.section { padding-block: var(--home-space-3xl); }
+.sectionHead { display: flex; align-items: end; justify-content: space-between; gap: var(--home-gap); margin-bottom: var(--home-space-xl); }
+.sectionHead h2 { font-size: clamp(36px,4vw,56px); line-height: 1.08; }
+.sectionHead p { max-width: 45ch; color: var(--home-muted); }
+.brandGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--home-gap); }
+.brandItem { display: flex; flex-direction: column; border-top: 1px solid var(--home-rule); padding-top: var(--home-space-lg); gap: var(--home-space-lg); min-width: 0; }
+.brandLogo { display: flex; align-items: center; height: 60px; overflow: clip; }
+.brandLogo img { width: 180px; height: 60px; object-fit: cover; mix-blend-mode: multiply; }
+.brandItem[data-brand="valvetronic"] img { transform: scale(1.5); }
+.brandItem h3 { font-size: 20px; line-height: 1.3; }
+.brandItem p { color: var(--home-muted); margin-top: var(--home-space-sm); font-size: 14px; }
+.brandItem:hover h3 { text-decoration: underline; text-underline-offset: 5px; }
+.brandItem:active { opacity: .7; }
+.vehicles { background: var(--home-well); padding-block: var(--home-space-2xl); }
+.vehicleGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); column-gap: var(--home-gap); }
+.vehicleGrid a { display: flex; align-items: center; justify-content: space-between; min-height: 80px; border-bottom: 1px solid var(--home-rule); font-size: 22px; letter-spacing: -.025em; }
+.vehicleGrid a:hover { text-decoration: underline; text-underline-offset: 6px; }
+.vehicleGrid svg { flex-shrink: 0; width: 18px; height: 18px; }
+.feature { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: var(--home-space-2xl); align-items: center; }
+.featureImage { position: relative; min-width: 0; aspect-ratio: 5 / 3; }
+.featureImage img { object-fit: cover; object-position: center; }
+.featureCopy h2 { font-size: clamp(36px,4vw,56px); line-height: 1.08; }
+.featureCopy p { margin-top: var(--home-space-lg); color: var(--home-muted); max-width: 45ch; }
+.featureCopy .button { margin-top: var(--home-space-xl); }
+.featureCopy .textLink { display: flex; width: fit-content; margin-top: var(--home-space-sm); }
+.featureLinks { display: flex; flex-wrap: wrap; gap: var(--home-space-sm) var(--home-space-lg); margin-top: var(--home-space-lg); }
+.featureLinks a { padding-block: var(--home-space-xs); font-size: 14px; border-bottom: 1px solid var(--home-rule); }
+.products { padding-top: 0; }
+.productGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--home-gap); }
+.productImage { position: relative; aspect-ratio: 1; background: var(--home-well); }
+.productImage img { width: 100%; height: 100%; object-fit: contain; }
+.productCard { display: flex; flex-direction: column; min-width: 0; }
+.productCard .productImage { flex-shrink: 0; width: 100%; }
+.productCard h3 { flex: 1; font-size: 16px; line-height: 1.5; margin-top: var(--home-space-md); letter-spacing: -.015em; }
+.productCard p { margin-top: var(--home-space-xs); font-size: 14px; color: var(--home-muted); font-variant-numeric: tabular-nums; }
+.productCard:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
+.productCard:active { opacity: .75; }
+.modelLinks { display: flex; flex-wrap: wrap; align-items: center; gap: var(--home-space-md) var(--home-space-lg); margin-top: var(--home-space-xl); padding-top: var(--home-space-lg); border-top: 1px solid var(--home-rule); font-size: 14px; }
+.modelLinks span { color: var(--home-muted); margin-right: auto; }
+.modelLinks a { display: inline-flex; align-items: center; min-height: 44px; }
+.modelLinks a:hover, .serviceList a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.serviceList a { text-decoration: underline; text-underline-offset: 4px; }
+.productFallback { padding: var(--home-space-xl); background: var(--home-well); }
+.productFallback p { margin-top: var(--home-space-sm); }
+.dark { background: var(--home-dark); color: var(--home-white); padding-block: var(--home-space-3xl); }
+.dark .feature { grid-template-columns: minmax(0,1fr) minmax(0,1.4fr); }
+.dark .featureImage { aspect-ratio: 1.4; grid-column: 2; grid-row: 1; }
+.dark .featureCopy { grid-column: 1; grid-row: 1; }
+.dark .featureCopy p { color: var(--home-light-muted); }
+.dark .featureLinks a { border-color: var(--home-dark-rule); }
+.service { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--home-space-2xl); }
+.service h2 { font-size: clamp(36px,4vw,56px); line-height: 1.08; max-width: 16ch; }
+.serviceIntro { margin-top: var(--home-space-lg); max-width: 45ch; color: var(--home-muted); }
+.serviceLinks { display: flex; flex-wrap: wrap; gap: var(--home-space-lg); margin-top: var(--home-space-lg); }
+.serviceList { list-style: none; margin: 0; padding: 0; }
+.serviceList li { border-top: 1px solid var(--home-rule); padding-block: var(--home-space-lg); }
+.serviceList h3 { font-size: 22px; line-height: 1.3; }
+.serviceList p { margin-top: var(--home-space-xs); color: var(--home-muted); }
+.location { border-top: 1px solid var(--home-rule); padding-block: var(--home-space-xl); display: flex; align-items: center; justify-content: space-between; gap: var(--home-gap); }
+.location p { font-size: 14px; color: var(--home-muted); }
+.location a { font-size: 14px; text-decoration: underline; text-underline-offset: 5px; }
+@media (max-width: 1000px) {
+  .hero { padding-top: var(--home-header-tablet); }
+  .heroLead { grid-template-columns: minmax(0,1.45fr) minmax(0,1fr); }
+  .hero h1 { font-size: clamp(42px,5.7vw,64px); }
+  .brandGrid { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: var(--home-space-xl); }
+  .feature { gap: var(--home-gap); }
+  .productGrid { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: var(--home-space-xl); }
+  .vehicleGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 700px) {
+  .hero { padding-top: 100px; height: auto; min-height: 0; max-height: none; grid-template-rows: auto auto auto; }
+  .heroLead { display: block; padding-block: var(--home-space-xl); }
+  .hero h1 { font-size: clamp(32px,8.6vw,52px); line-height: 1.1; letter-spacing: -.04em; }
+  .heroAside { max-width: none; margin-top: var(--home-space-lg); padding: 0; }
+  .heroAside p { max-width: 32ch; }
+  .actions { column-gap: var(--home-space-lg); margin-top: var(--home-space-lg); }
+  .heroFrame { width: 100%; height: auto; aspect-ratio: 1; }
+  .heroPicture > img { object-position: center; }
+  .heroMark { top: var(--home-space-sm); right: var(--home-space-md); }
+  .heroMark img { width: 128px; }
+  .heroCaption { min-height: 64px; font-size: 11px; gap: var(--home-space-sm); }
+  .heroCaption a { font-size: 11px; }
+  .section { padding-block: var(--home-space-2xl); }
+  .sectionHead { display: block; margin-bottom: var(--home-space-lg); }
+  .sectionHead h2 { font-size: 36px; }
+  .sectionHead p, .sectionHead > .textLink { margin-top: var(--home-space-md); }
+  .brandGrid { gap: var(--home-space-xl) var(--home-space-lg); }
+  .brandLogo { height: 44px; }
+  .brandLogo img { width: 135px; height: 44px; }
+  .brandItem { gap: var(--home-space-md); }
+  .brandItem h3 { font-size: 17px; }
+  .brandItem p { font-size: 13px; }
+  .vehicles { padding-block: var(--home-space-xl); }
+  .vehicleGrid { column-gap: var(--home-space-lg); }
+  .vehicleGrid a { font-size: 18px; min-height: 68px; }
+  .feature, .dark .feature, .service { grid-template-columns: minmax(0,1fr); gap: var(--home-gap); }
+  .featureCopy h2 { font-size: 36px; }
+  .featureImage { aspect-ratio: 5 / 3; }
+  .featureCopy .button { margin-top: var(--home-space-lg); }
+  .dark { padding-block: var(--home-space-2xl); }
+  .dark .featureImage, .dark .featureCopy { grid-column: auto; grid-row: auto; }
+  .dark .featureCopy { order: -1; }
+  .productGrid { gap: var(--home-space-xl) var(--home-space-md); }
+  .productCard h3 { font-size: 14px; }
+  .productCard p { font-size: 13px; }
+  .products { padding-top: 0; }
+  .service h2 { font-size: 36px; }
+  .location { display: block; }
+  .location a { display: inline-flex; min-height: 44px; align-items: center; margin-top: var(--home-space-sm); }
+}
+@media (max-width: 360px) {
+  .vehicleGrid { grid-template-columns: minmax(0,1fr); }
+  .brandGrid { grid-template-columns: minmax(0,1fr); gap: var(--home-space-lg); }
+  .brandItem { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1fr); align-items: center; }
+  .hero h1 { font-size: 30px; }
+  .actions { gap: var(--home-space-md); }
+  .button { padding-inline: var(--home-space-md); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home a, .hero a { transition: none; }
+}
