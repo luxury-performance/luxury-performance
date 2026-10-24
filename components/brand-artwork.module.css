@@ -1,0 +1,13 @@
+.artwork { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 210px; height: 60px; }
+.artwork img, .artwork svg { display: block; height: auto; max-width: 100%; object-fit: contain; }
+.artwork[data-brand-artwork="novitec"] > img { width: 83%; }
+.artwork[data-brand-artwork="valvetronic"] > img { width: 93%; }
+.artwork[data-brand-artwork="techart"] > img { width: 95%; }
+.artwork[data-brand-artwork="gintani"] > img { width: 78%; }
+.artwork[data-brand-artwork="voltrix"] > svg { width: 91%; }
+.artwork[data-brand-artwork="urban"] > img, .artwork[data-brand-artwork="lxp"] > img { width: 100%; }
+.fi, .liberty { width: 100%; display: grid; align-items: center; gap: 12px; }
+.fi { grid-template-columns: 1fr 1.83fr; }
+.liberty { grid-template-columns: 17% minmax(0, 1fr); filter: brightness(0) invert(1); }
+.fi img, .liberty img { width: 100%; min-width: 0; }
+@media (max-width: 700px) { .fi, .liberty { gap: 10px; } }

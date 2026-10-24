@@ -109,3 +109,12 @@
 
 /* Carry the readability shading through the unclipped upper image, avoiding a horizontal band. */
 @media(min-width:701px){.stage[data-detail=true] .composition:after{top:calc(-1 * (var(--film-header) + 90px));bottom:-100svh}}
+
+/* Mobile: keep the sticky layer unclipped; crop only its inner artwork. */
+@media(max-width:700px){
+ .film{overflow:visible}
+ .stage,.stage[data-detail=true]{overflow:visible;clip-path:none;transform:translateZ(0);backface-visibility:hidden}
+ .composition,.stage[data-detail=true] .composition{overflow:hidden;clip-path:none}
+ .camera{filter:none;backface-visibility:hidden}
+ .floor,.lightMask{display:none}
+}

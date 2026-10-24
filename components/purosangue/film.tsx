@@ -48,6 +48,17 @@ export function PurosangueFilm() {
     captureViewport();
     let geometry: FilmGeometry = { width: 1, height: 1, rigWidth: 1, rigHeight: 1, rigX: 0, rigY: 0, small: false };
 
+    const painted = new Map<string, string>();
+    let leaderPath = '';
+    const data = (name: string, value: string) => {
+      if (frameEl!.dataset[name] !== value) frameEl!.dataset[name] = value;
+    };
+    const property = (name: string, value: string) => {
+      if (painted.get(name) === value) return;
+      painted.set(name, value);
+      frameEl!.style.setProperty(name, value);
+    };
+
     function paint(value: number, instant = false, mix = 1, fromPose: CameraPose = { scale: 1, x: 0, y: 0 }) {
       progress = clamp(value);
       const f = filmFrame(progress, geometry, isComparing);
@@ -58,34 +69,35 @@ export function PurosangueFilm() {
         f.pin = null;
       }
       cameraPose = { scale: f.scale, x: f.x, y: f.y };
-      const simple = preference.matches || isComparing;
-      frameEl!.style.setProperty('--camera-scale', String(f.scale));
-      frameEl!.style.setProperty('--camera-x', `${f.x}px`);
-      frameEl!.style.setProperty('--camera-y', `${f.y}px`);
-      frameEl!.dataset.detail = String((Boolean(f.pin) || Math.abs(f.scale - 1) > .01) && !isComparing);
-      if (!f.pin) frameEl!.style.setProperty('--pin-visible', '0');
+      const simple = preference.matches || mobile.matches || isComparing;
+      property('--camera-scale', String(f.scale));
+      property('--camera-x', `${f.x}px`);
+      property('--camera-y', `${f.y}px`);
+      data('detail', String((Boolean(f.pin) || Math.abs(f.scale - 1) > .01) && !isComparing));
+      if (!f.pin) property('--pin-visible', '0');
       if (f.pin) {
         const { x, y } = f.pin;
         // Labels stay readable while the point stays attached to the photographed part.
         const labelX = clamp(x + (geometry.small ? 38 : 85), 8, geometry.width - (geometry.small ? 168 : 190));
         const labelY = clamp(y + (geometry.small ? 46 : 70), 24, geometry.height - 35);
-        frameEl!.style.setProperty('--pin-x', `${x}px`);
-        frameEl!.style.setProperty('--pin-y', `${y}px`);
-        frameEl!.style.setProperty('--label-x', `${labelX}px`);
-        frameEl!.style.setProperty('--label-y', `${labelY}px`);
+        property('--pin-x', `${x}px`);
+        property('--pin-y', `${y}px`);
+        property('--label-x', `${labelX}px`);
+        property('--label-y', `${labelY}px`);
         const visible = x > 6 && x < geometry.width - 6 && y > 8 && y < geometry.height - 10;
-        frameEl!.style.setProperty('--pin-visible', visible ? '1' : '0');
-        leader.current?.setAttribute('d', `M ${x} ${y} L ${labelX - 12} ${labelY + 7} L ${labelX - 3} ${labelY + 7}`);
+        property('--pin-visible', visible ? '1' : '0');
+        const path = `M ${x} ${y} L ${labelX - 12} ${labelY + 7} L ${labelX - 3} ${labelY + 7}`;
+        if (path !== leaderPath) { leaderPath = path; leader.current?.setAttribute('d', path); }
       }
-      frameEl!.style.setProperty('--upgrade-cut', `${(1 - f.reveal) * 100}%`);
-      frameEl!.style.setProperty('--reveal-position', `${f.reveal * 100}%`);
-      frameEl!.style.setProperty('--scan-opacity', f.reveal > .01 && f.reveal < .99 ? '.65' : '0');
-      frameEl!.style.setProperty('--light-x', `${-120 + f.light * 290}%`);
-      frameEl!.style.setProperty('--car-light', String(simple ? 1 : f.brightness));
-      frameEl!.style.setProperty('--word-opacity', String(simple ? .20 : f.word * .20));
-      frameEl!.style.setProperty('--film-progress', String(progress));
-      frameEl!.dataset.chapter = String(f.chapter);
-      frameEl!.dataset.instant = String(instant || preference.matches);
+      property('--upgrade-cut', `${(1 - f.reveal) * 100}%`);
+      property('--reveal-position', `${f.reveal * 100}%`);
+      property('--scan-opacity', f.reveal > .01 && f.reveal < .99 ? '.65' : '0');
+      property('--light-x', `${-120 + f.light * 290}%`);
+      property('--car-light', String(simple ? 1 : f.brightness));
+      property('--word-opacity', String(simple ? .20 : f.word * .20));
+      property('--film-progress', String(progress));
+      data('chapter', String(f.chapter));
+      data('instant', String(instant || preference.matches));
       if (selected !== f.chapter) { selected = f.chapter; setChapter(f.chapter); }
     }
 
@@ -122,7 +134,7 @@ export function PurosangueFilm() {
     }
 
     function onResize() {
-      if (mobile.matches && window.innerWidth === viewportWidth) return;
+      if (mobile.matches && Math.abs(window.innerWidth - viewportWidth) < 2) return;
       captureViewport();
       measure();
     }
@@ -295,7 +307,7 @@ export function PurosangueFilm() {
         <span className={styles.sceneCaption}>{chapter === 0 ? 'ORIGINAL CONFIGURATION' : 'NOVITEC / DESIGN VISUALISATION'}</span>
       </div>
 
-      <div className={styles.controls}>
+      <div className={styles.controls} data-film-controls>
         <div className={styles.controlTop}>
           {comparing ? <label className={styles.compareControl}><span>Original</span><input type="range" min="0" max="100" value={split} aria-label="Reveal NOVITEC build" aria-valuetext={`${split}% NOVITEC, ${100 - split}% original`} onChange={event => setSplit(Number(event.target.value))} /><span>NOVITEC</span></label> : <div className={styles.transport}>
             {complete && !playing ? <button className={styles.play} disabled={!imageReady} onClick={() => control.current?.compare(true)}><MoveHorizontal size={15} /><span>Compare before / after</span></button> : !reduced && <button className={styles.play} disabled={!imageReady} onClick={() => control.current?.play()} aria-label={playing ? 'Pause transformation film' : 'Play transformation film'}>{playing ? <Pause size={13} fill="currentColor" /> : <Play size={13} fill="currentColor" />}<span>{playing ? 'Pause film' : imageReady ? 'Play film' : 'Preparing images'}</span></button>}
