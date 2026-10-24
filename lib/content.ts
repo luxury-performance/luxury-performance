@@ -4,7 +4,7 @@ export const contact = {
   maps: 'https://maps.app.goo.gl/pbjT7EEoidhdy1cv8',
 };
 export const socialLinks = [
-  { name: 'Instagram', href: 'https://instagram.com/lxpforged', icon: 'instagram' },
+  { name: 'Instagram', href: 'https://instagram.com/lxp.official', icon: 'instagram' },
   { name: 'YouTube', href: 'https://www.youtube.com/@Ahmed.Amwell', icon: 'youtube' },
   { name: 'WhatsApp', href: contact.whatsapp, icon: 'whatsapp' },
 ] as const;
