@@ -21,7 +21,7 @@
 
 /* Original brand artwork replaces the oversized text name while preserving the H1. */
 .heroBody .brandHeading { max-width: 100%; }
-.heroBody .heroBrand { width: min(720px, 100%); max-width: none; height: auto; min-height: 80px; justify-content: flex-start; }
+.heroBody .heroBrand { width: min(480px, 100%); max-width: none; height: auto; min-height: 64px; justify-content: flex-start; }
 .heroBody .heroBrand > img, .heroBody .heroBrand > svg { width: 100%; }
-.heroBody .heroBrand[data-brand-artwork="techart"] { width: min(800px, 100%); }
-@media (max-width: 700px) { .heroBody .heroBrand { min-height: 60px; } }
+.heroBody .heroBrand[data-brand-artwork="techart"] { width: min(560px, 100%); }
+@media (max-width: 700px) { .heroBody .heroBrand { width: min(250px, 100%); min-height: 48px; } .heroBody .heroBrand[data-brand-artwork="techart"] { width: min(290px, 100%); } }

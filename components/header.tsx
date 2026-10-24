@@ -9,6 +9,8 @@ import { brandMenu, limitedStock, usedParts } from '@/lib/shop-navigation';
 import styles from './header-menus.module.css';
 import { MenuCards, MenuLogo } from './shop-menu-cards';
 import { VehicleMenu } from './vehicle-menu';
+import { SocialLinks } from './social-links';
+import { contact } from '@/lib/content';
 
 type ShopMenu = 'brands' | 'vehicles';
 const menus = [{ key: 'brands' as const, label: 'By brand' }, { key: 'vehicles' as const, label: 'By vehicle' }];
@@ -25,9 +27,11 @@ function BrandMenu({ close }: { close: () => void }) {
     </div>
   </>;
 }
-function ShopContents({ selected, select, prefix, close, dismiss }: { selected: ShopMenu; select: (value: ShopMenu) => void; prefix: string; close: () => void; dismiss?: () => void }) {
+function ShopContents({ selected, select, prefix, close, dismiss, label }: { selected: ShopMenu; select: (value: ShopMenu) => void; prefix: string; close: () => void; dismiss?: () => void; label?: string }) {
   return <>
     <div className={styles.shopToolbar}>
+      <div className={styles.shopBrowse}>
+      {label && <span className={styles.shopLabel}>{label}</span>}
       <div className={styles.shopTabs} role="tablist" aria-label="Browse parts">
         {menus.map((menu, index) => <button key={menu.key} className={styles.shopTab} role="tab" id={`${prefix}-tab-${menu.key}`} aria-controls={`${prefix}-panel-${menu.key}`} aria-selected={selected === menu.key} tabIndex={selected === menu.key ? 0 : -1} onClick={() => select(menu.key)} onKeyDown={event => {
           let next = index;
@@ -38,6 +42,7 @@ function ShopContents({ selected, select, prefix, close, dismiss }: { selected: 
           event.preventDefault(); select(menus[next].key);
           document.getElementById(`${prefix}-tab-${menus[next].key}`)?.focus();
         }}>{menu.label}</button>)}
+      </div>
       </div>
       <div className={styles.shopActions}><Link className={styles.shopAll} href="/shop" onClick={close}>View all parts <ArrowUpRight size={16}/></Link>{dismiss && <button className={styles.close} aria-label="Close shop" onClick={dismiss}><X size={19}/></button>}</div>
     </div>
@@ -130,9 +135,15 @@ export function Header() {
     </header>
     {shopMenu && <div ref={shopGlass} className="navigation-glass-surface navigation-shop-glass" aria-hidden="true" />}
     {open && <div className="navigation-glass-surface" aria-hidden="true" />}
-    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="full-navigation"><nav aria-label="Full navigation"><div className={styles.fullShop}><span className={styles.sectionLabel}>Shop</span>
-      <ShopContents selected={mobileSection} select={setMobileSection} prefix="full-shop" close={close}/>
-      </div><div className={styles.mobileLinks}><span className={styles.sectionLabel}>Explore Luxury Performance</span>{links.map(link => <Link key={link.name} href={link.href} onClick={close} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}<ArrowUpRight size={20}/></Link>)}</div>
-    </nav><div className="mobile-menu-foot">Independent spirit. Exceptional performance.<br/><span>Dubai, United Arab Emirates</span></div></div>}
+    {open && <div ref={panel} className={`mobile-menu ${styles.mobile}`} id="full-navigation"><nav aria-label="Full navigation"><div className={styles.fullShop}>
+      <ShopContents selected={mobileSection} select={setMobileSection} prefix="full-shop" close={close} label="Shop"/>
+      </div><div className={styles.mobileLinks}><span className={styles.sectionLabel}>Explore Luxury Performance</span>{links.map(link => <Link key={link.name} href={link.href} onClick={close} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}<ArrowUpRight size={20}/></Link>)}
+        <div className={styles.menuDetails}>
+          <p className={styles.menuMotto}>Beyond Ordinary.</p>
+          <a className={styles.menuAddress} href={contact.maps} target="_blank" rel="noopener noreferrer">4th Street, Al Quoz Industrial 3<br/>Dubai, United Arab Emirates <ArrowUpRight size={12}/><span className="sr-only"> (opens in a new tab)</span></a>
+          <SocialLinks/>
+        </div>
+      </div>
+    </nav></div>}
   </>;
 }
