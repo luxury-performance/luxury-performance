@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from 'next';
+import Image, { getImageProps } from 'next/image';
+import { brandHeroImages } from '@/lib/brand-hero-images';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = partners.find(p => p.slug === slug);
   if (!p) return { title: 'Partner not found' };
-  return { title: `${p.name} in Dubai`, description: p.intro + ' ' + p.detail, alternates: { canonical: `/partners/${p.slug}` }, robots: { index: process.env.SHOP_SEO_LIVE === 'true', follow: true }, openGraph: { title: `${p.name} | Luxury Performance`, description: p.intro, images: [{ url: p.image, alt: p.imageAlt }] } };
+  return { title: `${p.name} in Dubai`, description: p.intro + ' ' + p.detail, alternates: { canonical: `/partners/${p.slug}` }, robots: { index: process.env.SHOP_SEO_LIVE === 'true', follow: true }, openGraph: { title: `${p.name} | Luxury Performance`, description: p.intro, images: [{ url: brandHeroImages[p.slug]?.image || p.image, alt: brandHeroImages[p.slug]?.alt || p.imageAlt }] } };
 }
 export default async function PartnerPage({ params, searchParams }: Props) {
   const [{ slug }, query] = await Promise.all([params, searchParams]);
@@ -39,8 +41,8 @@ export default async function PartnerPage({ params, searchParams }: Props) {
   const selections = [...categories.flatMap(c => products.find(item => categoryOf(item) === c) || []), ...products];
   const featured = [...new Map(selections.map(item => [item.id, item])).values()].slice(0, 4);
   const related = programmes.filter(item => item.brand.toLowerCase() === p.name.toLowerCase());
-  const heroProduct = p.slug === 'valvetronic' ? products.find(item => /urus/i.test(item.title) && item.featuredImage) : undefined;
-  const heroImage = heroProduct?.featuredImage?.url || p.image;
+  const heroAsset = brandHeroImages[p.slug];
+  const mobileHero = heroAsset ? getImageProps({ ...heroAsset.mobile, alt: '', sizes: '100vw', quality: 95 }).props : null;
   const vehicleFirst = p.slug === 'techart' && vehicles.includes('911');
   const initialFit = typeof query.fit === 'string' && is911Fit(query.fit) ? query.fit : undefined;
   const vehicleSection = vehicles.length > 0 && <section id="vehicles" className={`${styles.vehicles} ${vehicleFirst ? styles.vehicleFirst : ''}`}>
@@ -52,8 +54,11 @@ export default async function PartnerPage({ params, searchParams }: Props) {
   </section>;
 
   return <div className={styles.page}>
-    <section className={styles.hero} aria-labelledby="partner-title">
-      <img className={styles.heroImage} src={heroImage} alt={heroProduct?.title || p.imageAlt} fetchPriority="high"/>
+    <section className={`${styles.hero} ${heroAsset ? styles.fullBleedHero : ''}`} data-header-hero={heroAsset ? true : undefined} data-brand={p.slug} aria-labelledby="partner-title">
+      {heroAsset ? <picture className={styles.heroPicture}>
+        {mobileHero && <source media="(max-width: 700px)" srcSet={mobileHero.srcSet} sizes="100vw"/>}
+        <Image className={styles.heroImage} src={heroAsset.image} alt={heroAsset.alt} fill quality={95} sizes="100vw" loading="eager" fetchPriority="high"/>
+      </picture> : <img className={styles.heroImage} src={p.image} alt={p.imageAlt} fetchPriority="high"/>}
       <div className={styles.heroShade}/>
       <div className={styles.heroContent}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href={p.stockOnly ? "/shop" : "/partners"}>{p.stockOnly ? "The collection" : "Our partners"}</Link><span>/</span><span>{p.name}</span></nav>

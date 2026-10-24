@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { contact } from '@/lib/content';
+import { brandHeroImages } from '@/lib/brand-hero-images';
 import { HomeProducts } from './home-products';
 import styles from './homepage.module.css';
 import { BrandHero } from './brand-hero';
@@ -14,9 +15,7 @@ import { TechartPersonalHeadline } from './techart-personal-headline';
 const heroSlides = [
   {
     slug: 'novitec', name: 'NOVITEC', logo: '/brand/novitec.svg', logoWidth: 228, logoHeight: 45,
-    image: '/images/home/novitec-purosangue-esteso.jpg',
-    mobile: { src: '/images/home/novitec-purosangue-esteso.jpg', width: 2560, height: 1717 },
-    alt: 'Black and red Ferrari Purosangue ESTESO builds with NOVITEC widebody styling, carbon fibre and forged wheels',
+    ...brandHeroImages.novitec!,
     title: <>Performance<br /><span className={heroStyles.glitchPhrase}>
       <span className="sr-only">en vogue</span>
       <span className={`${heroStyles.glitchWord} ${heroStyles.glitchBase}`} data-text="en vogue" aria-hidden="true">en vogue</span>
@@ -27,18 +26,14 @@ const heroSlides = [
   },
   {
     slug: 'valvetronic', name: 'Valvetronic Designs', logo: '/brand/valvetronic.png', logoWidth: 1200, logoHeight: 304,
-    image: '/images/home/valvetronic-porsche.webp',
-    mobile: { src: '/images/home/valvetronic-mobile.jpg', width: 1320, height: 1639 },
-    alt: 'Porsche GT3 RS with a Valvetronic Designs exhaust in a specialist installation bay',
+    ...brandHeroImages.valvetronic!,
     title: <ValvetronicSoundHeadline />,
     description: 'Explore Valvetronic Designs valved exhaust systems, downpipes and components, with vehicle fitment advice from Dubai.',
     href: '/shop?brand=valvetronic', cta: 'Shop Valvetronic',
   },
   {
     slug: 'techart', name: 'TECHART', logo: '/brand/techart.svg', logoWidth: 487, logoHeight: 35,
-    image: '/images/home/techart-gtstreet-touring-full.jpg',
-    mobile: { src: '/images/home/techart-gtstreet-touring-full.jpg', width: 3000, height: 2000 },
-    alt: 'Blue TECHART GTstreet R Touring Porsche 911 on an Alpine road, with carbon aerodynamics and custom wheels',
+    ...brandHeroImages.techart!,
     title: <TechartPersonalHeadline />,
     description: 'TECHART aerodynamics, wheels, interior and performance upgrades. Start with your Porsche to find the parts that fit.',
     href: '/partners/techart#vehicles', cta: 'Choose your Porsche',
