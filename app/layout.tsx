@@ -13,7 +13,7 @@ const montserrat = localFont({ src: './Montserrat-Variable.ttf', variable: '--fo
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3002'),
   title: { default: 'Luxury Performance — Beyond Ordinary', template: '%s | Luxury Performance' },
-  description: 'Performance, aerodynamics, forged wheels and genuine OEM components for extraordinary cars. Discover Luxury Performance, Dubai. A division of The Luxury Group.',
+  description: 'Performance, aerodynamics, forged wheels and genuine OEM components for extraordinary cars. Discover Luxury Performance, Dubai. A division of The Luxury Group Dubai.',
   openGraph: { title: 'Luxury Performance — Beyond Ordinary', description: 'Exceptional cars. Individual expression. Discover Luxury Performance, Dubai.', type: 'website', locale: 'en_AE', images: [{ url: '/images/hero-luxury-group.webp', width: 3200, height: 1800, alt: 'The Luxury Group headquarters and supercar lineup in Dubai' }] },
   twitter: { card: 'summary_large_image' },
 };
