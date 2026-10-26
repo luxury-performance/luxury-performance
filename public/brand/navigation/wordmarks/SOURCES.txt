@@ -1,0 +1,43 @@
+Vehicle navigation logos — 2026-10-26.
+SVG artwork sourced through Wikimedia Commons. Brand artwork and trademarks remain the property of their respective owners.
+Source SVG geometry preserved; metadata removed and a viewBox added to the McLaren SVG for responsive rendering. Wordmarks are presented in white with CSS. BMW retains its original white/blue roundel.
+
+ferrari.svg
+https://commons.wikimedia.org/wiki/File:Ferrari_wordmark.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/9/9b/Ferrari_wordmark.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+lamborghini.svg
+https://commons.wikimedia.org/wiki/File:Lamborghini_-_logo_wordmark%2Bpayoff_(Italy,_1963-).svg
+Original: https://upload.wikimedia.org/wikipedia/commons/3/3a/Lamborghini_-_logo_wordmark%2Bpayoff_%28Italy%2C_1963-%29.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+porsche.svg
+https://commons.wikimedia.org/wiki/File:Porsche_wordmark_black_rgb.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/c/cb/Porsche_wordmark_black_rgb.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: CC BY-SA 4.0
+
+mclaren.svg
+https://commons.wikimedia.org/wiki/File:McLaren_wordmark_(2026).svg
+Original: https://upload.wikimedia.org/wikipedia/commons/2/2f/McLaren_wordmark_%282026%29.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+rolls-royce.svg
+https://commons.wikimedia.org/wiki/File:Rolls_royce_motorcars_logo.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/0/0a/Rolls_royce_motorcars_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+mercedes.svg
+https://commons.wikimedia.org/wiki/File:Mercedes_Benz_wordmark.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/1/19/Mercedes_Benz_wordmark.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+bmw.svg
+https://commons.wikimedia.org/wiki/File:BMW_logo_(white).svg
+Original: https://upload.wikimedia.org/wikipedia/commons/5/53/BMW_logo_%28white%29.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+audi.svg
+https://commons.wikimedia.org/wiki/File:Audi_text_logo.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/d/dc/Audi_text_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain

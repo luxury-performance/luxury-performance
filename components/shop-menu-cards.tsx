@@ -7,6 +7,7 @@ import type { ShopMenuItem } from '@/lib/shop-navigation';
 import styles from './header-menus.module.css';
 export function MenuLogo({ item }: { item: ShopMenuItem }) {
   if (item.artwork) return <BrandArtwork brand={item.artwork} labelled={false} />;
+  if (item.wordmark) return <span className={`${styles.logoFrame} ${styles.vehicleWordmark}`}><img src={`/brand/navigation/wordmarks/${item.wordmark}`} alt="" className={item.logoClass ? styles[item.logoClass] : undefined}/></span>;
   return <span className={styles.logoFrame}>{item.logo && <img src={`/brand/navigation/${item.logo}`} alt="" className={item.logoClass ? styles[item.logoClass] : undefined}/>}</span>;
 }
 export function MenuCards({ items, close, logoOnly = false }: { items: ShopMenuItem[]; close: () => void; logoOnly?: boolean }) {

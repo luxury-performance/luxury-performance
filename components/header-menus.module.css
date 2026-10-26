@@ -86,3 +86,58 @@
 .shopBrowse { display: flex; align-items: center; gap: 24px; min-width: 0; }
 .shopLabel { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #9f9d94; flex: none; }
 @media(max-width:700px) { .shopBrowse { gap: 18px; } }
+
+/* Vehicle makes share the brand grid's transparent glass treatment. */
+.header .desktop .dropdown .vehicleTile,
+.mobile nav .vehicleTile {
+  background: transparent;
+  color: #f0f0ec;
+  border: 1px solid transparent;
+  flex-direction: column;
+  min-height: 104px;
+  padding: 16px 12px;
+  gap: 0;
+}
+.header .desktop .dropdown .vehicleTile:hover,
+.header .desktop .dropdown .vehicleTile:focus-visible,
+.mobile nav .vehicleTile:hover,
+.mobile nav .vehicleTile:focus-visible {
+  background: #ffffff08;
+  border-color: #ffffff20;
+}
+.vehicleTile:focus-visible { outline: 2px solid #c9b594; outline-offset: -2px; }
+.vehicleTile .logoFrame,
+.modelHeading .vehicleWordmark,
+.mobile .modelHeading .logoFrame { background: transparent; }
+.vehicleTile .vehicleWordmark,
+.dropdown .vehicleTile .vehicleWordmark { width: min(100%, 200px); height: 48px; }
+.vehicleWordmark img {
+  width: 170px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: normal;
+  filter: brightness(0) invert(1);
+  transform: none;
+}
+.vehicleWordmark img.ferrariWordmark { width: 140px; }
+.vehicleWordmark img.lamborghiniWordmark { width: 158px; }
+.vehicleWordmark img.porscheWordmark { width: 180px; }
+.vehicleWordmark img.mclarenWordmark { width: 190px; }
+.vehicleWordmark img.rollsWordmark { width: 160px; }
+.vehicleWordmark img.mercedesWordmark { width: 176px; }
+.vehicleWordmark img.audiWordmark { width: 110px; }
+.logoFrame img.bmwMark { width: 48px; height: 48px; transform: none; filter: none; mix-blend-mode: normal; }
+.modelHeading .vehicleWordmark { width: 150px; height: 38px; }
+@media (max-width: 700px) {
+  .mobile nav .vehicleCards { gap: 8px 12px; padding-bottom: 0; }
+  .mobile nav .vehicleTile { min-height: 80px; padding: 12px 8px; }
+  .mobile .vehicleTile .vehicleWordmark { width: 100%; max-width: 160px; height: 40px; }
+  .mobile .vehicleTile .bmwMark { width: 40px; height: 40px; }
+  .mobile .modelHeading .vehicleWordmark { width: 138px; height: 36px; }
+}
+.modelIdentity { min-width: 0; }
+.modelIdentity h3 { width: fit-content; line-height: 1; margin-top: 10px; }
+@media (max-width: 700px) {
+  .mobile nav .allModels { min-height: 44px; align-items: center; }
+}
