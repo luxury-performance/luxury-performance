@@ -41,7 +41,7 @@ export function NovitecFeatureFilm() {
           aria-label="Play NOVITEC Purosangue film"
           onClick={() => setPlaying(true)}
         >
-          <Image src="/images/home/novitec-purosangue-film.jpg" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
+          <Image src="/images/home/novitec-purosangue-film-cover-v2.webp" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
           <span className={styles.play}><Play size={26} fill="currentColor" strokeWidth={1.5} aria-hidden="true" /></span>
           <span className={styles.watch}>Watch the film <ArrowUpRight size={17} aria-hidden="true" /></span>
         </button>}
