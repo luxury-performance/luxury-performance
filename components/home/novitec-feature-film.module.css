@@ -7,24 +7,24 @@
 .description { max-width: 310px; color: #a8aaa5; font-size: 13px; line-height: 1.85; }
 .player { position: relative; aspect-ratio: 16 / 9; width: 100%; overflow: hidden; border: 1px solid #ffffff20; border-radius: 10px; background: #080909; }
 .player iframe { display: block; width: 100%; height: 100%; border: 0; }
-.poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; color: #fff; background: #080909; }
-.poster img { object-fit: contain; }
-.poster::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #05080cdb, #05080c70 34%, transparent 64%), linear-gradient(180deg, #0003, transparent 50%, #0007); }
-/* Typography and vector artwork stay separate from the enhanced photograph. */
-.brandLockup { position: absolute; z-index: 1; top: 5%; left: 4%; display: flex; align-items: center; gap: clamp(8px, 1.5vw, 22px); pointer-events: none; }
-.brandLockup .novitecMark { position: static; width: 188px; height: auto; }
-.brandLockup .ferrariMark { position: static; width: 112px; height: auto; filter: brightness(0) invert(1); }
-.collaboration { font-size: 20px; line-height: 1; font-weight: 300; color: #ffffffb3; }
-.thumbnailCopy { position: absolute; z-index: 1; top: 34%; left: 4%; display: flex; flex-direction: column; align-items: start; width: 49%; text-align: left; pointer-events: none; }
-.thumbnailEyebrow { font-size: clamp(7px, .9vw, 13px); font-weight: 500; line-height: 1.5; letter-spacing: .19em; text-transform: uppercase; color: #dddfe0; }
-.thumbnailCopy strong { margin-top: clamp(8px, 1.1vw, 16px); color: #fff; font-size: clamp(17px, 4.1vw, 66px); font-weight: 750; line-height: .98; letter-spacing: -.065em; text-transform: uppercase; }
-.thumbnailCopy strong > span { color: #e3232b; }
-.thumbnailCredit { margin-top: clamp(12px, 1.6vw, 24px); padding-left: 14px; border-left: 2px solid #e3232b; color: #d4d7d8; font-size: clamp(7px, .8vw, 11px); line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; }
-.play { position: absolute; z-index: 1; right: 28px; bottom: 24px; display: grid; place-items: center; width: 64px; height: 64px; border: 1px solid #ffffff80; border-radius: 50%; background: #101112; transition: background 180ms ease; }
+.poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; color: #fff; background: radial-gradient(ellipse at 78% 45%, #3a3e43 0%, #1b1e22 37%, #0b0d10 75%); }
+.frame { object-fit: cover; }
+.poster::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #05080ce8, #05080ca3 32%, #05080c18 57%, transparent 72%), linear-gradient(0deg, #0506099c, transparent 55%); }
+.carCutout { position: absolute; z-index: 1; top: 48%; right: 2%; bottom: 2%; left: 55%; }
+.carCutout img { object-fit: contain; filter: drop-shadow(0 24px 22px #0008); }
+/* Separate vector logos and live type keep the thumbnail sharp at every size. */
+.thumbnailCopy { position: absolute; z-index: 1; inset: 10% auto 10% 5%; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 35%; text-align: center; pointer-events: none; }
+.thumbnailIntro, .thumbnailLocation { color: #fff; font-size: clamp(18px, 3.2vw, 48px); font-weight: 550; line-height: 1.1; letter-spacing: -.04em; }
+.thumbnailIntro { margin-bottom: 6%; }
+.thumbnailCopy .novitecMark { width: 77%; height: auto; }
+.collaboration { margin: 4% 0; color: #bfc3c7; font-size: clamp(13px, 1.7vw, 25px); line-height: 1; font-weight: 300; }
+.thumbnailCopy .purosangueMark { width: 100%; height: auto; }
+.thumbnailLocation { margin-top: 6%; }
+.thumbnailCredit { margin-top: 7%; color: #bfc3c7; font-size: clamp(7px, .8vw, 11px); line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; }
+.play { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 72px; height: 72px; border: 1px solid #ffffff80; border-radius: 50%; background: #101112c7; backdrop-filter: blur(8px); transition: background 180ms ease; }
 .play svg { margin-left: 3px; }
 .poster:hover .play { background: #222426; }
 .poster:focus-visible { outline: 2px solid #fff; outline-offset: -6px; }
-.watch { position: absolute; z-index: 1; right: 110px; bottom: 46px; font-size: 12px; }
 .footer { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; margin-top: 16px; }
 .filmActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
 .footer a, .footer button { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; background: transparent; color: #b8bbb4; font-size: 11px; padding: 0; }
@@ -39,16 +39,12 @@
   .eyebrow { margin-bottom: 18px; font-size: 8px; }
   .description { font-size: 12px; }
   .player { border-radius: 6px; }
-  .brandLockup { top: 7%; left: 4%; gap: 8px; }
-  .brandLockup .novitecMark { width: 84px; }
-  .brandLockup .ferrariMark { width: 52px; }
-  .collaboration { font-size: 12px; }
-  .thumbnailCopy { top: 37%; }
-  .thumbnailCopy strong { font-size: clamp(16px, 4.1vw, 28px); }
-  .thumbnailCredit { margin-top: 11px; padding-left: 8px; border-left-width: 1px; font-size: 6px; }
-  .play { right: 14px; bottom: 12px; width: 44px; height: 44px; }
+  .thumbnailCopy { left: 4%; width: 37%; }
+  .thumbnailIntro, .thumbnailLocation { font-size: clamp(14px, 4.1vw, 28px); }
+  .collaboration { font-size: 11px; }
+  .thumbnailCredit { font-size: 6px; letter-spacing: .06em; }
+  .play { width: 44px; height: 44px; }
   .play svg { width: 20px; height: 20px; }
-  .watch { right: 68px; bottom: 29px; font-size: 8px; }
   .footer { flex-wrap: wrap; gap: 0 24px; margin-top: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .play { transition: none; } }

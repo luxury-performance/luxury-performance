@@ -41,19 +41,19 @@ export function NovitecFeatureFilm() {
           aria-label="Play NOVITEC Purosangue film"
           onClick={() => setPlaying(true)}
         >
-          <Image src="/images/home/novitec-purosangue-film-frame-enhanced-v1.webp" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
-          <span className={styles.brandLockup} aria-hidden="true">
-            <Image className={styles.novitecMark} src="/brand/novitec.svg" alt="" width={228} height={45} />
-            <span className={styles.collaboration}>×</span>
-            <Image className={styles.ferrariMark} src="/brand/navigation/wordmarks/ferrari.svg" alt="" width={332} height={73} />
+          <Image className={styles.frame} src="/images/home/novitec-purosangue-film-frame-enhanced-v1.webp" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
+          <span className={styles.carCutout} aria-hidden="true">
+            <Image src="/images/home/novitec-purosangue-cutout-v1.webp" alt="" fill sizes="(max-width: 700px) 60vw, 55vw" quality={90} />
           </span>
           <span className={styles.thumbnailCopy} aria-hidden="true">
-            <span className={styles.thumbnailEyebrow}>The Dubai build</span>
-            <strong>Purosangue<span>.</span></strong>
+            <span className={styles.thumbnailIntro}>The first</span>
+            <Image className={styles.novitecMark} src="/brand/novitec.svg" alt="" width={228} height={45} />
+            <span className={styles.collaboration}>×</span>
+            <Image className={styles.purosangueMark} src="/brand/ferrari-purosangue-white.svg" alt="" width={663} height={96} />
+            <strong className={styles.thumbnailLocation}>in Dubai.</strong>
             <span className={styles.thumbnailCredit}>With Ahmed Amwell</span>
           </span>
           <span className={styles.play}><Play size={26} fill="currentColor" strokeWidth={1.5} aria-hidden="true" /></span>
-          <span className={styles.watch}>Watch the film</span>
         </button>}
       </div>
       <div className={styles.footer}>
