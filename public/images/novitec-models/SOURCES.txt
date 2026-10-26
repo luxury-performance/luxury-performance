@@ -39,3 +39,7 @@ all-novitec-aventador-clean-v1.webp
 User-supplied photograph of a black Lamborghini Aventador at NOVITEC headquarters.
 AI edit, 2026-10-26: remove left scaffolding; reconstruct sharper detail at higher resolution. Original all-novitec.png retained.
 Web delivery: 2244 x 2804 WebP, resized from the AI-cleaned master with Lanczos interpolation.
+
+all-novitec-purosangue-esteso-original.jpg
+https://www.instagram.com/p/Db3IetJCG9L/?img_index=1
+First carousel photograph from the official NOVITEC Instagram account, retrieved 2026-10-26. Original 3072 x 4096 JPEG preserved without generative edits, recolouring or resizing. Next.js provides display optimization.
