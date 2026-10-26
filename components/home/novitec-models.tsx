@@ -9,8 +9,8 @@ import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-previe
 
 const purosangueImages: readonly ModelPreviewImage[] = [
   { image: "purosangue-gallery/14-rear-wheel-cover.jpg", label: "Rear wheel and body", alt: "Red NOVITEC Ferrari Purosangue ESTESO with a gold rear wheel and carbon wheel arch" },
-  { image: "purosangue-gallery/06-front-corner.jpg", label: "Front corner", alt: "Red NOVITEC Ferrari Purosangue front corner with carbon fibre splitter and yellow accent" },
   { image: "purosangue-gallery/15-elevated-front.jpg", label: "Elevated front three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, elevated front three-quarter view" },
+  { image: "purosangue-gallery/06-front-corner.jpg", label: "Front corner", alt: "Red NOVITEC Ferrari Purosangue front corner with carbon fibre splitter and yellow accent" },
   { image: "purosangue-gallery/19-rear-three-quarter.jpg", label: "Rear three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, rear three-quarter view" },
 ];
 

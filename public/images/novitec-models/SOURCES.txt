@@ -46,7 +46,7 @@ First carousel photograph from the official NOVITEC Instagram account, retrieved
 
 Purosangue hover preview gallery, retrieved 2026-10-26.
 Original NOVITEC photographs preserved; Next.js provides display optimization.
-Owner-selected sequence: photo 14 at rest; photos 6, 15 and 19 on hover.
+Owner-selected sequence: photo 14 at rest; photos 15, 6 and 19 on hover.
 
 purosangue-gallery/14-rear-wheel-cover.jpg
 https://www.instagram.com/p/DdRUQmJCP3N/?img_index=14
