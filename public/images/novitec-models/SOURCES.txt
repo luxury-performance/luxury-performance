@@ -34,3 +34,8 @@ https://lxpforged.com/cdn/shop/files/IMG_0790_2.jpg?v=1767419320&width=1086
 
 spectre.jpg
 https://lxpforged.com/cdn/shop/files/IMG_0823.jpg?v=1767448304&width=1320
+
+all-novitec-aventador-clean-v1.webp
+User-supplied photograph of a black Lamborghini Aventador at NOVITEC headquarters.
+AI edit, 2026-10-26: remove left scaffolding; reconstruct sharper detail at higher resolution. Original all-novitec.png retained.
+Web delivery: 2244 x 2804 WebP, resized from the AI-cleaned master with Lanczos interpolation.

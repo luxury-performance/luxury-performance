@@ -59,7 +59,7 @@ export function NovitecModels() {
     </div>
     <ul ref={rail} id="novitec-model-cards" className={styles.rail} aria-label="NOVITEC vehicle programmes">
       <li className={styles.item}><Link href="/shop?brand=novitec" className={`${styles.card} ${styles.all}`} aria-label="Shop all NOVITEC parts">
-        <div className={styles.image}><Image src="/images/novitec-models/all-novitec.png" alt="Yellow Ferrari outside the NOVITEC headquarters" fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
+        <div className={styles.image}><Image src="/images/novitec-models/all-novitec-aventador-clean-v1.webp" alt="Black NOVITEC Lamborghini Aventador outside NOVITEC headquarters" fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
         <div className={styles.caption}><div><h3>All NOVITEC</h3><p>Explore all parts</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
       </Link></li>
       {models.map(model => <li key={model.name} className={styles.item}><Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
