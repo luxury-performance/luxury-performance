@@ -16,7 +16,7 @@ export const vehicleMenu: ShopMenuItem[] = [
   { name: 'McLaren', href: '/shop?make=mclaren', wordmark: 'mclaren.svg', logoClass: 'mclarenWordmark' },
   { name: 'Rolls-Royce', href: '/shop?make=rolls_royce', wordmark: 'rolls-royce.svg', logoClass: 'rollsWordmark' },
   { name: 'Mercedes-Benz', href: '/shop?make=mercedes', wordmark: 'mercedes.svg', logoClass: 'mercedesWordmark' },
-  { name: 'BMW', href: '/shop?make=bmw', logo: 'wordmarks/bmw.svg', logoClass: 'bmwMark' },
+  { name: 'BMW', href: '/shop?make=bmw', wordmark: 'bmw.svg', logoClass: 'bmwMark' },
   { name: 'Audi', href: '/shop?make=audi', wordmark: 'audi.svg', logoClass: 'audiWordmark' },
 ];
 

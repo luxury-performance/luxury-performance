@@ -123,11 +123,11 @@
 .vehicleWordmark img.ferrariWordmark { width: 140px; }
 .vehicleWordmark img.lamborghiniWordmark { width: 158px; }
 .vehicleWordmark img.porscheWordmark { width: 180px; }
-.vehicleWordmark img.mclarenWordmark { width: 190px; }
+.vehicleWordmark img.mclarenWordmark { width: 200px; filter: none; }
 .vehicleWordmark img.rollsWordmark { width: 160px; }
 .vehicleWordmark img.mercedesWordmark { width: 176px; }
 .vehicleWordmark img.audiWordmark { width: 110px; }
-.logoFrame img.bmwMark { width: 48px; height: 48px; transform: none; filter: none; mix-blend-mode: normal; }
+.logoFrame img.bmwMark { width: 48px; height: 48px; max-height: 100%; transform: none; filter: none; mix-blend-mode: normal; }
 .modelHeading .vehicleWordmark { width: 150px; height: 38px; }
 @media (max-width: 700px) {
   .mobile nav .vehicleCards { gap: 8px 12px; padding-bottom: 0; }

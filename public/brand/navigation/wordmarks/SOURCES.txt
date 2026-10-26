@@ -1,6 +1,6 @@
 Vehicle navigation logos — 2026-10-26.
 SVG artwork sourced through Wikimedia Commons. Brand artwork and trademarks remain the property of their respective owners.
-Source SVG geometry preserved; metadata removed and a viewBox added to the McLaren SVG for responsive rendering. Wordmarks are presented in white with CSS. BMW retains its original white/blue roundel.
+Source SVG geometry preserved; metadata removed and a viewBox added to the McLaren SVG for responsive rendering. Wordmarks are presented in white with CSS. BMW retains its original white/blue roundel. McLaren combines its white wordmark with a papaya-orange speedmark at the owner’s request.
 
 ferrari.svg
 https://commons.wikimedia.org/wiki/File:Ferrari_wordmark.svg
@@ -40,4 +40,15 @@ Licence recorded by the source: Public domain
 audi.svg
 https://commons.wikimedia.org/wiki/File:Audi_text_logo.svg
 Original: https://upload.wikimedia.org/wikipedia/commons/d/dc/Audi_text_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+Licence recorded by the source: Public domain
+
+Refinement on 2026-10-26:
+Lamborghini lettering-only artwork replaces the wordmark+payoff version above.
+https://commons.wikimedia.org/wiki/File:Lamborghini_-_logo_wordmark_(italy,_1963-).svg
+Original: https://upload.wikimedia.org/wikipedia/commons/c/c7/Lamborghini_-_logo_wordmark_%28italy%2C_1963-%29.svg
+Licence recorded by the source: Public domain
+
+McLaren speedmark geometry, presented in orange beside the existing wordmark:
+https://commons.wikimedia.org/wiki/File:McLaren_Speedmark.svg
+Original: https://upload.wikimedia.org/wikipedia/commons/c/cb/McLaren_Speedmark.svg
 Licence recorded by the source: Public domain
