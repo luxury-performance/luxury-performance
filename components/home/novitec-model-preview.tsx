@@ -8,9 +8,9 @@ import styles from './novitec-models.module.css';
 
 export type ModelPreviewImage = { image: string; label: string; alt: string };
 
-type Props = { href: string; name: string; make: string; images: readonly ModelPreviewImage[] };
+type Props = { href: string; name: string; make: string; images: readonly ModelPreviewImage[]; effect?: 'slide' | 'fade' };
 
-export function ModelPreviewCard({ href, name, make, images }: Props) {
+export function ModelPreviewCard({ href, name, make, images, effect = 'slide' }: Props) {
   const hintId = useId();
   const [preview, setPreview] = useState({ active: 0, previous: 0, hover: 1 });
   const { active } = preview;
@@ -54,6 +54,7 @@ export function ModelPreviewCard({ href, name, make, images }: Props) {
     className={styles.card}
     aria-label={`${name} photo preview`}
     data-preview-index={active}
+    data-preview-effect={effect}
     onPointerMove={previewAt}
     onPointerLeave={event => { if (event.pointerType === 'mouse') { mouseDown.current = null; select(0); } }}
     onPointerDown={event => { dragged.current = false; mouseDown.current = event.pointerType === 'mouse' ? { x: event.clientX, y: event.clientY } : null; }}
@@ -64,14 +65,18 @@ export function ModelPreviewCard({ href, name, make, images }: Props) {
   >
     <div className={`${styles.image} ${styles.previewImage}`}>
       <Link href={href} className={styles.previewLink} aria-label={`Shop NOVITEC for ${make} ${name}`} aria-describedby={hintId} onKeyDown={previewKey}>
-        <span className={styles.previewTrack} style={{ transform: `translateX(${-(preview.hover - 1) * 100}%)`, transitionDuration: slideDuration }}>
-          {images.slice(1).map((photo, index) => <span key={photo.image} className={styles.previewFrame} aria-hidden={active !== index + 1}>
-            <Image src={`/images/novitec-models/${photo.image}`} alt={photo.alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
-          </span>)}
-        </span>
-        <span className={styles.previewCover} data-active={active === 0} aria-hidden={active !== 0}>
-          <Image src={`/images/novitec-models/${images[0].image}`} alt={images[0].alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
-        </span>
+        {effect === 'fade' ? images.map((photo, index) => <span key={photo.image} className={styles.previewFadeFrame} data-active={active === index} aria-hidden={active !== index}>
+          <Image src={`/images/novitec-models/${photo.image}`} alt={photo.alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
+        </span>) : <>
+          <span className={styles.previewTrack} style={{ transform: `translateX(${-(preview.hover - 1) * 100}%)`, transitionDuration: slideDuration }}>
+            {images.slice(1).map((photo, index) => <span key={photo.image} className={styles.previewFrame} aria-hidden={active !== index + 1}>
+              <Image src={`/images/novitec-models/${photo.image}`} alt={photo.alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
+            </span>)}
+          </span>
+          <span className={styles.previewCover} data-active={active === 0} aria-hidden={active !== 0}>
+            <Image src={`/images/novitec-models/${images[0].image}`} alt={images[0].alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
+          </span>
+        </>}
       </Link>
       <button type="button" className={`${styles.previewControl} ${styles.previewPrevious}`} aria-label={`Previous ${name} photo`} onClick={() => show(active - 1, true)}><ArrowLeft size={18} strokeWidth={1.5} aria-hidden="true"/></button>
       <button type="button" className={`${styles.previewControl} ${styles.previewNext}`} aria-label={`Next ${name} photo`} onClick={() => show(active + 1, true)}><ArrowRight size={18} strokeWidth={1.5} aria-hidden="true"/></button>

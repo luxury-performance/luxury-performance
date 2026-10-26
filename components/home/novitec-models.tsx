@@ -8,17 +8,24 @@ import styles from './novitec-models.module.css';
 import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
 
 const purosangueImages: readonly ModelPreviewImage[] = [
-  { image: "purosangue-gallery/14-rear-wheel-cover.jpg", label: "Rear wheel and body", alt: "Red NOVITEC Ferrari Purosangue ESTESO with a gold rear wheel and carbon wheel arch" },
-  { image: "purosangue-gallery/15-elevated-front.jpg", label: "Elevated front three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, elevated front three-quarter view" },
   { image: "purosangue-gallery/06-front-corner.jpg", label: "Front corner", alt: "Red NOVITEC Ferrari Purosangue front corner with carbon fibre splitter and yellow accent" },
+  { image: "purosangue-gallery/15-elevated-front.jpg", label: "Elevated front three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, elevated front three-quarter view" },
+  { image: "purosangue-gallery/14-rear-wheel-cover.jpg", label: "Rear wheel and body", alt: "Red NOVITEC Ferrari Purosangue ESTESO with a gold rear wheel and carbon wheel arch" },
   { image: "purosangue-gallery/19-rear-three-quarter.jpg", label: "Rear three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, rear three-quarter view" },
 ];
 
-type Model = { name: string; make: string; image: string; collection?: string; href?: string; preview?: readonly ModelPreviewImage[] };
+const revueltoImages: readonly ModelPreviewImage[] = [
+  { image: "revuelto-gallery/14-front-bonnet.jpg", label: "Bonnet and front corner", alt: "Green Lamborghini Revuelto bonnet, badge and angular front corner with carbon detailing" },
+  { image: "revuelto-gallery/11-rear-wheel.jpg", label: "Rear wheel and body", alt: "Gold NOVITEC NL6 rear wheel and green rear quarter of a Lamborghini Revuelto" },
+  { image: "revuelto-gallery/05-exhaust-cover.jpg", label: "Exhaust and carbon rear detail", alt: "Gold NOVITEC exhaust tips and carbon rear bodywork on a green Lamborghini Revuelto" },
+  { image: "revuelto-gallery/15-rear-three-quarter.jpg", label: "Rear three-quarter", alt: "Green NOVITEC Lamborghini Revuelto with gold NL6 wheels, rear three-quarter view" },
+];
+
+type Model = { name: string; make: string; image: string; collection?: string; href?: string; preview?: readonly ModelPreviewImage[]; previewEffect?: 'slide' | 'fade' };
 
 const models: Model[] = [
-  { name: 'Purosangue', make: 'Ferrari', image: purosangueImages[0].image, collection: 'ferrari-purosangue', preview: purosangueImages },
-  { name: 'Revuelto', make: 'Lamborghini', image: 'revuelto.jpg', collection: 'lamborghini-revuelto' },
+  { name: 'Purosangue', make: 'Ferrari', image: purosangueImages[0].image, collection: 'ferrari-purosangue', preview: purosangueImages, previewEffect: 'fade' },
+  { name: 'Revuelto', make: 'Lamborghini', image: revueltoImages[0].image, collection: 'lamborghini-revuelto', preview: revueltoImages, previewEffect: 'fade' },
   { name: 'F8', make: 'Ferrari', image: 'f8.jpg', collection: 'ferrari-f8' },
   { name: '812', make: 'Ferrari', image: '812.jpg', href: '/shop?brand=novitec&make=ferrari&q=Ferrari+812' },
   { name: 'Urus', make: 'Lamborghini', image: 'urus.jpg', collection: 'lamborghini-urus' },
@@ -73,7 +80,7 @@ export function NovitecModels() {
         <div className={styles.caption}><div><h3>All NOVITEC</h3><p>Explore all parts</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
       </Link></li>
       {models.map(model => <li key={model.name} className={styles.item}>
-        {model.preview ? <ModelPreviewCard href={model.href || `/collections/${model.collection}?brand=novitec`} name={model.name} make={model.make} images={model.preview}/> : <Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
+        {model.preview ? <ModelPreviewCard href={model.href || `/collections/${model.collection}?brand=novitec`} name={model.name} make={model.make} images={model.preview} effect={model.previewEffect}/> : <Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
           <div className={styles.image}><Image src={`/images/novitec-models/${model.image}`} alt={`NOVITEC ${model.make} ${model.name}`} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
           <div className={styles.caption}><div><h3>{model.name}</h3><p>{model.make}</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
         </Link>}

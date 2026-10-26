@@ -31,6 +31,8 @@
 .previewTrack { display: flex; width: 100%; height: 100%; transition: transform 450ms cubic-bezier(.22,.61,.36,1); }
 .previewCover { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
 .previewCover[data-active=true] { opacity: 1; }
+.previewFadeFrame { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
+.previewFadeFrame[data-active=true] { opacity: 1; }
 .previewFrame { position: relative; flex: 0 0 100%; height: 100%; overflow: hidden; pointer-events: none; }
 .previewControl { position: absolute; z-index: 1; top: 50%; transform: translateY(-50%); display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #101112b3; color: #fff; }
 .previewPrevious { left: 8px; }
@@ -48,4 +50,4 @@
   .caption { padding: 20px; }
   .caption h3 { font-size: 22px; }
 }
-@media(prefers-reduced-motion:reduce) { .card, .image img, .previewTrack, .previewCover, .caption > svg, .controls button { transition: none; } .card:hover .image img { transform: none; } }
+@media(prefers-reduced-motion:reduce) { .card, .image img, .previewTrack, .previewCover, .previewFadeFrame, .caption > svg, .controls button { transition: none; } .card:hover .image img { transform: none; } }

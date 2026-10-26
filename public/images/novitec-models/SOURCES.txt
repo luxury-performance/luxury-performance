@@ -44,9 +44,9 @@ all-novitec-purosangue-esteso-original.jpg
 https://www.instagram.com/p/Db3IetJCG9L/?img_index=1
 First carousel photograph from the official NOVITEC Instagram account, retrieved 2026-10-26. Original 3072 x 4096 JPEG preserved without generative edits, recolouring or resizing. Next.js provides display optimization.
 
-Purosangue hover preview gallery, retrieved 2026-10-26.
+Purosangue crossfade preview gallery, retrieved 2026-10-26.
 Original NOVITEC photographs preserved; Next.js provides display optimization.
-Owner-selected sequence: photo 14 at rest; photos 15, 6 and 19 on hover.
+Owner-selected sequence: photo 6 at rest; photos 15, 14 and 19 on hover.
 
 purosangue-gallery/14-rear-wheel-cover.jpg
 https://www.instagram.com/p/DdRUQmJCP3N/?img_index=14
@@ -59,3 +59,19 @@ https://www.instagram.com/p/DdRUQmJCP3N/?img_index=15
 
 purosangue-gallery/19-rear-three-quarter.jpg
 https://www.instagram.com/p/DdRUQmJCP3N/?img_index=19
+
+Revuelto crossfade preview gallery, retrieved 2026-10-26.
+Original NOVITEC photographs preserved; Next.js provides display optimization.
+Owner-selected sequence: photo 14 at rest; photos 11, 5 and 15 on hover.
+
+revuelto-gallery/05-exhaust-cover.jpg
+https://www.instagram.com/p/DMdGXh-o7Od/?img_index=5
+
+revuelto-gallery/11-rear-wheel.jpg
+https://www.instagram.com/p/DMdGXh-o7Od/?img_index=11
+
+revuelto-gallery/14-front-bonnet.jpg
+https://www.instagram.com/p/DMdGXh-o7Od/?img_index=14
+
+revuelto-gallery/15-rear-three-quarter.jpg
+https://www.instagram.com/p/DMdGXh-o7Od/?img_index=15
