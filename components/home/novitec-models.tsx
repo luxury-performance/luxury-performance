@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import styles from './novitec-models.module.css';
 import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
+import { additionalModelGalleries } from './novitec-model-galleries';
 
 const purosangueImages: readonly ModelPreviewImage[] = [
   { image: "purosangue-gallery/06-front-corner.jpg", label: "Front corner", alt: "Red NOVITEC Ferrari Purosangue front corner with carbon fibre splitter and yellow accent" },
@@ -26,14 +27,14 @@ type Model = { name: string; make: string; image: string; collection?: string; h
 const models: Model[] = [
   { name: 'Purosangue', make: 'Ferrari', image: purosangueImages[0].image, collection: 'ferrari-purosangue', preview: purosangueImages, previewEffect: 'fade' },
   { name: 'Revuelto', make: 'Lamborghini', image: revueltoImages[0].image, collection: 'lamborghini-revuelto', preview: revueltoImages, previewEffect: 'fade' },
-  { name: 'F8', make: 'Ferrari', image: 'f8.jpg', collection: 'ferrari-f8' },
-  { name: '812', make: 'Ferrari', image: '812.jpg', href: '/shop?brand=novitec&make=ferrari&q=Ferrari+812' },
-  { name: 'Urus', make: 'Lamborghini', image: 'urus.jpg', collection: 'lamborghini-urus' },
-  { name: 'SF90', make: 'Ferrari', image: 'sf90.jpg', collection: 'ferrari-sf90' },
-  { name: '12Cilindri', make: 'Ferrari', image: '12cilindri.jpg', collection: 'ferrari-12cilindri' },
-  { name: 'Cullinan', make: 'Rolls-Royce', image: 'cullinan.jpg', collection: 'rolls-royce-cullinan' },
-  { name: '750S', make: 'McLaren', image: '750s.jpg', collection: 'mclaren-750s' },
-  { name: 'Spectre', make: 'Rolls-Royce', image: 'spectre.jpg', collection: 'rolls-royce-spectre' },
+  { name: 'SF90', make: 'Ferrari', image: additionalModelGalleries['sf90'][0].image, collection: 'ferrari-sf90', preview: additionalModelGalleries['sf90'], previewEffect: 'fade' },
+  { name: '12Cilindri', make: 'Ferrari', image: additionalModelGalleries['12cilindri'][0].image, collection: 'ferrari-12cilindri', preview: additionalModelGalleries['12cilindri'], previewEffect: 'fade' },
+  { name: 'Urus', make: 'Lamborghini', image: additionalModelGalleries['urus'][0].image, collection: 'lamborghini-urus', preview: additionalModelGalleries['urus'], previewEffect: 'fade' },
+  { name: 'F8', make: 'Ferrari', image: additionalModelGalleries['f8'][0].image, collection: 'ferrari-f8', preview: additionalModelGalleries['f8'], previewEffect: 'fade' },
+  { name: '812', make: 'Ferrari', image: additionalModelGalleries['812'][0].image, href: '/shop?brand=novitec&make=ferrari&q=Ferrari+812', preview: additionalModelGalleries['812'], previewEffect: 'fade' },
+  { name: 'Cullinan', make: 'Rolls-Royce', image: additionalModelGalleries['cullinan'][0].image, collection: 'rolls-royce-cullinan', preview: additionalModelGalleries['cullinan'], previewEffect: 'fade' },
+  { name: '750S', make: 'McLaren', image: additionalModelGalleries['750s'][0].image, collection: 'mclaren-750s', preview: additionalModelGalleries['750s'], previewEffect: 'fade' },
+  { name: 'Spectre', make: 'Rolls-Royce', image: additionalModelGalleries['spectre'][0].image, collection: 'rolls-royce-spectre', preview: additionalModelGalleries['spectre'], previewEffect: 'fade' },
 ];
 
 export function NovitecModels() {

@@ -75,3 +75,112 @@ https://www.instagram.com/p/DMdGXh-o7Od/?img_index=14
 
 revuelto-gallery/15-rear-three-quarter.jpg
 https://www.instagram.com/p/DMdGXh-o7Od/?img_index=15
+
+Additional model crossfade galleries, retrieved 2026-10-26.
+Original official NOVITEC Instagram JPEGs preserved; Next.js provides display optimization.
+Covers selected by the owner; three complementary hover photos selected from each matching post.
+12Cilindri hover sequence explicitly selected by the owner: 13, 7, 17.
+
+F8: photo 5 at rest; photos 1, 2, 4 on hover.
+f8-gallery/05-exhaust-detail.jpg
+https://www.instagram.com/p/DHvvcOqIUAL/?img_index=5
+
+f8-gallery/01-front-three-quarter.jpg
+https://www.instagram.com/p/DHvvcOqIUAL/?img_index=1
+
+f8-gallery/02-rear-wheel.jpg
+https://www.instagram.com/p/DHvvcOqIUAL/?img_index=2
+
+f8-gallery/04-rear-three-quarter.jpg
+https://www.instagram.com/p/DHvvcOqIUAL/?img_index=4
+
+812: photo 13 at rest; photos 15, 2, 14 on hover.
+812-gallery/13-tail-light-detail.jpg
+https://www.instagram.com/p/DewsCMOjPsW/?img_index=13
+
+812-gallery/15-side-profile.jpg
+https://www.instagram.com/p/DewsCMOjPsW/?img_index=15
+
+812-gallery/02-rear-wheel.jpg
+https://www.instagram.com/p/DewsCMOjPsW/?img_index=2
+
+812-gallery/14-rear-three-quarter.jpg
+https://www.instagram.com/p/DewsCMOjPsW/?img_index=14
+
+Urus: photo 4 at rest; photos 3, 5, 7 on hover.
+urus-gallery/04-front-corner.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=4
+
+urus-gallery/03-straight-front.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=3
+
+urus-gallery/05-side-profile.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=5
+
+urus-gallery/07-rear-three-quarter.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=7
+
+SF90: photo 6 at rest; photos 7, 8, 9 on hover.
+sf90-gallery/06-front-corner.jpg
+https://www.instagram.com/p/DB9HsZ1oCg8/?img_index=6
+
+sf90-gallery/07-side-profile.jpg
+https://www.instagram.com/p/DB9HsZ1oCg8/?img_index=7
+
+sf90-gallery/08-rear-wheel.jpg
+https://www.instagram.com/p/DB9HsZ1oCg8/?img_index=8
+
+sf90-gallery/09-straight-rear.jpg
+https://www.instagram.com/p/DB9HsZ1oCg8/?img_index=9
+
+12Cilindri: photo 9 at rest; photos 13, 7, 17 on hover.
+12cilindri-gallery/09-bonnet-detail.jpg
+https://www.instagram.com/p/DcTQuAGiDzi/?img_index=9
+
+12cilindri-gallery/13-straight-rear.jpg
+https://www.instagram.com/p/DcTQuAGiDzi/?img_index=13
+
+12cilindri-gallery/07-rear-wheel.jpg
+https://www.instagram.com/p/DcTQuAGiDzi/?img_index=7
+
+12cilindri-gallery/17-rear-three-quarter.jpg
+https://www.instagram.com/p/DcTQuAGiDzi/?img_index=17
+
+Cullinan: photo 5 at rest; photos 6, 4, 7 on hover.
+cullinan-gallery/05-grille-detail.jpg
+https://www.instagram.com/p/C6ONfk2rOg1/?img_index=5
+
+cullinan-gallery/06-straight-front.jpg
+https://www.instagram.com/p/C6ONfk2rOg1/?img_index=6
+
+cullinan-gallery/04-interior.jpg
+https://www.instagram.com/p/C6ONfk2rOg1/?img_index=4
+
+cullinan-gallery/07-rear-wheel.jpg
+https://www.instagram.com/p/C6ONfk2rOg1/?img_index=7
+
+750S: photo 7 at rest; photos 8, 9, 10 on hover.
+750s-gallery/07-front-wheel.jpg
+https://www.instagram.com/p/C7jiruSoSM2/?img_index=7
+
+750s-gallery/08-straight-front.jpg
+https://www.instagram.com/p/C7jiruSoSM2/?img_index=8
+
+750s-gallery/09-rear-wheel.jpg
+https://www.instagram.com/p/C7jiruSoSM2/?img_index=9
+
+750s-gallery/10-rear-three-quarter.jpg
+https://www.instagram.com/p/C7jiruSoSM2/?img_index=10
+
+Spectre: photo 14 at rest; photos 13, 15, 17 on hover.
+spectre-gallery/14-front-corner.jpg
+https://www.instagram.com/p/DTx0TKgjJV8/?img_index=14
+
+spectre-gallery/13-straight-front.jpg
+https://www.instagram.com/p/DTx0TKgjJV8/?img_index=13
+
+spectre-gallery/15-interior.jpg
+https://www.instagram.com/p/DTx0TKgjJV8/?img_index=15
+
+spectre-gallery/17-front-wheel.jpg
+https://www.instagram.com/p/DTx0TKgjJV8/?img_index=17
