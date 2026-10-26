@@ -28,7 +28,7 @@
 .all .caption { margin-top: auto; border-top-color: transparent; }
 .all .caption p { color: #d3d5cf; letter-spacing: 0; text-transform: none; }
 .previewCard { --preview-caption-height: 100px; }
-.previewCard > .caption { z-index: 1; height: var(--preview-caption-height); background: #1c1e20; transition: background 280ms ease, border-color 280ms ease; }
+.previewCard > .caption { z-index: 1; height: var(--preview-caption-height); background: #1c1e20; transition: background 140ms ease-out, border-color 140ms ease-out; }
 .previewImage { user-select: none; overflow: visible; }
 .previewMedia { position: absolute; inset: 0; height: 100%; overflow: hidden; transition: height 360ms cubic-bezier(.22,.61,.36,1); }
 .previewMedia::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 38%,#000000b8); opacity: 0; pointer-events: none; transition: opacity 280ms ease; }
