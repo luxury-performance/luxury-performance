@@ -1,0 +1,36 @@
+NOVITEC model-card images from the LXP Forged homepage, 2026-10-26.
+Reference: https://lxpforged.com/
+Original imagery preserved; optimized for display by Next.js.
+
+all-novitec.png
+https://lxpforged.com/cdn/shop/files/Screenshot_2026-02-12_at_15.41.37.png?v=1770896527&width=878
+
+purosangue.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0831.jpg?v=1767449532&width=1320
+
+revuelto.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0829.jpg?v=1767449413&width=1320
+
+f8.jpg
+https://lxpforged.com/cdn/shop/files/IMG_3556.jpg?v=1777986324&width=1320
+
+812.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0794.jpg?v=1767442475&width=1320
+
+urus.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0836.jpg?v=1767450373&width=1320
+
+sf90.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0835.jpg?v=1767449983&width=1320
+
+12cilindri.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0799.jpg?v=1767444208&width=1320
+
+cullinan.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0819.jpg?v=1767448276&width=1320
+
+750s.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0790_2.jpg?v=1767419320&width=1086
+
+spectre.jpg
+https://lxpforged.com/cdn/shop/files/IMG_0823.jpg?v=1767448304&width=1320
