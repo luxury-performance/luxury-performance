@@ -1,0 +1,37 @@
+.section { background: var(--home-intro-bg, #101112); color: #f1f2f0; padding: 80px var(--gutter) 76px; }
+.inner { max-width: var(--home-container, 1440px); margin: 0 auto; }
+.heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 32px; }
+.eyebrow { font-size: 9px; line-height: 1.6; letter-spacing: .14em; text-transform: uppercase; color: #b8bbb4; margin-bottom: 22px; }
+.heading h2 { font-size: clamp(32px, 3.5vw, 54px); }
+.heading h2 span { color: #a8aaa5; }
+.description { max-width: 310px; color: #a8aaa5; font-size: 13px; line-height: 1.85; }
+.player { position: relative; aspect-ratio: 16 / 9; width: 100%; overflow: hidden; border: 1px solid #ffffff20; border-radius: 10px; background: #080909; }
+.player iframe { display: block; width: 100%; height: 100%; border: 0; }
+.poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; color: #fff; background: #080909; }
+.poster img { object-fit: contain; }
+.poster::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 65%, #0009); }
+.play { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 76px; height: 76px; border: 1px solid #ffffff80; border-radius: 50%; background: #101112d9; transition: background 180ms ease; }
+.play svg { margin-left: 3px; }
+.poster:hover .play { background: #101112; }
+.poster:focus-visible { outline: 2px solid #fff; outline-offset: -6px; }
+.watch { position: absolute; z-index: 1; left: 28px; bottom: 24px; display: flex; align-items: center; gap: 20px; font-size: 12px; }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; margin-top: 16px; }
+.filmActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.footer a, .footer button { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; background: transparent; color: #b8bbb4; font-size: 11px; padding: 0; }
+.footer a:hover, .footer button:hover { color: #fff; }
+@media (max-width: 800px) {
+  .heading { flex-direction: column; align-items: start; gap: 20px; }
+  .description { max-width: 460px; }
+}
+@media (max-width: 700px) {
+  .section { padding: 52px var(--gutter) 44px; }
+  .heading { gap: 16px; margin-bottom: 24px; }
+  .eyebrow { margin-bottom: 18px; font-size: 8px; }
+  .description { font-size: 12px; }
+  .player { border-radius: 6px; }
+  .play { width: 52px; height: 52px; }
+  .play svg { width: 20px; height: 20px; }
+  .watch { left: 16px; bottom: 13px; font-size: 10px; gap: 12px; }
+  .footer { flex-wrap: wrap; gap: 0 24px; margin-top: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .play { transition: none; } }
