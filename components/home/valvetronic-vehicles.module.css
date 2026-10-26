@@ -1,0 +1,57 @@
+.section { padding: 24px var(--gutter) 88px; background: var(--home-intro-bg, #101112); color: #f1f2f0; }
+.inner { max-width: var(--home-container, 1440px); margin: 0 auto; }
+.heading { display: flex; align-items: end; justify-content: space-between; gap: 24px 40px; margin-bottom: 32px; }
+.heading h2 { line-height: 1; }
+.heading h2 img { display: block; width: 238px; height: auto; }
+.heading p { margin-top: 14px; color: #a8aaa5; font-size: 12px; line-height: 1.7; }
+.all { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; flex: none; color: #c5c8c3; font-size: 11px; }
+.all:hover { color: #fff; }
+.all:focus-visible, .brand:focus-visible { outline: 2px solid #c9b594; outline-offset: 4px; }
+.grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px 32px; margin: 0; padding: 0; list-style: none; }
+.grid li { min-width: 0; }
+.brand { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 104px; padding: 16px 8px; }
+.mark { display: block; width: 160px; max-width: 100%; height: 54px; object-fit: contain; transition: opacity 180ms ease, transform 180ms ease; }
+.monochrome { filter: brightness(0) invert(1); }
+/* Optical sizes account for each mark's proportions and built-in clear space. */
+.brand[data-mark="ferrari"] .mark { width: 140px; }
+.brand[data-mark="porsche"] .mark { width: 180px; }
+.brand[data-mark="bmw"] .mark { width: 56px; height: 56px; }
+.brand[data-mark="mclaren"] .mark, .brand[data-mark="mercedes-amg"] .mark, .brand[data-mark="dodge"] .mark { width: 180px; }
+.brand[data-mark="audi"] .mark { width: 105px; }
+.brand[data-mark="aston-martin"] .mark { width: 180px; height: 58px; }
+.brand[data-mark="maserati"] .mark { width: 164px; height: 68px; }
+.brand[data-mark="lotus"] .mark { width: 62px; height: 62px; }
+.brand[data-mark="nissan"] .mark { width: 74px; height: 62px; }
+.brand[data-mark="toyota"] .mark { width: 80px; height: 56px; }
+.brand[data-mark="ford"] .mark { width: 122px; height: 52px; }
+.brand[data-mark="honda"] .mark { width: 60px; height: 56px; }
+.brand[data-mark="subaru"] .mark { width: 88px; height: 74px; }
+.brand[data-mark="volkswagen"] .mark { width: 56px; height: 56px; }
+/* Preserve the original transparent PNG; enlarge its artwork past the clear margins. */
+.brand[data-mark="chevrolet-corvette"] .mark { position: absolute; top: calc(50% + 15px); left: 50%; translate: -50% -50%; clip-path: inset(20% 0 40%); width: 196px; max-width: none; height: 158px; }
+@media (hover: hover) and (pointer: fine) {
+ .brand .mark { opacity: .9; }
+ .brand:hover .mark, .brand:focus-visible .mark { opacity: 1; transform: scale(1.035); }
+}
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 24px; } }
+@media (max-width: 700px) {
+ .section { padding-top: 20px; padding-bottom: 52px; }
+ .heading { align-items: start; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+ .heading h2 img { width: 186px; }
+ .heading p { margin-top: 12px; font-size: 11px; }
+ .all { font-size: 10px; }
+ .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
+ .brand { min-height: 80px; padding: 12px 2px; }
+ .brand .mark { width: 100%; max-width: 112px; height: 40px; }
+ .brand[data-mark="bmw"] .mark, .brand[data-mark="lotus"] .mark, .brand[data-mark="volkswagen"] .mark { width: 50px; height: 50px; }
+ .brand[data-mark="audi"] .mark { width: 78px; }
+ .brand[data-mark="maserati"] .mark { width: 104px; height: 50px; }
+ .brand[data-mark="aston-martin"] .mark, .brand[data-mark="mercedes-amg"] .mark, .brand[data-mark="dodge"] .mark { width: 108px; height: 42px; }
+ .brand[data-mark="nissan"] .mark { width: 56px; height: 48px; }
+ .brand[data-mark="toyota"] .mark { width: 62px; height: 44px; }
+ .brand[data-mark="ford"] .mark { width: 92px; height: 42px; }
+ .brand[data-mark="honda"] .mark { width: 48px; height: 44px; }
+ .brand[data-mark="subaru"] .mark { width: 62px; height: 54px; }
+ .brand[data-mark="chevrolet-corvette"] .mark { top: calc(50% + 10px); width: 138px; max-width: none; height: 112px; }
+}
+@media (prefers-reduced-motion: reduce) { .mark { transition: none; } .brand:hover .mark { transform: none; } }

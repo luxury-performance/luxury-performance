@@ -1,0 +1,52 @@
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(40px, 6vw, 100px); margin-top: 80px; }
+.copy { max-width: 410px; }
+.eyebrow { margin-bottom: 24px; color: #b8bbb4; font-size: 9px; line-height: 1.6; letter-spacing: .14em; text-transform: uppercase; }
+.copy h3 { font-size: clamp(38px, 5vw, 68px); font-weight: 400; line-height: 1.05; letter-spacing: -.045em; }
+.description { max-width: 320px; margin-top: 24px; color: #a8aaa5; font-size: 13px; line-height: 1.85; }
+.credit { margin-top: 24px; padding-left: 12px; border-left: 2px solid #e3232b; color: #b8bbb4; font-size: 9px; line-height: 1.6; letter-spacing: .08em; text-transform: uppercase; }
+.cta { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; margin-top: 28px; color: #f1f2f0; font-size: 12px; }
+.cta:hover { color: #c8c7be; }
+.media { min-width: 0; }
+.player { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border: 1px solid #ffffff20; border-radius: 10px; background: #080909; }
+/* Keep the original portrait ratio; the square window removes the baked-in top caption. */
+.embed { position: absolute; top: 50%; left: 0; width: 100%; height: 177.777778%; transform: translateY(-50%); }
+.embed iframe { display: block; width: 100%; height: 100%; border: 0; }
+.poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; color: #fff; background: #080909; }
+.posterImage { object-fit: cover; object-position: center; }
+.poster::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #06080cf2, #06080c55 34%, transparent 62%); pointer-events: none; }
+.play { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 68px; height: 68px; border: 1px solid #ffffff80; border-radius: 50%; background: #101112c7; backdrop-filter: blur(8px); transition: background 180ms ease; }
+.play svg { margin-left: 3px; }
+.poster:hover .play { background: #222426; }
+.poster:focus-visible { outline: 2px solid #fff; outline-offset: -6px; }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; margin-top: 6px; }
+.footer a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #b8bbb4; font-size: 10px; }
+.footer a:hover { color: #fff; }
+.duration { color: #8f938d; font-size: 10px; }
+.controls { display: flex; gap: 2px; }
+.controls button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; background: transparent; color: #d7dad4; }
+.controls button:hover { color: #fff; }
+.controls button:disabled { opacity: .35; }
+.cta:focus-visible, .footer a:focus-visible, .controls button:focus-visible { outline: 2px solid #c9b594; outline-offset: 3px; }
+.error { color: #b8bbb4; font-size: 11px; line-height: 1.7; }
+@media (max-width: 700px) {
+  .feature { grid-template-columns: 1fr; gap: 28px; margin-top: 56px; }
+  .copy { max-width: none; }
+  .eyebrow { margin-bottom: 20px; font-size: 8px; }
+  .copy h3 { font-size: 42px; }
+  .description { margin-top: 20px; font-size: 12px; }
+  .credit { margin-top: 20px; font-size: 8px; }
+  .cta { margin-top: 20px; font-size: 11px; }
+  .player { border-radius: 6px; }
+  .play { width: 54px; height: 54px; }
+  .footer { gap: 4px; }
+  .footer a { font-size: 9px; gap: 5px; }
+  .controls { gap: 0; }
+  .controls button { width: 42px; min-width: 42px; }
+}
+@media (prefers-reduced-motion: reduce) { .play { transition: none; } }
+
+.thumbnailCopy { position: absolute; z-index: 1; bottom: 7%; left: 7%; display: flex; flex-direction: column; align-items: start; width: 80%; text-align: left; pointer-events: none; }
+.thumbnailCopy img { width: 58%; max-width: 270px; height: auto; }
+.thumbnailTitle { margin-top: 14px; font-size: clamp(18px, 2.5vw, 34px); font-weight: 500; line-height: 1.1; letter-spacing: -.04em; }
+.thumbnailCredit { margin-top: 14px; padding-left: 10px; border-left: 2px solid #e3232b; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #d4d7d8; }
+@media (max-width: 700px) { .thumbnailTitle { margin-top: 10px; font-size: 23px; } .thumbnailCredit { margin-top: 10px; font-size: 7px; } .controls button { width: 44px; min-width: 44px; } }

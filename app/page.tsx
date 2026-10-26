@@ -9,6 +9,7 @@ import { Eyebrow, ArrowLink } from '@/components/ui';
 import { PurosangueFilm } from '@/components/purosangue/film';
 import { NovitecModels } from '@/components/home/novitec-models';
 import { NovitecFeatureFilm } from '@/components/home/novitec-feature-film';
+import { ValvetronicVehicles } from '@/components/home/valvetronic-vehicles';
 import { Expertise } from '@/components/expertise';
 import { Reveal } from '@/components/reveal';
 import { ProgrammeCard } from '@/components/programme-card';
@@ -51,6 +52,7 @@ export default function Home() {
     <NovitecModels />
     <PurosangueFilm />
     <NovitecFeatureFilm />
+    <ValvetronicVehicles />
     <Expertise />
     <section className="programmes-section section-pad"><Reveal><div className="section-heading horizontal"><div><Eyebrow number="03">Selected programmes</Eyebrow><h2>Extraordinary,<br /><span className="text-muted">from every angle.</span></h2></div><ArrowLink href="/programmes">Explore all programmes</ArrowLink></div><div className="programme-grid home-programmes">{programmes.slice(0, 2).map((programme, index) => <ProgrammeCard key={programme.slug} programme={programme} index={index} />)}</div></Reveal></section>
 

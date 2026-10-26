@@ -1,0 +1,105 @@
+Original vector artwork; no raster auto-tracing. Neutral marks adapted to light fills for the dark section. Ford, Lotus, Aston Martin and Dodge retain original accent colours. Subaru keeps blue oval with silver/white stars; enclosing rectangle removed. Corvette uses the original high-resolution transparent PNG, with no background-removal processing.
+
+[
+  {
+    "slug": "mercedes-amg",
+    "page": "https://commons.wikimedia.org/wiki/File:AMG_logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/AMG_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/mercedes-amg.svg",
+    "bytes": 3779
+  },
+  {
+    "slug": "ford",
+    "page": "https://commons.wikimedia.org/wiki/File:Ford_logo_flat.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/ford.svg",
+    "bytes": 10048
+  },
+  {
+    "slug": "dodge",
+    "page": "https://commons.wikimedia.org/wiki/File:Dodge_2022_logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Dodge_2022_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/dodge.svg",
+    "bytes": 4147
+  },
+  {
+    "slug": "range-rover",
+    "page": "https://commons.wikimedia.org/wiki/File:Range_Rover_logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/5/58/Range_Rover_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/range-rover.svg",
+    "bytes": 2471
+  },
+  {
+    "slug": "subaru",
+    "page": "https://commons.wikimedia.org/wiki/File:Subaru_Logo_alt.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Subaru_Logo_alt.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/subaru.svg",
+    "bytes": 7513
+  },
+  {
+    "slug": "aston-martin",
+    "page": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/aston-martin-logo.svg",
+    "url": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/aston-martin-logo.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/aston-martin.svg",
+    "bytes": 4872
+  },
+  {
+    "slug": "honda",
+    "page": "https://commons.wikimedia.org/wiki/File:Honda_Logo.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Honda_Logo.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/honda.svg",
+    "bytes": 4734
+  },
+  {
+    "slug": "lotus",
+    "page": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/lotus-logo.svg",
+    "url": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/lotus-logo.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/lotus.svg",
+    "bytes": 7533
+  },
+  {
+    "slug": "nissan",
+    "page": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/nissan-logo.svg",
+    "url": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/nissan-logo.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/nissan.svg",
+    "bytes": 1570
+  },
+  {
+    "slug": "toyota",
+    "page": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/toyota-logo.svg",
+    "url": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/toyota-logo.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/toyota.svg",
+    "bytes": 1034
+  },
+  {
+    "slug": "volkswagen",
+    "page": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/volkswagen-logo.svg",
+    "url": "https://raw.githubusercontent.com/vehiclespecs/brand-logos/main/volkswagen-logo.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/volkswagen.svg",
+    "bytes": 980
+  },
+  {
+    "slug": "maserati",
+    "page": "https://commons.wikimedia.org/wiki/File:Maserati_logo_2.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Maserati_logo_2.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/maserati.svg",
+    "bytes": 5601
+  },
+  {
+    "slug": "lexus",
+    "page": "https://commons.wikimedia.org/wiki/File:Lexus.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Lexus.svg",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/lexus.svg",
+    "bytes": 3472
+  },
+  {
+    "slug": "corvette",
+    "page": "https://commons.wikimedia.org/wiki/File:Logo_Corvette_-Transparency.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Logo_Corvette_-Transparency.png",
+    "file": "/Users/lxp/Codes/lxp-shopify/outputs/valvetronic-home-vehicles-20261026/clean-originals/corvette.png",
+    "bytes": 354170
+  }
+]
+Honda source correction — automotive H (replaces motorcycle wing): https://github.com/simple-icons/simple-icons/blob/develop/icons/honda.svg (CC0).
+Range Rover logo by JohnBeyene, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Range_Rover_logo.svg ; colour adapted, geometry unchanged. https://creativecommons.org/licenses/by-sa/4.0/
+VehicleSpecs vector library license: ../navigation/vehicle-logos-LICENSE
