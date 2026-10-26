@@ -16,7 +16,8 @@
 .card:focus-visible { outline: 2px solid #c9b594; outline-offset: -3px; }
 .image { position: absolute; inset: 0; overflow: hidden; background: #252725; }
 .image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,#0000001a 35%,#000000b3); pointer-events: none; }
-.image img { object-fit: cover; }
+.image img { object-fit: cover; transition: transform 650ms cubic-bezier(.2,.7,.2,1); }
+@media(hover:hover) and (pointer:fine) { .card:hover .image img { transform: scale(1.035); } }
 .caption { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding: 22px; }
 .caption h3 { font-size: 26px; font-weight: 400; line-height: 1.2; letter-spacing: -.04em; }
 .caption p { margin-top: 7px; font-size: 10px; color: #d3d5cf; line-height: 1.5; letter-spacing: .07em; text-transform: uppercase; }
@@ -47,4 +48,4 @@
   .caption { padding: 20px; }
   .caption h3 { font-size: 22px; }
 }
-@media(prefers-reduced-motion:reduce) { .card, .image img, .previewTrack, .previewCover, .caption > svg, .controls button { transition: none; } }
+@media(prefers-reduced-motion:reduce) { .card, .image img, .previewTrack, .previewCover, .caption > svg, .controls button { transition: none; } .card:hover .image img { transform: none; } }
