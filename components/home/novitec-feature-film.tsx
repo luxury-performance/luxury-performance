@@ -42,11 +42,8 @@ export function NovitecFeatureFilm() {
           onClick={() => setPlaying(true)}
         >
           <Image className={styles.frame} src="/images/home/novitec-purosangue-film-frame-enhanced-v1.webp" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
-          <span className={styles.carCutout} aria-hidden="true">
-            <Image src="/images/home/novitec-purosangue-cutout-v1.webp" alt="" fill sizes="(max-width: 700px) 60vw, 55vw" quality={90} />
-          </span>
           <span className={styles.thumbnailCopy} aria-hidden="true">
-            <span className={styles.thumbnailIntro}>The first</span>
+            <span className={styles.thumbnailIntro}>The 1ST</span>
             <Image className={styles.novitecMark} src="/brand/novitec.svg" alt="" width={228} height={45} />
             <span className={styles.collaboration}>×</span>
             <Image className={styles.purosangueMark} src="/brand/ferrari-purosangue-white.svg" alt="" width={663} height={96} />
