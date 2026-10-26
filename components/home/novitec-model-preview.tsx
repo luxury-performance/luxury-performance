@@ -12,14 +12,19 @@ type Props = { href: string; name: string; make: string; images: readonly ModelP
 
 export function ModelPreviewCard({ href, name, make, images }: Props) {
   const hintId = useId();
-  const [active, setActive] = useState(0);
+  const [preview, setPreview] = useState({ active: 0, previous: 0 });
+  const { active } = preview;
   const [announcement, setAnnouncement] = useState('');
   const mouseDown = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
 
+  function select(index: number) {
+    setPreview(previous => previous.active === index ? previous : { active: index, previous: previous.active });
+  }
+
   function show(index: number, announce = false) {
     const next = (index + images.length) % images.length;
-    setActive(next);
+    select(next);
     if (announce) setAnnouncement(`${images[next].label}, image ${next + 1} of ${images.length}.`);
   }
 
@@ -31,7 +36,7 @@ export function ModelPreviewCard({ href, name, make, images }: Props) {
     if (mouseDown.current && Math.hypot(event.clientX - mouseDown.current.x, event.clientY - mouseDown.current.y) > 6) dragged.current = true;
     const hoverCount = images.length - 1;
     const index = 1 + Math.max(0, Math.min(hoverCount - 1, Math.floor((event.clientX - bounds.left) / bounds.width * hoverCount)));
-    setActive(previous => previous === index ? previous : index);
+    select(index);
   }
 
   function previewKey(event: KeyboardEvent<HTMLAnchorElement>) {
@@ -50,7 +55,7 @@ export function ModelPreviewCard({ href, name, make, images }: Props) {
     data-preview-index={active}
     onPointerEnter={previewAt}
     onPointerMove={previewAt}
-    onPointerLeave={event => { if (event.pointerType === 'mouse') { mouseDown.current = null; setActive(0); } }}
+    onPointerLeave={event => { if (event.pointerType === 'mouse') { mouseDown.current = null; select(0); } }}
     onPointerDown={event => { dragged.current = false; mouseDown.current = event.pointerType === 'mouse' ? { x: event.clientX, y: event.clientY } : null; }}
     onPointerUp={() => { mouseDown.current = null; }}
     onPointerCancel={() => { mouseDown.current = null; dragged.current = false; }}
@@ -59,7 +64,7 @@ export function ModelPreviewCard({ href, name, make, images }: Props) {
   >
     <div className={`${styles.image} ${styles.previewImage}`}>
       <Link href={href} className={styles.previewLink} aria-label={`Shop NOVITEC for ${make} ${name}`} aria-describedby={hintId} onKeyDown={previewKey}>
-        <span className={styles.previewTrack} style={{ transform: `translateX(${-active * 100}%)` }}>
+        <span className={styles.previewTrack} style={{ transform: `translateX(${-active * 100}%)`, transitionDuration: active !== 0 && preview.previous !== 0 ? '450ms' : '0ms' }}>
           {images.map((photo, index) => <span key={photo.image} className={styles.previewFrame} aria-hidden={active !== index}>
             <Image src={`/images/novitec-models/${photo.image}`} alt={photo.alt} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw" draggable={false}/>
           </span>)}

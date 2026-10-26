@@ -8,10 +8,10 @@ import styles from './novitec-models.module.css';
 import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
 
 const purosangueImages: readonly ModelPreviewImage[] = [
-  { image: 'purosangue-gallery/01-front-three-quarter.jpg', label: 'Front three-quarter', alt: 'Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, front three-quarter view' },
-  { image: 'purosangue-gallery/02-rear-three-quarter.jpg', label: 'Rear three-quarter', alt: 'Red NOVITEC Ferrari Purosangue ESTESO, rear three-quarter view' },
-  { image: 'purosangue-gallery/03-forged-wheel.jpg', label: 'Forged wheel', alt: 'Gold NOVITEC forged wheel and carbon wheel arch on a red Ferrari Purosangue' },
-  { image: 'purosangue-gallery/04-carbon-bonnet.jpg', label: 'Carbon bonnet', alt: 'Carbon bonnet, Ferrari badge and yellow accent on the NOVITEC Purosangue' },
+  { image: "purosangue-gallery/14-rear-wheel-cover.jpg", label: "Rear wheel and body", alt: "Red NOVITEC Ferrari Purosangue ESTESO with a gold rear wheel and carbon wheel arch" },
+  { image: "purosangue-gallery/06-front-corner.jpg", label: "Front corner", alt: "Red NOVITEC Ferrari Purosangue front corner with carbon fibre splitter and yellow accent" },
+  { image: "purosangue-gallery/15-elevated-front.jpg", label: "Elevated front three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, elevated front three-quarter view" },
+  { image: "purosangue-gallery/19-rear-three-quarter.jpg", label: "Rear three-quarter", alt: "Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, rear three-quarter view" },
 ];
 
 type Model = { name: string; make: string; image: string; collection?: string; href?: string; preview?: readonly ModelPreviewImage[] };

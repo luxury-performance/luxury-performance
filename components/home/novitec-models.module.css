@@ -30,7 +30,7 @@
 .previewImage { user-select: none; }
 .previewLink { position: absolute; inset: 0; }
 .previewLink:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
-.previewTrack { display: flex; width: 100%; height: 100%; transition: transform 320ms cubic-bezier(.22,.61,.36,1); }
+.previewTrack { display: flex; width: 100%; height: 100%; transition: transform 450ms cubic-bezier(.22,.61,.36,1); }
 .previewFrame { position: relative; flex: 0 0 100%; height: 100%; pointer-events: none; }
 .card:hover .previewImage img { transform: none; }
 .previewControl { position: absolute; top: 50%; transform: translateY(-50%); display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #101112b3; color: #fff; }

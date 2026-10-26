@@ -46,15 +46,16 @@ First carousel photograph from the official NOVITEC Instagram account, retrieved
 
 Purosangue hover preview gallery, retrieved 2026-10-26.
 Original NOVITEC photographs preserved; Next.js provides display optimization.
+Owner-selected sequence: photo 14 at rest; photos 6, 15 and 19 on hover.
 
-purosangue-gallery/01-front-three-quarter.jpg
-https://www.instagram.com/p/DdRUQmJCP3N/?img_index=17
+purosangue-gallery/14-rear-wheel-cover.jpg
+https://www.instagram.com/p/DdRUQmJCP3N/?img_index=14
 
-purosangue-gallery/02-rear-three-quarter.jpg
-https://www.instagram.com/p/DdRUQmJCP3N/?img_index=1
+purosangue-gallery/06-front-corner.jpg
+https://www.instagram.com/p/DdRUQmJCP3N/?img_index=6
 
-purosangue-gallery/03-forged-wheel.jpg
-https://www.instagram.com/p/DdRUQmJCP3N/?img_index=16
+purosangue-gallery/15-elevated-front.jpg
+https://www.instagram.com/p/DdRUQmJCP3N/?img_index=15
 
-purosangue-gallery/04-carbon-bonnet.jpg
-https://www.instagram.com/p/DdRUQmJCP3N/?img_index=18
+purosangue-gallery/19-rear-three-quarter.jpg
+https://www.instagram.com/p/DdRUQmJCP3N/?img_index=19
