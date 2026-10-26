@@ -21,7 +21,7 @@ export async function HomeProducts() {
   return <div className={styles.productGrid}>
     {featured.map(product => <Link className={styles.productCard} key={product.id} href={`/products/${product.handle}`} title={product.title}>
       <div className={styles.productImage}><img src={`${product.featuredImage!.url}${product.featuredImage!.url.includes('?') ? '&' : '?'}width=700`} alt={product.featuredImage!.altText || product.title} loading="lazy" width="700" height="700" /></div>
-      <h3>{product.title.replace(/^NOVITEC\s*[-–]\s*/i, '').split(/\s+for\s+/i)[0]}</h3>
+      <h3>{product.title.split(/\s+for\s+/i)[0]}</h3>
       <p>From {money(product.priceRange.minVariantPrice)}</p>
     </Link>)}
   </div>;
