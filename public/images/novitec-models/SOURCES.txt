@@ -81,7 +81,7 @@ Original official NOVITEC Instagram JPEGs preserved; Next.js provides display op
 Covers selected by the owner; three complementary hover photos selected from each matching post.
 12Cilindri hover sequence explicitly selected by the owner: 13, 7, 17.
 
-F8: photo 5 at rest; photos 1, 2, 4 on hover.
+F8: generated front-wheel cover at rest; original photos 1, 2, 4 on hover. Original photo 5 retained below.
 f8-gallery/05-exhaust-detail.jpg
 https://www.instagram.com/p/DHvvcOqIUAL/?img_index=5
 
@@ -107,7 +107,7 @@ https://www.instagram.com/p/DewsCMOjPsW/?img_index=2
 812-gallery/14-rear-three-quarter.jpg
 https://www.instagram.com/p/DewsCMOjPsW/?img_index=14
 
-Urus: photo 4 at rest; photos 3, 5, 7 on hover.
+Urus: photo 4 at rest; photos 3, 2, 8 on hover, updated at the owner’s request. Original photos 5 and 7 retained.
 urus-gallery/04-front-corner.jpg
 https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=4
 
@@ -184,3 +184,14 @@ https://www.instagram.com/p/DTx0TKgjJV8/?img_index=15
 
 spectre-gallery/17-front-wheel.jpg
 https://www.instagram.com/p/DTx0TKgjJV8/?img_index=17
+
+f8-gallery/00-front-wheel-cover-v2.webp
+AI-generated cover, 2026-10-26, built-in imagegen. Camera angle and framing based on the official NOVITEC McLaren 750S photo 7 (C7jiruSoSM2). Ferrari F8 geometry, black NF10 wheels, yellow calipers, orange-red paint and carbon side-skirt extension referenced from DHvvcOqIUAL photos 1, 2, 4 and 6. Composition flipped horizontally at the owner’s request. Original F8 cover and all three original hover images preserved. Full-resolution PNG master retained in the generated-images folder; WebP delivery has no resizing.
+
+Owner-selected Urus hover replacements, 2026-10-26. Original official NOVITEC JPEGs preserved.
+
+urus-gallery/02-front-fender-detail.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=2
+
+urus-gallery/08-rear-detail.jpg
+https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=8

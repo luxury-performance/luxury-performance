@@ -4,9 +4,9 @@ import type { ModelPreviewImage } from './novitec-model-preview';
 export const additionalModelGalleries = {
   "f8": [
     {
-      "image": "f8-gallery/05-exhaust-detail.jpg",
-      "label": "Exhaust and diffuser",
-      "alt": "Red NOVITEC Ferrari F8 Tributo exhaust outlet and carbon rear diffuser detail"
+      "image": "f8-gallery/00-front-wheel-cover-v2.webp",
+      "label": "Front wheel and carbon side skirt",
+      "alt": "Orange-red NOVITEC Ferrari F8 Tributo front wheel with black NF10 spokes, yellow brake caliper and carbon side skirt"
     },
     {
       "image": "f8-gallery/01-front-three-quarter.jpg",
@@ -58,14 +58,14 @@ export const additionalModelGalleries = {
       "alt": "White NOVITEC Lamborghini Urus ESTESO with black carbon detailing, straight front view"
     },
     {
-      "image": "urus-gallery/05-side-profile.jpg",
-      "label": "Side profile",
-      "alt": "White NOVITEC Lamborghini Urus ESTESO with black wheels, side profile"
+      "image": "urus-gallery/02-front-fender-detail.jpg",
+      "label": "Front fender and carbon detail",
+      "alt": "White NOVITEC Lamborghini Urus ESTESO front fender vent, red carbon accent and carbon mirror"
     },
     {
-      "image": "urus-gallery/07-rear-three-quarter.jpg",
-      "label": "Rear three-quarter",
-      "alt": "White NOVITEC Lamborghini Urus ESTESO with carbon rear detailing, rear three-quarter view"
+      "image": "urus-gallery/08-rear-detail.jpg",
+      "label": "Rear body and diffuser",
+      "alt": "White NOVITEC Lamborghini Urus ESTESO rear wheel, spoiler, exhaust and carbon rear diffuser"
     }
   ],
   "sf90": [
