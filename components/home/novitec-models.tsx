@@ -5,9 +5,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import styles from './novitec-models.module.css';
+import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
 
-const models = [
-  { name: 'Purosangue', make: 'Ferrari', image: 'purosangue.jpg', collection: 'ferrari-purosangue' },
+const purosangueImages: readonly ModelPreviewImage[] = [
+  { image: 'purosangue-gallery/01-front-three-quarter.jpg', label: 'Front three-quarter', alt: 'Red NOVITEC Ferrari Purosangue ESTESO with gold wheels, front three-quarter view' },
+  { image: 'purosangue-gallery/02-rear-three-quarter.jpg', label: 'Rear three-quarter', alt: 'Red NOVITEC Ferrari Purosangue ESTESO, rear three-quarter view' },
+  { image: 'purosangue-gallery/03-forged-wheel.jpg', label: 'Forged wheel', alt: 'Gold NOVITEC forged wheel and carbon wheel arch on a red Ferrari Purosangue' },
+  { image: 'purosangue-gallery/04-carbon-bonnet.jpg', label: 'Carbon bonnet', alt: 'Carbon bonnet, Ferrari badge and yellow accent on the NOVITEC Purosangue' },
+];
+
+type Model = { name: string; make: string; image: string; collection?: string; href?: string; preview?: readonly ModelPreviewImage[] };
+
+const models: Model[] = [
+  { name: 'Purosangue', make: 'Ferrari', image: purosangueImages[0].image, collection: 'ferrari-purosangue', preview: purosangueImages },
   { name: 'Revuelto', make: 'Lamborghini', image: 'revuelto.jpg', collection: 'lamborghini-revuelto' },
   { name: 'F8', make: 'Ferrari', image: 'f8.jpg', collection: 'ferrari-f8' },
   { name: '812', make: 'Ferrari', image: '812.jpg', href: '/shop?brand=novitec&make=ferrari&q=Ferrari+812' },
@@ -62,10 +72,12 @@ export function NovitecModels() {
         <div className={styles.image}><Image src="/images/novitec-models/all-novitec-purosangue-esteso-original.jpg" alt="Grey NOVITEC Ferrari Purosangue ESTESO outside NOVITEC headquarters" fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
         <div className={styles.caption}><div><h3>All NOVITEC</h3><p>Explore all parts</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
       </Link></li>
-      {models.map(model => <li key={model.name} className={styles.item}><Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
-        <div className={styles.image}><Image src={`/images/novitec-models/${model.image}`} alt={`NOVITEC ${model.make} ${model.name}`} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
-        <div className={styles.caption}><div><h3>{model.name}</h3><p>{model.make}</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
-      </Link></li>)}
+      {models.map(model => <li key={model.name} className={styles.item}>
+        {model.preview ? <ModelPreviewCard href={model.href || `/collections/${model.collection}?brand=novitec`} name={model.name} make={model.make} images={model.preview}/> : <Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
+          <div className={styles.image}><Image src={`/images/novitec-models/${model.image}`} alt={`NOVITEC ${model.make} ${model.name}`} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
+          <div className={styles.caption}><div><h3>{model.name}</h3><p>{model.make}</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
+        </Link>}
+      </li>)}
     </ul>
   </section>;
 }
