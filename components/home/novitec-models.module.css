@@ -34,7 +34,7 @@
 .previewMedia::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 38%,#000000b8); opacity: 0; pointer-events: none; transition: opacity 280ms ease; }
 @media(min-width:701px) and (hover:hover) and (pointer:fine) {
   .previewCard:is(:hover,:focus-within) .previewMedia { height: calc(100% + var(--preview-caption-height)); }
-  .previewCard:is(:hover,:focus-within) > .caption { background: transparent; border-top-color: transparent; }
+  .previewCard:is(:hover,:focus-within) > .caption { background: transparent; border-top-color: transparent; transition-delay: 360ms; }
   .previewCard:is(:hover,:focus-within) .previewMedia::after { opacity: 1; }
   .previewCard:is(:hover,:focus-within) .caption p { color: #d3d5cf; }
 }
