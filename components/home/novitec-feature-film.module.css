@@ -12,13 +12,12 @@
 .poster::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #05080ce8, #05080ca3 32%, #05080c18 57%, transparent 72%), linear-gradient(0deg, #0506099c, transparent 55%); }
 /* Separate vector logos and live type keep the thumbnail sharp at every size. */
 .thumbnailCopy { position: absolute; z-index: 1; inset: 10% auto 10% 5%; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 35%; text-align: center; pointer-events: none; }
-.thumbnailIntro, .thumbnailLocation { color: #fff; font-size: clamp(18px, 3.2vw, 48px); font-weight: 550; line-height: 1.1; letter-spacing: -.04em; }
-.thumbnailIntro { margin-bottom: 6%; }
+.thumbnailLocation { color: #fff; font-size: clamp(18px, 2.6vw, 38px); font-weight: 550; line-height: 1.15; letter-spacing: -.04em; }
 .thumbnailCopy .novitecMark { width: 77%; height: auto; }
 .collaboration { margin: 4% 0; color: #bfc3c7; font-size: clamp(13px, 1.7vw, 25px); line-height: 1; font-weight: 300; }
 .thumbnailCopy .purosangueMark { width: 100%; height: auto; }
 .thumbnailLocation { margin-top: 6%; }
-.thumbnailCredit { margin-top: 7%; color: #bfc3c7; font-size: clamp(7px, .8vw, 11px); line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; }
+.thumbnailCredit { margin-top: 7%; padding-left: 14px; border-left: 2px solid #e3232b; color: #d4d7d8; font-size: clamp(7px, .8vw, 11px); line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; }
 .play { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 72px; height: 72px; border: 1px solid #ffffff80; border-radius: 50%; background: #101112c7; backdrop-filter: blur(8px); transition: background 180ms ease; }
 .play svg { margin-left: 3px; }
 .poster:hover .play { background: #222426; }
@@ -38,9 +37,9 @@
   .description { font-size: 12px; }
   .player { border-radius: 6px; }
   .thumbnailCopy { left: 4%; width: 37%; }
-  .thumbnailIntro, .thumbnailLocation { font-size: clamp(14px, 4.1vw, 28px); }
+  .thumbnailLocation { font-size: clamp(12px, 3.4vw, 23px); }
   .collaboration { font-size: 11px; }
-  .thumbnailCredit { font-size: 6px; letter-spacing: .06em; }
+  .thumbnailCredit { padding-left: 8px; border-left-width: 1px; font-size: 6px; letter-spacing: .06em; }
   .play { width: 44px; height: 44px; }
   .play svg { width: 20px; height: 20px; }
   .footer { flex-wrap: wrap; gap: 0 24px; margin-top: 12px; }

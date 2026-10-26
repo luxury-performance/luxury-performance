@@ -43,11 +43,10 @@ export function NovitecFeatureFilm() {
         >
           <Image className={styles.frame} src="/images/home/novitec-purosangue-film-frame-enhanced-v1.webp" alt="" fill sizes="(max-width: 700px) 100vw, 90vw" quality={90} />
           <span className={styles.thumbnailCopy} aria-hidden="true">
-            <span className={styles.thumbnailIntro}>The 1ST</span>
             <Image className={styles.novitecMark} src="/brand/novitec.svg" alt="" width={228} height={45} />
             <span className={styles.collaboration}>×</span>
             <Image className={styles.purosangueMark} src="/brand/ferrari-purosangue-white.svg" alt="" width={663} height={96} />
-            <strong className={styles.thumbnailLocation}>in Dubai.</strong>
+            <strong className={styles.thumbnailLocation}>The 1st in Dubai.</strong>
             <span className={styles.thumbnailCredit}>With Ahmed Amwell</span>
           </span>
           <span className={styles.play}><Play size={26} fill="currentColor" strokeWidth={1.5} aria-hidden="true" /></span>
