@@ -1,0 +1,142 @@
+.section { margin-top: 76px; padding-top: 34px; border-top: 1px solid #ffffff1b; color: #f1f2f0; }
+.topline { display: flex; justify-content: space-between; gap: 20px; color: #848984; font-size: 8px; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; }
+.topline span:last-child { color: #646a66; }
+.layout { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); align-items: start; gap: 48px; margin-top: 18px; }
+.copy { position: relative; z-index: 1; min-width: 0; padding: 28px 0 0; }
+.finishes { display: flex; flex-wrap: wrap; gap: 2px 20px; margin: 28px 0 0; padding: 0; border: 0; }
+.finishes legend { margin-bottom: 9px; font-size: 8px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: #777e78; }
+.finishes button { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0; background: transparent; color: #8b938c; font-size: 11px; }
+.finishes button[aria-pressed="true"] { color: #fff; }
+.finishes button > span { width: 15px; height: 15px; border-radius: 50%; box-shadow: inset 0 0 0 1px #ffffff40; }
+.finishes button[aria-pressed="true"] > span { outline: 1px solid #b4bab4; outline-offset: 4px; }
+.titanium { background: conic-gradient(from 20deg, #d9d3c5, #6f6073, #b59158, #e6ded2, #70696e, #d9d3c5); }
+.stainless { background: linear-gradient(120deg, #5e6267, #e1e3e4 30%, #8b9096 48%, #d9dddf 73%, #565e63); }
+.routeToggle { display: flex; width: fit-content; align-items: center; gap: 10px; min-height: 44px; margin-top: 9px; padding: 0; background: transparent; color: #8b938c; font-size: 11px; }
+.routeToggle[aria-pressed="true"] { color: #f1f2f0; }
+.routeToggle > span { width: 15px; height: 15px; border-radius: 50%; background: conic-gradient(#58ace0 0 60deg, #64c79a 60deg 120deg, #e1c06d 120deg 180deg, #b798e7 180deg 240deg, #e889aa 240deg 300deg, #f09a4f 300deg); }
+.routeToggle[aria-pressed="true"] > span { outline: 1px solid #b4bab4; outline-offset: 4px; }
+.routeLegend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; padding: 0; list-style: none; }
+.routeLegend li { display: flex; align-items: center; gap: 7px; color: #b3b9b4; font-size: 10px; line-height: 1.5; }
+.routeLegend i { flex: 0 0 7px; height: 7px; border-radius: 50%; }
+.routeLegend li > span { color: #69766c; font-size: 8px; }
+.visual { position: relative; min-width: 0; }
+.mode { position: absolute; top: 12px; right: 0; z-index: 2; display: flex; gap: 2px; }
+.mode button { min-width: 48px; min-height: 44px; padding: 0 12px; border-bottom: 1px solid transparent; background: transparent; color: #7d857e; font-size: 9px; }
+.mode button[aria-pressed="true"] { color: #eef1ec; border-bottom-color: #949d95; }
+.stage { position: relative; height: clamp(400px, 38vw, 565px); isolation: isolate; background: radial-gradient(ellipse at 50% 48%, #24282c80, #10111200 65%); }
+.canvas, .photography { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 220ms ease; }
+.visible { opacity: 1; pointer-events: auto; }
+.canvas canvas { display: block; width: 100%; height: 100%; cursor: grab; outline-offset: -5px; }
+.canvas canvas:active { cursor: grabbing; }
+.photography { overflow: hidden; border-radius: 8px; }
+.photography img { object-fit: cover; }
+.stageFooter { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: -12px; position: relative; }
+.drag { display: flex; align-items: center; gap: 10px; font-size: 9px; letter-spacing: .03em; color: #929a93; }
+.tools { display: flex; gap: 2px; }
+.tools button { display: grid; place-items: center; width: 44px; height: 44px; color: #99a49b; background: transparent; }
+.tools button:hover, .tools button[aria-pressed="true"] { color: #fff; }
+.bottom { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 26px; border-top: 1px solid #ffffff15; padding-top: 18px; }
+.views { display: flex; flex-wrap: wrap; gap: clamp(14px, 3vw, 40px); }
+.views button { display: flex; align-items: center; gap: 10px; min-height: 44px; background: transparent; padding: 0; color: #848e85; font-size: 10px; }
+.views button span { font-size: 8px; color: #626e65; }
+.views button[aria-pressed="true"] { color: #f0f4ee; }
+.views button[aria-pressed="true"] span { color: #d5b385; }
+.detail { max-width: 250px; text-align: right; color: #69766c; font-size: 9px; line-height: 1.7; }
+.section button:disabled { opacity: .4; cursor: default; }
+.section button:focus-visible, .section input:focus-visible, .section select:focus-visible { outline: 2px solid #c9b594; outline-offset: 4px; }
+@media (max-width: 950px) { .layout { grid-template-columns: 230px minmax(0, 1fr); gap: 26px; } .detail { display: none; } }
+@media (max-width: 700px) {
+ .section { margin-top: 50px; padding-top: 25px; }
+ .topline { font-size: 7px; gap: 12px; }
+ .topline span:last-child { text-align: right; max-width: 85px; }
+ .layout { grid-template-columns: 1fr; gap: 0; margin-top: 26px; }
+ .copy { padding: 18px 0 0; order: 2; }
+ .finishes { margin-top: 20px; }
+ .routeLegend { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; }
+ .routeLegend li { font-size: 9px; gap: 6px; }
+ .visual { order: 1; margin-top: 0; margin-left: -12px; margin-right: -12px; }
+ .mode { right: 12px; top: 0; }
+ .stage { height: 340px; }
+ .stageFooter { margin: -10px 12px 0; }
+ .drag { font-size: 8px; gap: 7px; }
+ .tools { gap: 0; }
+ .tools button { width: 44px; }
+ .bottom { margin-top: 18px; padding-top: 12px; gap: 0; }
+ .views { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+ .views button { gap: 6px; font-size: 9px; }
+ .views button span { font-size: 7px; }
+}
+@media (prefers-reduced-motion: reduce) { .canvas, .photography { transition: none; } }
+
+.routeKey { margin-top: 16px; }
+.routeKey summary { min-height: 32px; cursor: pointer; color: #9ba69e; font-size: 10px; }
+@media (min-width: 701px) { .visual { position: sticky; top: 120px; } }
+
+/* Homepage presentation; the route study keeps its existing compact layout. */
+.cinematic { position: relative; margin-top: clamp(58px, 7vw, 112px); padding: 38px 0 30px; overflow: hidden; border-bottom: 1px solid #ffffff1b; }
+.cinematic .topline { color: #a9aaa3; font-size: 9px; letter-spacing: .16em; }
+.cinematic .topline span:last-child { color: #8b8d88; }
+.cinematic .layout { grid-template-columns: minmax(250px, .73fr) minmax(0, 1.9fr); gap: 18px; align-items: center; margin-top: 18px; }
+.cinematic .copy { padding: 24px 0 36px; z-index: 2; }
+.productEyebrow { color: #9c998f; font-size: 9px; line-height: 1.8; text-transform: uppercase; letter-spacing: .13em; }
+.productTitle { margin: 24px 0 22px; font-size: clamp(49px, 5.7vw, 84px); font-weight: 400; line-height: .99; letter-spacing: -.065em; }
+.productTitle em { color: #c4b59b; font-weight: 400; }
+.productIntro { max-width: 310px; color: #a4a6a1; font-size: 12px; line-height: 1.9; }
+.cinematic .finishes { margin-top: 30px; gap: 8px 25px; }
+.cinematic .finishes legend { font-size: 8px; color: #8e928c; letter-spacing: .13em; }
+.cinematic .finishes button { font-size: 12px; gap: 12px; color: #949b94; transition: color 180ms ease; }
+.cinematic .finishes button[aria-pressed="true"] { color: #f5f6f3; }
+.cinematic .finishes button > span { width: 18px; height: 18px; }
+.productLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 34px; margin-top: 27px; padding-bottom: 12px; border-bottom: 1px solid #ffffff40; color: #e3e4dd; font-size: 11px; }
+.productLink svg { transition: transform 180ms ease; }
+.productLink:hover svg { transform: translate(2px, -2px); }
+.cinematic .visual { position: relative; top: auto; min-width: 0; }
+.cinematic .stage { height: clamp(430px, 43vw, 660px); background: radial-gradient(ellipse at 51% 48%, #34302a54, #10111200 65%); }
+.liveLabel { position: absolute; top: 8px; right: 6px; z-index: 2; display: flex; align-items: center; gap: 9px; min-height: 32px; color: #a3aaa1; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; pointer-events: none; }
+.liveLabel > span { width: 4px; height: 4px; border-radius: 50%; background: #c3b393; box-shadow: 0 0 14px #d6bc8b40; }
+.cinematic .stageFooter { margin-top: -27px; padding: 0 6px 0 20px; }
+.cinematic .drag { font-size: 8px; color: #89928a; }
+.cinematic .tools button { color: #a9afa7; }
+.cinematic .tools button:hover { color: #fff; }
+.cinematic .bottom { margin-top: 12px; padding-top: 17px; }
+.cinematic .views { gap: clamp(20px, 3vw, 50px); }
+.cinematic .views button { font-size: 10px; }
+.cinematic .detail { max-width: 270px; color: #7e887f; font-size: 9px; }
+.cinematic[data-entered="true"] .productEyebrow { animation: exhaustCopyIn 900ms both; }
+.cinematic[data-entered="true"] .productTitle { animation: exhaustCopyIn 1100ms 100ms both; }
+.cinematic[data-entered="true"] .productIntro { animation: exhaustCopyIn 1100ms 220ms both; }
+@keyframes exhaustCopyIn { from { opacity: .25; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 1000px) and (min-width: 701px) {
+ .cinematic .layout { grid-template-columns: 240px minmax(0, 1fr); gap: 8px; }
+ .cinematic .stage { height: 490px; }
+ .productTitle { font-size: 55px; }
+ .productIntro { font-size: 11px; }
+}
+@media (max-width: 700px) {
+ .cinematic { margin-top: 58px; padding-top: 27px; padding-bottom: 18px; }
+ .cinematic .topline { font-size: 7px; letter-spacing: .10em; }
+ .cinematic .topline span:last-child { max-width: 115px; }
+ .cinematic .layout { display: flex; flex-direction: column; align-items: stretch; gap: 0; margin-top: 29px; }
+ .cinematic .copy { order: 0; padding: 0; }
+ .productEyebrow { font-size: 8px; }
+ .productTitle { margin-top: 18px; margin-bottom: 18px; font-size: clamp(52px, 13vw, 76px); line-height: 1; }
+ .productTitle br { display: none; }
+ .productTitle em { margin-left: .13em; }
+ .productIntro { max-width: 310px; font-size: 11px; }
+ .cinematic .finishes { margin-top: 23px; gap: 5px 28px; }
+ .cinematic .finishes button { font-size: 11px; }
+ .productLink { margin-top: 15px; font-size: 10px; padding-bottom: 10px; }
+ .cinematic .visual { order: 1; margin: 16px -18px 0; }
+ .cinematic .stage { height: clamp(330px, 102vw, 480px); }
+ .liveLabel { top: 5px; right: 22px; font-size: 7px; }
+ .cinematic .stageFooter { margin: -16px 18px 0; padding: 0; }
+ .cinematic .drag { font-size: 7px; gap: 6px; }
+ .cinematic .tools button { width: 38px; min-height: 44px; }
+ .cinematic .bottom { margin-top: 20px; }
+ .cinematic .views { display: flex; justify-content: space-between; gap: 8px; }
+ .cinematic .views button { font-size: 8px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .cinematic[data-entered="true"] .productEyebrow, .cinematic[data-entered="true"] .productTitle, .cinematic[data-entered="true"] .productIntro { animation: none; }
+ .productLink svg { transition: none; }
+}

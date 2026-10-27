@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import styles from './valvetronic-vehicles.module.css';
 import { ValvetronicFeatureFilm } from './valvetronic-feature-film';
+import { ValvetronicExhaustShowcase } from './valvetronic-exhaust-showcase';
 
 type VehicleBrand = { name: string; mark: string; logo: string; make?: string; search?: string; monochrome?: boolean };
 
@@ -51,6 +52,7 @@ export function ValvetronicVehicles() {
           </li>;
         })}
       </ul>
+      <ValvetronicExhaustShowcase cinematic />
       <ValvetronicFeatureFilm />
     </div>
   </section>;

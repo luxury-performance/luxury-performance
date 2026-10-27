@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { HeaderSearch } from './header-search';
 import { CartButton } from './shop/cart-provider';
 import { BrandLogo } from './brand-logo';
 import { usePathname } from 'next/navigation';
@@ -45,7 +46,7 @@ function ShopContents({ selected, select, prefix, close, dismiss, label }: { sel
         }}>{menu.label}</button>)}
       </div>
       </div>
-      <div className={styles.shopActions}><Link className={styles.shopAll} href="/shop" onClick={close}>View all parts <ArrowUpRight size={16}/></Link>{dismiss && <button className={styles.close} aria-label="Close shop" onClick={dismiss}><X size={19}/></button>}</div>
+      <div className={styles.shopActions}><Link className={styles.shopAll} href="/collections/in-stock" onClick={close}>All in stock <ArrowUpRight size={16}/></Link><Link className={styles.shopAll} href="/shop" onClick={close}>View all parts <ArrowUpRight size={16}/></Link>{dismiss && <button className={styles.close} aria-label="Close shop" onClick={dismiss}><X size={19}/></button>}</div>
     </div>
     {menus.map(menu => <div key={menu.key} id={`${prefix}-panel-${menu.key}`} role="tabpanel" aria-labelledby={`${prefix}-tab-${menu.key}`} hidden={selected !== menu.key} data-shop-category={menu.key}>
       {selected === menu.key && (menu.key === 'brands' ? <BrandMenu close={close}/> : <VehicleMenu close={close}/>)}
@@ -133,7 +134,7 @@ export function Header() {
         </div>
       </nav>
       <Link inert={open} className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
-      <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
+      <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><HeaderSearch onOpen={close}/><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
     </header>
     {shopMenu && <div ref={shopGlass} className="navigation-glass-surface navigation-shop-glass" aria-hidden="true" />}
     {open && <div className="navigation-glass-surface" aria-hidden="true" />}

@@ -141,3 +141,7 @@
 @media (max-width: 700px) {
   .mobile nav .allModels { min-height: 44px; align-items: center; }
 }
+
+@media(max-width:700px){.shopActions{gap:20px;flex-wrap:wrap}.header .actions{gap:12px}}
+
+@media(max-width:380px){.header :global(.company-logo){width:100px}.header .actions{gap:4px}}
