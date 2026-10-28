@@ -1,0 +1,35 @@
+.section{position:relative;--cinema-runway:760svh;height:calc(var(--cinema-runway) + var(--exhaust-stage-height,100svh));margin:92px calc(50% - 50vw) 0;color:#eee;background:#0b0d0f;overflow-x:clip}
+.pin{position:sticky;top:0;height:var(--exhaust-stage-height,100svh);min-height:620px;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 55% 52%,#20212666,transparent 58%);--type-opacity:.74;--detail-opacity:0;--hint-opacity:1}
+.topline{position:absolute;z-index:3;inset:calc(112px + 4vh) var(--gutter) auto;display:flex;justify-content:space-between;gap:24px;font-size:9px;line-height:1.7;text-transform:uppercase;letter-spacing:.15em;color:#8d918f}
+.wordmark{position:absolute;z-index:0;left:5%;top:50%;transform:translateY(-50%);width:90%;height:auto;pointer-events:none;filter:grayscale(1);opacity:var(--type-opacity);user-select:none}
+
+.canvas{position:absolute;z-index:1;inset:16% 0 14%;opacity:0;pointer-events:none;transition:opacity .7s ease}
+.canvas.ready{opacity:1}.canvas canvas{display:block;width:100%;height:100%;pointer-events:none}
+.bottom{position:absolute;z-index:3;inset:auto var(--gutter) 5.5vh;display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.caption p{font-size:11px;line-height:1.8;color:#9b9e9b;margin:0 0 15px;opacity:var(--detail-opacity)}
+.caption a{display:inline-flex;align-items:center;justify-content:space-between;gap:40px;min-height:44px;padding-bottom:8px;border-bottom:1px solid #ffffff50;color:#eeeee8;font-size:12px;text-decoration:none}
+.finishes{display:flex;gap:24px;border:0;padding:0;margin:0 48px 7px 0;min-width:0}.finishes button{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:0;min-height:44px;color:#969d99;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}.finishes button[aria-pressed=true]{color:#fff}.finishes i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px #ffffff40}.finishes button[aria-pressed=true] i{outline:1px solid #ffffff90;outline-offset:4px}.titanium{background:conic-gradient(from 20deg,#d9d3c5,#6f6073,#b59158,#e6ded2,#70696e,#d9d3c5)}.stainless{background:linear-gradient(120deg,#5e6267,#e1e3e4 30%,#8b9096 48%,#d9dddf 73%,#565e63)}.finishes:disabled{opacity:.3}.finishes:disabled button{cursor:default}
+.scrollHint{display:flex;align-items:center;gap:16px;position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-size:9px;letter-spacing:.06em;color:#9b9e9b;opacity:var(--hint-opacity);white-space:nowrap;pointer-events:none}
+.loading{position:absolute;z-index:2;top:67%;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;color:#8d928f;font-size:9px;letter-spacing:.08em;white-space:nowrap}.loading i{width:24px;height:1px;background:#c2b99e}
+.section button:focus-visible,.section a:focus-visible{outline:1px solid #d7c5a8;outline-offset:5px}
+@media(min-width:1700px){.topline,.bottom{left:max(88px,calc((100vw - 1540px)/2));right:max(88px,calc((100vw - 1540px)/2))}}
+@media(max-width:1000px){.wordmark{left:4%;width:92%}.topline{font-size:8px}.scrollHint{left:auto;right:0;transform:none;bottom:68px}}
+@media(max-width:700px){.section{--cinema-runway:450svh;margin-top:54px}.pin{min-height:560px}.topline{top:calc(100px + 3.5vh);font-size:7px;letter-spacing:.10em;gap:22px}.topline span:last-child{text-align:right;max-width:100px}.wordmark{left:3%;width:94%;top:46%}.canvas{inset:26% -2% 25%}.bottom{bottom:5vh;align-items:flex-start;flex-direction:column;gap:20px}.caption p{font-size:10px;margin-bottom:10px}.caption a{font-size:11px;gap:55px}.finishes{gap:28px;margin:0}.finishes button{font-size:10px}.scrollHint{left:auto;right:0;bottom:15px;font-size:8px;gap:9px}.loading{top:59%;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.section{height:auto}.pin{position:relative;height:var(--exhaust-stage-height,100svh)}.canvas{transition:none}.caption p{opacity:1}.scrollHint{display:none}.wordmark{opacity:.10}}
+
+/* Short landscape windows use the visible viewport, keeping every control reachable. */
+@media (orientation:landscape) and (max-height:620px) {
+ .pin { min-height:0; }
+ .topline { top:122px; font-size:7px; }
+ .canvas { inset:144px 0 58px; }
+ .bottom { bottom:10px; align-items:center; flex-direction:row; gap:16px; }
+ .caption p { display:none; }
+ .caption a { min-height:44px; padding-bottom:0; font-size:10px; gap:18px; }
+ .finishes { margin:0 64px 0 0; gap:18px; }
+ .finishes button { min-height:44px; font-size:10px; gap:8px; }
+ .scrollHint { display:none; }
+}
+@media (orientation:landscape) and (max-height:620px) and (max-width:700px) {
+ .topline { top:110px; }
+ .canvas { inset:128px -2% 58px; }
+}

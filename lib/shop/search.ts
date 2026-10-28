@@ -1,9 +1,10 @@
 import type { CatalogProduct } from './types';
 
-export const normalizeSearch = (value: string) => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+export const normalizeSearch = (value: string) => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 
 export function matchesSearch(product: CatalogProduct, query: string) {
   const terms = normalizeSearch(query).split(' ').filter(Boolean);
+  if (!terms.length) return !query.trim();
   const text = normalizeSearch([product.title, product.vendor, product.productType, ...product.tags].join(' '));
   return terms.every(term => text.includes(term));
 }

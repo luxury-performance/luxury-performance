@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { exhaustScrollPose } from './valvetronic-exhaust-motion';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -9,7 +10,6 @@ import { editRearBank } from './valvetronic-exhaust-rear-editing';
 import { EXHAUST_ROUTE_COLORS, EXHAUST_MAIN_PART_COUNT, EXHAUST_RETURN_PART_COUNT } from './valvetronic-exhaust-palette';
 import { createUpperPlate, upperPlateFrame } from './valvetronic-exhaust-plate';
 import { createExhaustClamp } from './valvetronic-exhaust-clamps';
-import { exhaustRevealProgress } from './valvetronic-exhaust-motion';
 import { createExhaustBadge } from './valvetronic-exhaust-badges';
 import { createExhaustGussets } from './valvetronic-exhaust-gussets';
 import { mapExhaustJoinSurface } from './valvetronic-exhaust-join-surface';
@@ -18,7 +18,7 @@ import { createExhaustMetal, finishExhaustMetal, createExhaustPipeSurface, exhau
 export type ExhaustFinish = 'titanium' | 'stainless';
 export type ExhaustView = 'overview' | 'welds' | 'reverse' | 'front' | 'entry';
 export type ExhaustScene = {
-  reveal(): void;
+  progress(value: number): void;
   view(value: ExhaustView): void;
   finish(value: ExhaustFinish): void;
   routeColors(value: boolean): void;
@@ -27,21 +27,23 @@ export type ExhaustScene = {
   zoom(direction: number): void;
   dispose(): void;
 };
-type Options = { cinematic?: boolean; initialMotion?: boolean; onReveal?(): void; initialIsolated?: boolean; initialRouteColors?: boolean; reducedMotion: boolean; onInteract(): void; onError(): void };
+type Options = { cinematic?: boolean; initialIsolated?: boolean; initialRouteColors?: boolean; reducedMotion: boolean; onInteract(): void; onError(): void };
 
 /** Photo-based display reconstruction; not engineering or fitment geometry. */
 export function createExhaustScene(host: HTMLDivElement, options: Options): ExhaustScene {
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, matchMedia('(max-width: 700px)').matches ? 2 : 2.5));
+  const mobile=matchMedia('(max-width: 700px)').matches;
+  const renderer = new THREE.WebGLRenderer({ antialias:true,alpha:true,powerPreference:options.cinematic && !mobile ? 'high-performance' : 'low-power' });
+  const pixelRatio=options.cinematic && !mobile ? Math.min(2.5,Math.max(2,window.devicePixelRatio)) : Math.min(window.devicePixelRatio,mobile?2:2.5);
+  renderer.setPixelRatio(pixelRatio);
   renderer.setClearColor(0x101112, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = .9;
   const canvas = renderer.domElement;
-  canvas.setAttribute('aria-label', 'Interactive exhaust model. Drag in any direction to rotate freely. Pinch to zoom; twist with two fingers to roll. Arrow keys rotate; Home restores the photo angle.');
+  canvas.setAttribute('aria-label', options.cinematic ? 'Valvetronic Designs Huracán exhaust in titanium or stainless steel. Scroll to reveal the complete system.' : 'Interactive exhaust model. Drag in any direction to rotate freely. Pinch to zoom; twist with two fingers to roll. Arrow keys rotate; Home restores the photo angle.');
   canvas.setAttribute('role', 'img');
-  canvas.tabIndex = 0;
-  canvas.style.touchAction = 'none';
+  canvas.tabIndex = options.cinematic ? -1 : 0;
+  canvas.style.touchAction = options.cinematic ? 'pan-y' : 'none';
   host.append(canvas);
 
   const scene = new THREE.Scene();
@@ -74,7 +76,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const silver = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0xc5c6c7, metalness: 1, roughness: .19, clearcoat: .3, clearcoatRoughness: .2 }));
   const inside = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x252729, metalness: .8, roughness: .4, side: THREE.BackSide }));
   // Fine longitudinal tool marks break up the otherwise perfectly smooth reflections.
-  const grainWidth = 1024, grainHeight = 256;
+  const grainWidth = options.cinematic && !mobile ? 4096 : 2048, grainHeight = options.cinematic && !mobile ? 1024 : 512;
   const grainBytes = new Uint8Array(grainWidth * grainHeight * 4);
   const hash = (n: number) => { const v=Math.sin(n*127.1)*43758.5453; return v-Math.floor(v); };
   for (let y = 0; y < grainHeight; y++) for (let x = 0; x < grainWidth; x++) {
@@ -89,7 +91,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const grain = new THREE.DataTexture(grainBytes, grainWidth, grainHeight);
   grain.wrapS = grain.wrapT = THREE.RepeatWrapping; grain.repeat.set(4,6);
   grain.generateMipmaps = true; grain.minFilter = THREE.LinearMipmapLinearFilter; grain.magFilter = THREE.LinearFilter;
-  grain.anisotropy = Math.min(8,renderer.capabilities.getMaxAnisotropy()); grain.needsUpdate = true; textures.add(grain);
+  grain.anisotropy = Math.min(16,renderer.capabilities.getMaxAnisotropy()); grain.needsUpdate = true; textures.add(grain);
   silver.roughnessMap = grain; silver.bumpMap = grain; silver.bumpScale = .0007;
   const seamMaterial = ownMaterial(createExhaustMetal(grain, 'weld'));
   const frontBanks = [1, -1].map(sign => editOuterBank(huracanBank(sign), FINISHED_FRONT_EDITS, sign).bank);
@@ -97,7 +99,6 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   type TubeRecord = { burns: Array<{ s: number; width: number; strength: number }>; route: ExhaustRoute; material: THREE.MeshPhysicalMaterial; geometry: THREE.TubeGeometry; curve: THREE.CurvePath<THREE.Vector3>; group: THREE.Group; radiusAt(t: number): number; length: number; seams: number[]; routeColorAt(t: number): string };
   const coloredTubes: TubeRecord[] = [];
   const badges: ReturnType<typeof createExhaustBadge>[] = [];
-  const clampParts: Array<{ group: THREE.Group; rest: THREE.Vector3; direction: THREE.Vector3 }> = [];
   const coloredJunctions: Array<{ mesh: THREE.Mesh; routeMaterial: THREE.Material; surfaceMaterials: THREE.Material[]; branch?: boolean }> = [];
   const routeJunctionMaterials = EXHAUST_ROUTE_COLORS.map(item => ownMaterial(new THREE.MeshStandardMaterial({ color: item.color, roughness: .8 })));
   const up = new THREE.Vector3(0, 1, 0);
@@ -105,16 +106,17 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   type Point = [number, number, number];
 
   function geometryFor(route: ExhaustRoute, radius: number, radiusAt: (t: number) => number, wall: number) {
-    const curve = route.curve, segments = Math.max(80, Math.ceil(route.length * 34));
-    const geometry = ownGeometry(new THREE.TubeGeometry(curve, segments, radius, 32, false));
+    const curve=route.curve,segments=Math.max(80,Math.ceil(route.length*(options.cinematic && !mobile?48:34)));
+    const radialSegments=options.cinematic && !mobile?64:32;
+    const geometry=ownGeometry(new THREE.TubeGeometry(curve,segments,radius,radialSegments,false));
     const position = geometry.getAttribute('position'), normal = geometry.getAttribute('normal');
     const radial = new THREE.Vector3(), point = new THREE.Vector3();
     for (let i = 0; i <= segments; i++) {
       const t = i / segments, center = curve.getPointAt(t), tangent = curve.getTangentAt(t);
       const delta = .0005, before = Math.max(0, t - delta), after = Math.min(1, t + delta);
       const slope = (radiusAt(after) - radiusAt(before)) / ((after - before) * route.length);
-      for (let j = 0; j <= 32; j++) {
-        const index = i * 33 + j;
+      for (let j=0;j<=radialSegments;j++) {
+        const index=i*(radialSegments+1)+j;
         radial.fromBufferAttribute(normal, index);
         point.copy(center).addScaledVector(radial, radiusAt(t) - wall);
         position.setXYZ(index, point.x, point.y, point.z);
@@ -188,7 +190,6 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
       clamp.group.position.copy(topStraight.getPointAt(u));
       clamp.group.quaternion.copy(upperPlateFrame(bank).quaternion);
       bankGroup.add(clamp.group);
-      clampParts.push({group:clamp.group,rest:clamp.group.position.clone(),direction:upperPlateFrame(bank).normal});
       clamp.geometries.forEach(geometry => ownGeometry(geometry));
     }
     drawTarget = bankGroup;
@@ -244,15 +245,17 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     }
   }
 
-  // A broad, soft contact shadow anchors the product without an expensive live shadow pass.
-  const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 128;
-  const shadowContext = shadowCanvas.getContext('2d')!;
-  const gradient = shadowContext.createRadialGradient(64, 64, 6, 64, 64, 62);
-  gradient.addColorStop(0, '#0000009c'); gradient.addColorStop(.5, '#0000004c'); gradient.addColorStop(1, '#00000000');
-  shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 128, 128);
-  const shadowTexture = new THREE.CanvasTexture(shadowCanvas); textures.add(shadowTexture);
-  const shadow = new THREE.Mesh(ownGeometry(new THREE.PlaneGeometry(9, 5)), ownMaterial(new THREE.MeshBasicMaterial({ map: shadowTexture, transparent: true, depthWrite: false })));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -2.75; scene.add(shadow);
+  if(!options.cinematic) {
+    // A broad, soft contact shadow anchors the product without an expensive live shadow pass.
+    const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 128;
+    const shadowContext = shadowCanvas.getContext('2d')!;
+    const gradient = shadowContext.createRadialGradient(64, 64, 6, 64, 64, 62);
+    gradient.addColorStop(0, '#0000009c'); gradient.addColorStop(.5, '#0000004c'); gradient.addColorStop(1, '#00000000');
+    shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 128, 128);
+    const shadowTexture = new THREE.CanvasTexture(shadowCanvas); textures.add(shadowTexture);
+    const shadow = new THREE.Mesh(ownGeometry(new THREE.PlaneGeometry(9, 5)), ownMaterial(new THREE.MeshBasicMaterial({ map: shadowTexture, transparent: true, depthWrite: false })));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = -2.75; scene.add(shadow);
+  }
 
   let routeColorsEnabled = options.initialRouteColors ?? false;
   let selectedFinish: ExhaustFinish = 'titanium';
@@ -283,15 +286,12 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     gussets.finish(titanium);
     invalidate();
   }
-  function finish(value: ExhaustFinish) { selectedFinish = value; applyAppearance(); if(options.cinematic && !options.reducedMotion) { lightSweepStart=performance.now(); invalidate(); } }
+  function finish(value: ExhaustFinish) { selectedFinish = value; applyAppearance(); }
 
-  let frame = 0, disposed = false, visible = !options.cinematic, autoRotate = false, interacting = false;
-  let introRequested=Boolean(options.cinematic), introStart: number|null=null, idleElapsed=0, lightSweepStart: number|null=null;
-  let idleMotion=Boolean(options.cinematic && options.initialMotion!==false && !options.reducedMotion);
-  const plateParts=[upperPlate,...badges].map(part=>({group:part.group,rest:part.group.position.clone(),direction:upperPlateFrame(banks[0]).normal}));
+  let frame = 0, disposed = false, visible = true, autoRotate = false, interacting = false;
   let isolated = options.initialIsolated ?? false, fit = 1, lastRenderTime = 0;
   rightBank.visible = !isolated; centre.visible = !isolated;
-  const referenceOrbit: [number, number, number] = options.cinematic ? [Math.PI+.20,1.47,8.8] : [.65,1.00,11.2];
+  const referenceOrbit: [number, number, number] = options.cinematic ? [Math.PI+.20,1.47,8.6] : [.65,1.00,11.2];
   const referenceRoll = options.cinematic ? .12 : 1.97;
   const referenceTarget = options.cinematic ? new THREE.Vector3(0,-.20,-.24) : new THREE.Vector3(0,-.35,-.45);
   const target = referenceTarget.clone();
@@ -307,6 +307,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   placeCamera(orbitOrientation(referenceOrbit[0], referenceOrbit[1], referenceRoll), referenceOrbit[2]);
   const controls = new TrackballControls(camera, canvas);
   controls.target.copy(target);
+  controls.enabled = !options.cinematic;
   controls.rotateSpeed = 1.4; controls.zoomSpeed = .8;
   controls.noPan = true; controls.multiTouchRoll = true;
   controls.staticMoving = true;
@@ -315,42 +316,46 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   controls.update();
   type Transition = { start: number; fromOrientation: THREE.Quaternion; toOrientation: THREE.Quaternion; fromRadius: number; toRadius: number; fromTarget: THREE.Vector3; toTarget: THREE.Vector3 };
   let transition: Transition | null = null;
+  let scrollProgress = options.reducedMotion ? 1 : 0,requestedProgress=scrollProgress,firstProgress=true,scrollDirty=true;
+  const cinemaEye=new THREE.Vector3(),cinemaUp=new THREE.Vector3(0,0,1),cinemaScreenUp=new THREE.Vector3();
+  function applyScrollPose() {
+    const pose = exhaustScrollPose(options.reducedMotion ? 1 : scrollProgress);
+    target.set(pose.target[0],pose.target[1],pose.target[2]); controls.target.copy(target);
+    // The exhaust roof is +Z. Orbiting about it reveals the left/right sides
+    // without turning the front-facing product like a flat image.
+    cinemaEye.set(Math.sin(pose.azimuth)*Math.cos(pose.elevation),Math.cos(pose.azimuth)*Math.cos(pose.elevation),Math.sin(pose.elevation));
+    camera.position.copy(target).addScaledVector(cinemaEye,pose.radius*fit);
+    camera.up.copy(cinemaUp).applyAxisAngle(cinemaEye,pose.roll);camera.lookAt(target);
+    model.visible=pose.visible;
+    model.rotation.x=pose.bodyPitch;
+    cinemaScreenUp.set(0,1,0).applyQuaternion(camera.quaternion);
+    model.position.copy(cinemaScreenUp).multiplyScalar(pose.lift);
+    renderer.toneMappingExposure=pose.exposure;
+    scene.environmentIntensity=pose.environment;
+    scene.environmentRotation.set(0,pose.reflectionYaw,pose.reflectionRoll);
+    key.position.set(pose.lightX,7,pose.lightZ); key.intensity=pose.key;
+    rim.intensity=pose.rim;
+  }
   function invalidate() { if (!frame && !disposed && visible && !document.hidden) frame = requestAnimationFrame(render); }
-  function restoreAssembly() {
-    leftBank.position.x=-EXHAUST_BANK_OFFSET; rightBank.position.x=EXHAUST_BANK_OFFSET;
-    centre.visible=!isolated;
-    for(const part of [...clampParts,...plateParts]) part.group.position.copy(part.rest);
-    model.rotation.set(0,0,0); model.position.y=0;
-  }
-  function finishReveal() { introRequested=false; introStart=null; restoreAssembly(); }
-  function reveal() {
-    autoRotate=false; transition=null; idleElapsed=0;
-    isolated=false; rightBank.visible=true; restoreAssembly();
-    target.copy(referenceTarget); controls.target.copy(target);
-    introRequested=true; introStart=null;
-    idleMotion=Boolean(options.cinematic && !options.reducedMotion);
-    invalidate();
-  }
+  let lastCinemaFrame=0;
   function render(now: number) {
     frame = 0;
     if (disposed || !visible || document.hidden) return;
-    // The quiet idle is capped at 30 fps; dragging and the entrance stay fluid.
-    if(idleMotion && !interacting && !transition && !introRequested && introStart===null && lightSweepStart===null && now-lastRenderTime<32) { invalidate(); return; }
-    if(introRequested) {
-      introRequested=false; options.onReveal?.();
-      if(options.reducedMotion) { restoreAssembly(); placeCamera(orbitOrientation(referenceOrbit[0],referenceOrbit[1],referenceRoll),referenceOrbit[2]); idleMotion=false; }
-      else introStart=now;
+    const tracking=options.cinematic && Math.abs(requestedProgress-scrollProgress)>.00005;
+    const floating=options.cinematic && !options.reducedMotion && !tracking && scrollProgress>.985;
+    if(floating && !scrollDirty && now-lastCinemaFrame<32) { invalidate(); return; }
+    const cameraDelta=lastCinemaFrame?Math.min(now-lastCinemaFrame,64):16;
+    lastCinemaFrame=now; scrollDirty=false;
+    if(options.cinematic && tracking) {
+      scrollProgress=THREE.MathUtils.lerp(scrollProgress,requestedProgress,1-Math.exp(-cameraDelta/(mobile?90:160)));
+      if(Math.abs(requestedProgress-scrollProgress)<.00005) scrollProgress=requestedProgress;
     }
-    if(introStart!==null) {
-      const pose=exhaustRevealProgress(now-introStart);
-      leftBank.position.x=-EXHAUST_BANK_OFFSET-(1-pose.banks)*.72;
-      rightBank.position.x=EXHAUST_BANK_OFFSET+(1-pose.banks)*.72;
-      centre.visible=pose.banks>.96 && !isolated;
-      for(const part of clampParts) part.group.position.copy(part.rest).addScaledVector(part.direction,(1-pose.clamps)*.28);
-      for(const part of plateParts) part.group.position.copy(part.rest).addScaledVector(part.direction,(1-pose.plates)*.20);
-      model.rotation.z=(1-pose.camera)*-.16;
-      placeCamera(orbitOrientation(referenceOrbit[0]+(1-pose.camera)*.20,referenceOrbit[1]-(1-pose.camera)*.10,referenceRoll+(1-pose.camera)*.06),referenceOrbit[2]*(1+(1-pose.camera)*.12));
-      if(pose.complete) { introStart=null; restoreAssembly(); idleElapsed=0; }
+    if(options.cinematic) {
+      applyScrollPose();
+      if(floating) {
+        model.position.addScaledVector(cinemaScreenUp,Math.sin(now*.00125)*.045*exhaustScrollPose(scrollProgress).floatAmount);
+        scene.environmentRotation.y+=Math.sin(now*.00045)*.025;
+      }
     }
     if (transition) {
       const p = options.reducedMotion ? 1 : Math.min((now - transition.start) / 720, 1);
@@ -361,17 +366,6 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
       if (p === 1) transition = null;
     }
     const delta = Math.min((now - lastRenderTime) / 1000, .05); lastRenderTime = now;
-    if(idleMotion && introStart===null && !transition && !interacting) {
-      idleElapsed+=delta*1000;
-      model.rotation.z=Math.sin(idleElapsed*.00026)*.045;
-      model.rotation.x=Math.sin(idleElapsed*.00019)*.012;
-      model.position.y=Math.sin(idleElapsed*.00030)*.014;
-    }
-    if(lightSweepStart!==null) {
-      const progress=Math.min((now-lightSweepStart)/900,1), sweep=Math.sin(progress*Math.PI);
-      key.position.x=-3+sweep*1.2; key.intensity=1.7+sweep*.22;
-      if(progress===1) lightSweepStart=null;
-    }
     if (autoRotate && !transition) {
       const rotation = new THREE.Quaternion().setFromAxisAngle(up, .13 * delta);
       camera.position.sub(controls.target).applyQuaternion(rotation).add(controls.target);
@@ -379,16 +373,15 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     }
     controls.update(); target.copy(controls.target);
     renderer.render(scene, camera);
-    if (transition || autoRotate || interacting || introRequested || introStart!==null || idleMotion || lightSweepStart!==null) invalidate();
+    if (transition || autoRotate || interacting || floating || tracking) invalidate();
   }
   function view(value: ExhaustView) {
-    if(options.cinematic) { finishReveal(); idleMotion=false; }
     autoRotate = false;
     controls.update();
     const views: Record<ExhaustView, { orbit: [number, number, number]; roll?: number; target: THREE.Vector3 }> = {
       overview: { orbit: referenceOrbit, roll: referenceRoll, target: referenceTarget.clone() },
       welds: { orbit: [-2.20, .16, 4.4], target: new THREE.Vector3(-1.85, -1.15, -1.05) },
-      reverse: { orbit: options.cinematic ? [.18,1.20,8.5] : [Math.PI + .15,.28,8.1], roll:options.cinematic?-.10:0, target: new THREE.Vector3(0,-.35,-.45) },
+      reverse: { orbit: [Math.PI + .15, .28, 8.1], target: new THREE.Vector3(0, -.35, -.45) },
       front: { orbit: [0, .25, 10.2], target: new THREE.Vector3(0, -.35, -.45) },
       entry: { orbit: [-2.154, .9273, 4.4], roll: -.8816, target: new THREE.Vector3(2.45, .70, -.10) },
     };
@@ -402,7 +395,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     };
     invalidate();
   }
-  function beginInteraction() { if(options.cinematic) { finishReveal(); idleMotion=false; } interacting = true; autoRotate = false; transition = null; options.onInteract(); controls.handleResize(); invalidate(); }
+  function beginInteraction() { interacting = true; autoRotate = false; transition = null; options.onInteract(); controls.handleResize(); invalidate(); }
   function endInteraction() { interacting = false; invalidate(); }
   controls.addEventListener('start', beginInteraction);
   controls.addEventListener('end', endInteraction);
@@ -411,7 +404,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     const width = host.clientWidth, height = host.clientHeight;
     if (!width || !height) return;
     renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix();
-    const nextFit = Math.max(1, 1.25 / camera.aspect);
+    const nextFit = Math.max(1, (options.cinematic ? 1.5 : 1.25) / camera.aspect);
     camera.position.sub(controls.target).multiplyScalar(nextFit / fit).add(controls.target);
     fit = nextFit; controls.minDistance = 2.8 * fit; controls.maxDistance = 18 * fit;
     controls.handleResize(); invalidate();
@@ -419,15 +412,14 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   resize.observe(host);
   const intersection = new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
-    if(!visible) lastRenderTime=0;
     if (!visible && frame) { cancelAnimationFrame(frame); frame = 0; } else invalidate();
-  }, {threshold:options.cinematic ? .16 : 0});
+  });
   intersection.observe(host);
   const visibility = () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else invalidate(); };
   document.addEventListener('visibilitychange', visibility);
   function keyboard(event: KeyboardEvent) {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
-    event.preventDefault(); if(options.cinematic) { finishReveal(); idleMotion=false; } options.onInteract(); autoRotate = false; transition = null;
+    event.preventDefault(); options.onInteract(); autoRotate = false; transition = null;
     if (event.key === 'Home') { view('overview'); return; }
     const horizontal = event.key === 'ArrowLeft' || event.key === 'ArrowRight';
     const axis = (horizontal ? up.clone() : new THREE.Vector3(1, 0, 0)).applyQuaternion(camera.quaternion);
@@ -439,19 +431,15 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const contextLost = (event: Event) => { event.preventDefault(); autoRotate = false; cancelAnimationFrame(frame); frame = 0; options.onError(); };
   canvas.addEventListener('keydown', keyboard); canvas.addEventListener('webglcontextlost', contextLost);
   finish('titanium');
-  lightSweepStart=null;
+  for(const texture of textures) texture.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy());
 
   return {
-    view, finish, reveal,
+    progress(value) { requestedProgress=THREE.MathUtils.clamp(value,0,1); if(firstProgress || options.reducedMotion) { scrollProgress=requestedProgress;firstProgress=false; } scrollDirty=true;invalidate(); },
+    view, finish,
     routeColors(value) { routeColorsEnabled = value; applyAppearance(); },
     isolate(value) { isolated = value; rightBank.visible = !value; centre.visible = !value; invalidate(); },
-    rotate(value) {
-      if(options.cinematic) { finishReveal(); idleMotion=value&&!options.reducedMotion; autoRotate=false; }
-      else autoRotate=value;
-      transition = null; invalidate();
-    },
+    rotate(value) { autoRotate = value; transition = null; invalidate(); },
     zoom(direction) {
-      if(options.cinematic) { finishReveal(); idleMotion=false; options.onInteract(); }
       transition = null;
       const eye = camera.position.clone().sub(controls.target);
       camera.position.copy(controls.target).add(eye.setLength(THREE.MathUtils.clamp(eye.length() * (direction > 0 ? 1.15 : 1 / 1.15), controls.minDistance, controls.maxDistance)));

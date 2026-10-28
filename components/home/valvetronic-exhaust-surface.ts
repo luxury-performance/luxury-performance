@@ -41,7 +41,7 @@ export function createExhaustMetal(grain: THREE.Texture, kind: MetalKind = 'shee
     exWeldField: { value: field }, exLength: { value: length }, exHeatField: { value: heatField },
   };
   material.userData.exhaustFinish = uniforms;
-  material.customProgramCacheKey = () => `exhaust-buffed-metal-v11-${kind}`;
+  material.customProgramCacheKey = () => `exhaust-buffed-metal-v12-micro-${kind}`;
   material.onBeforeCompile = shader => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader.replace('#include <common>', `#include <common>
@@ -53,6 +53,14 @@ export function createExhaustMetal(grain: THREE.Texture, kind: MetalKind = 'shee
       ${kind === 'pipe' ? 'uniform sampler2D exWeldField; uniform sampler2D exHeatField; uniform float exLength; varying float exBend;' : ''}`);
     const pipeColor = /* glsl */`
       float exS=exUv.x*exLength, exTheta=exUv.y*6.28318530718;
+      // Fine brushing follows the tube, at a consistent physical density.
+      // Fade only subpixel detail so close views retain grain without shimmer.
+      vec2 exBrushUv=vec2(exS*18.0,exTheta*79.8);
+      vec2 exFineUv=vec2(exS*95.0,exTheta*209.0);
+      float exBrushDetail=1.0-smoothstep(.65,1.75,max(fwidth(exBrushUv.x),fwidth(exBrushUv.y)));
+      float exFineDetail=1.0-smoothstep(.65,1.75,max(fwidth(exFineUv.x),fwidth(exFineUv.y)));
+      float exBrush=(exNoise(exBrushUv+vec2(exSeed*17.0,0.0))-.5)*exBrushDetail;
+      float exFine=(exNoise(exFineUv+vec2(exSeed*31.0,13.0))-.5)*exFineDetail;
       float exVariation=exNoise(vec2(exS*.8+exSeed,cos(exTheta)*1.6));
       // A subdued metal base; oxide colours mostly live in the reflections.
       vec3 exBase=mix(exBronze,exPurple,.12+.28*exVariation+.13*(.5+.5*sin(exTheta+exS*.6)));
@@ -92,7 +100,7 @@ export function createExhaustMetal(grain: THREE.Texture, kind: MetalKind = 'shee
     `;
     shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>\n${kind === 'pipe' ? pipeColor : kind === 'sheet' ? sheetColor : weldColor}`)
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
-      if(exRouteColors<.5) roughnessFactor=clamp(${kind === 'weld' ? '.20' : kind === 'pipe' ? '.135' : '.26'}+exVariation*.035+(texelRoughness.g-.7)*.10${kind === 'pipe' ? '-exHalo*.012+exHeat.r*.025+exBend*.018*exNoise(vec2(exS*85.0,exTheta*7.0))' : ''},.12,.31);`);
+      if(exRouteColors<.5) roughnessFactor=clamp(${kind === 'weld' ? '.20' : kind === 'pipe' ? '.135' : '.26'}+exVariation*.035+(texelRoughness.g-.7)*.10${kind === 'pipe' ? '-exHalo*.012+exHeat.r*.025+exBend*.018*exNoise(vec2(exS*85.0,exTheta*7.0))+exBrush*.022+exFine*.012' : ''},.12,.31);`);
     shader.fragmentShader = shader.fragmentShader.replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
       #ifdef USE_IRIDESCENCE
         material.iridescence=exTitanium*(1.0-exRouteColors)*${kind === 'pipe' ? '(.07+exHeat.b*.18+exHeat.g*.06)' : '.16'};
@@ -100,7 +108,8 @@ export function createExhaustMetal(grain: THREE.Texture, kind: MetalKind = 'shee
       #endif`);
     if (kind === 'pipe') shader.fragmentShader = shader.fragmentShader.replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
       float exBuff=.000055*exBend*exNoise(vec2(exS*120.0,exTheta*28.0));
-      if(exRouteColors<.5) normal=perturbNormalArb(-vViewPosition,normal,vec2(dFdx(exBuff),dFdy(exBuff)),faceDirection);
+      float exMicroHeight=exBuff+exBrush*.00010+exFine*.000035;
+      if(exRouteColors<.5) normal=perturbNormalArb(-vViewPosition,normal,vec2(dFdx(exMicroHeight),dFdy(exMicroHeight)),faceDirection);
     `);
   };
   return material;

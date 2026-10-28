@@ -58,7 +58,9 @@ export function HeaderSearch({ onOpen }: { onOpen: () => void }) {
   }, [open, term]);
 
   function changeQuery(value: string) {
-    setQuery(value); setReply(null); setError(''); setPending(value.trim().length >= 2);
+    setQuery(value);
+    if (value.trim() === term) return;
+    setReply(null); setError(''); setPending(value.trim().length >= 2);
   }
   function close() { setOpen(false); }
   function submit(event: FormEvent<HTMLFormElement>) {
