@@ -56,7 +56,7 @@
 }
 @media (prefers-reduced-motion: reduce) { .mark { transition: none; } .brand:hover .mark { transform: none; } }
 
-/* The film covers the final pinned 3D frame as normal scrolling continues. */
+/* Vehicle browsing covers the final 3D frame; the workshop film follows. */
 .section { --exhaust-stage-height: max(100svh,620px); }
 .filmCover { position:relative; z-index:2; display:flow-root; min-height:var(--exhaust-stage-height); margin:calc(0px - var(--exhaust-stage-height)) calc(50% - 50vw) 0; padding:1px var(--gutter) 36px; background:var(--home-intro-bg,#101112); isolation:isolate; }
 .filmCover > section { max-width:var(--home-container,1440px); margin-left:auto; margin-right:auto; }
@@ -67,3 +67,7 @@
 @media (orientation:landscape) and (max-height:620px) {
  .section { --exhaust-stage-height:100svh; }
 }
+
+.inner > section:first-child { margin-top:0; }
+.vehiclesPanel { max-width:var(--home-container,1440px); margin:80px auto 0; }
+@media(max-width:700px) { .vehiclesPanel { margin-top:56px; } }

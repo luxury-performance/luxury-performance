@@ -256,8 +256,8 @@ export function roundedExhaustRoute(points: RoutePoint[], bendRadius: number, wi
 }
 
 /** One blended external surface at a shared X or C-return junction. */
-export function mergedExhaustJunction(branches: JunctionBranch[], center: THREE.Vector3): THREE.BufferGeometry {
-  const resolution = 34, half = new THREE.Vector3(.52, .48, .52);
+export function mergedExhaustJunction(branches: JunctionBranch[], center: THREE.Vector3, resolution = 34): THREE.BufferGeometry {
+  const half = new THREE.Vector3(.52, .48, .52);
   const segments = branches.map(({ route, t, radiusAt, offset }) => {
     const points = Array.from({ length: 35 }, (_, i) => {
       const at = THREE.MathUtils.clamp(t + (i / 34 * 2 - 1) * .95 / route.length, 0, 1);

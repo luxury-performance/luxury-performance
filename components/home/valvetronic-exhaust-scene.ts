@@ -32,15 +32,16 @@ type Options = { cinematic?: boolean; initialIsolated?: boolean; initialRouteCol
 
 /** Photo-based display reconstruction; not engineering or fitment geometry. */
 export function createExhaustScene(host: HTMLDivElement, options: Options): ExhaustScene {
-  const mobile=matchMedia('(max-width: 700px)').matches;
-  const renderer = new THREE.WebGLRenderer({ antialias:true,alpha:true,powerPreference:options.cinematic && !mobile ? 'high-performance' : 'low-power' });
-  const pixelRatio=options.cinematic && !mobile ? Math.min(2.5,Math.max(2,window.devicePixelRatio)) : Math.min(window.devicePixelRatio,mobile?2:2.5);
+  const mobile=matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
+  const renderer = new THREE.WebGLRenderer({ antialias:!mobile,alpha:true,powerPreference:options.cinematic && !mobile ? 'high-performance' : 'low-power' });
+  const pixelRatio=options.cinematic && !mobile ? Math.min(2.5,Math.max(2,window.devicePixelRatio)) : Math.min(window.devicePixelRatio,mobile?1.5:2.5);
   renderer.setPixelRatio(pixelRatio);
   renderer.setClearColor(0x101112, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = .9;
   const canvas = renderer.domElement;
+  canvas.dataset.exhaustQuality=mobile?'mobile':'desktop';
   canvas.setAttribute('aria-label', options.cinematic ? 'Valvetronic Designs Huracán exhaust in titanium or stainless steel. Scroll to reveal the complete system.' : 'Interactive exhaust model. Drag in any direction to rotate freely. Pinch to zoom; twist with two fingers to roll. Arrow keys rotate; Home restores the photo angle.');
   canvas.setAttribute('role', 'img');
   canvas.tabIndex = options.cinematic ? -1 : 0;
@@ -77,7 +78,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const silver = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0xc5c6c7, metalness: 1, roughness: .19, clearcoat: .3, clearcoatRoughness: .2 }));
   const inside = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x252729, metalness: .8, roughness: .4, side: THREE.BackSide }));
   // Fine longitudinal tool marks break up the otherwise perfectly smooth reflections.
-  const grainWidth = options.cinematic && !mobile ? 4096 : 2048, grainHeight = options.cinematic && !mobile ? 1024 : 512;
+  const grainWidth = mobile ? 1024 : options.cinematic ? 4096 : 2048, grainHeight = mobile ? 256 : options.cinematic ? 1024 : 512;
   const grainBytes = new Uint8Array(grainWidth * grainHeight * 4);
   const hash = (n: number) => { const v=Math.sin(n*127.1)*43758.5453; return v-Math.floor(v); };
   for (let y = 0; y < grainHeight; y++) for (let x = 0; x < grainWidth; x++) {
@@ -92,7 +93,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const grain = new THREE.DataTexture(grainBytes, grainWidth, grainHeight);
   grain.wrapS = grain.wrapT = THREE.RepeatWrapping; grain.repeat.set(4,6);
   grain.generateMipmaps = true; grain.minFilter = THREE.LinearMipmapLinearFilter; grain.magFilter = THREE.LinearFilter;
-  grain.anisotropy = Math.min(16,renderer.capabilities.getMaxAnisotropy()); grain.needsUpdate = true; textures.add(grain);
+  grain.anisotropy = Math.min(mobile?4:16,renderer.capabilities.getMaxAnisotropy()); grain.needsUpdate = true; textures.add(grain);
   silver.roughnessMap = grain; silver.bumpMap = grain; silver.bumpScale = .0007;
   const seamMaterial = ownMaterial(createExhaustMetal(grain, 'weld'));
   const frontBanks = [1, -1].map(sign => editOuterBank(huracanBank(sign), FINISHED_FRONT_EDITS, sign).bank);
@@ -107,8 +108,10 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   type Point = [number, number, number];
 
   function geometryFor(route: ExhaustRoute, radius: number, radiusAt: (t: number) => number, wall: number) {
-    const curve=route.curve,segments=Math.max(80,Math.ceil(route.length*(options.cinematic && !mobile?48:34)));
-    const radialSegments=options.cinematic && !mobile?64:32;
+    const curve=route.curve,inner=wall>0;
+    const density=mobile?(inner?16:24):options.cinematic?48:34;
+    const segments=Math.max(mobile?(inner?32:48):80,Math.ceil(route.length*density));
+    const radialSegments=mobile?(inner?12:24):options.cinematic?64:32;
     const geometry=ownGeometry(new THREE.TubeGeometry(curve,segments,radius,radialSegments,false));
     const position = geometry.getAttribute('position'), normal = geometry.getAttribute('normal');
     const radial = new THREE.Vector3(), point = new THREE.Vector3();
@@ -167,7 +170,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
       const geometry = ownGeometry(mapExhaustJoinSurface(mergedExhaustJunction([
         { route: bank.main, t: join.main.t, radiusAt: bank.radiusAt },
         { route: bank.returning, t: join.returning.t, radiusAt: () => .228 },
-      ], join.main.position), records.map((record, i) => ({
+      ], join.main.position, mobile?24:34), records.map((record, i) => ({
         route: record.route, geometry: record.geometry, radiusAt: record.radiusAt,
         station: i ? join.returning.t : join.main.t,
       }))));
@@ -196,7 +199,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     drawTarget = bankGroup;
     // Owner's image order: Special Ops on the left, authenticity on the right.
     // The centre plate's readable face has -X to its right, +X to its left.
-    const badge = createExhaustBadge(bank, index === 0 ? 'authenticity' : 'special-ops', grain);
+    const badge = createExhaustBadge(bank, index === 0 ? 'authenticity' : 'special-ops', grain, mobile?1024:2048);
     bankGroup.add(badge.group); badges.push(badge);
     badge.geometries.forEach(geometry => ownGeometry(geometry));
     badge.materials.forEach(material => ownMaterial(material));
@@ -210,7 +213,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     const geometry = ownGeometry(mapExhaustJoinSurface(mergedExhaustJunction(banks.map((bank, index) => ({
       route: bank.main, t: bank.merges[i].t, radiusAt: bank.radiusAt,
       offset: new THREE.Vector3(index ? EXHAUST_BANK_OFFSET : -EXHAUST_BANK_OFFSET, 0, 0),
-    })), position), records.map((record, index) => ({
+    })), position, mobile?24:34), records.map((record, index) => ({
       route: record.route, geometry: record.geometry, radiusAt: record.radiusAt,
       station: banks[index].merges[i].t, offset: new THREE.Vector3(index ? EXHAUST_BANK_OFFSET : -EXHAUST_BANK_OFFSET, 0, 0),
     }))));
@@ -219,7 +222,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     coloredJunctions.push({ mesh: junction, surfaceMaterials, routeMaterial: routeJunctionMaterials[banks[0].colorStops.findIndex(stop => banks[0].merges[i].t <= stop)] });
     jointCenters.push(position);
   }
-  const upperPlate = createUpperPlate(banks[0], grain);
+  const upperPlate = createUpperPlate(banks[0], grain, mobile?1024:2048);
   centre.add(upperPlate.group);
   upperPlate.geometries.forEach(geometry => ownGeometry(geometry));
   upperPlate.materials.forEach(material => ownMaterial(material));
@@ -237,7 +240,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     const connections = record.seams.filter(clearOfJoin);
     const burns = record.burns.map(burn => burn.s / record.length).filter(t => clearOfJoin(t) && !record.seams.some(seam => Math.abs(t-seam)*record.length < .045));
     for (const [kind, stations] of [connections, burns].entries()) {
-      const parts = stations.map((t, index) => exhaustTubeWeldGeometry(record.route,t,record.radiusAt,index*1.37+(record.group===rightBank?2.4:0),kind?128:256));
+      const parts = stations.map((t, index) => exhaustTubeWeldGeometry(record.route,t,record.radiusAt,index*1.37+(record.group===rightBank?2.4:0),mobile?96:kind?128:256));
       if (!parts.length) continue;
       const geometry = ownGeometry(mergeGeometries(parts,false)!);
       parts.forEach(part => part.dispose());
@@ -259,17 +262,19 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   }
 
   let routeColorsEnabled = options.initialRouteColors ?? false;
-  let selectedFinish: ExhaustFinish = 'titanium';
+  let selectedFinish: ExhaustFinish = 'titanium',appearanceApplied=false;
   function applyAppearance() {
     const titanium = selectedFinish === 'titanium';
     coloredTubes.forEach(({ geometry, material, routeColorAt }) => {
-      const segments = geometry.parameters.tubularSegments, rings = geometry.parameters.radialSegments + 1;
-      const colors = new Float32Array(geometry.attributes.position.count * 3), color = new THREE.Color();
-      for (let i = 0; i <= segments; i++) {
-        color.set(routeColorAt(i / segments));
-        for (let j = 0; j < rings; j++) color.toArray(colors, (i * rings + j) * 3);
+      if(!geometry.getAttribute('color')) {
+        const segments = geometry.parameters.tubularSegments, rings = geometry.parameters.radialSegments + 1;
+        const colors = new Float32Array(geometry.attributes.position.count * 3), color = new THREE.Color();
+        for (let i = 0; i <= segments; i++) {
+          color.set(routeColorAt(i / segments));
+          for (let j = 0; j < rings; j++) color.toArray(colors, (i * rings + j) * 3);
+        }
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
       }
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
       finishExhaustMetal(material, titanium, routeColorsEnabled);
     });
     finishExhaustMetal(seamMaterial, titanium);
@@ -287,12 +292,13 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     gussets.finish(titanium);
     invalidate();
   }
-  function finish(value: ExhaustFinish) { selectedFinish = value; applyAppearance(); }
+  function finish(value: ExhaustFinish) { if(appearanceApplied && value===selectedFinish) return; selectedFinish=value;applyAppearance();appearanceApplied=true; }
 
   let frame = 0, disposed = false, visible = true, autoRotate = false, interacting = false;
   let prepared=!options.cinematic, preparing=false, failed=false;
   let preparation:Promise<void>|null=null, cancelPreparation:((error:Error)=>void)|null=null;
   let isolated = options.initialIsolated ?? false, fit = 1, lastRenderTime = 0;
+  let sizedWidth=0,sizedHeight=0,sizedRatio=0;
   rightBank.visible = !isolated; centre.visible = !isolated;
   const referenceOrbit: [number, number, number] = options.cinematic ? [Math.PI+.20,1.47,8.6] : [.65,1.00,11.2];
   const referenceRoll = options.cinematic ? .12 : 1.97;
@@ -366,7 +372,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     if (disposed || !prepared || preparing || failed || !visible || document.hidden) return;
     const tracking=options.cinematic && (scrollArrival!==null || Math.abs(requestedProgress-scrollProgress)>.00005);
     const floating=options.cinematic && !options.reducedMotion && !tracking && scrollProgress>.985;
-    if(floating && !scrollDirty && now-lastCinemaFrame<32) { invalidate(); return; }
+    if(lastCinemaFrame && (mobile || (floating && !scrollDirty)) && now-lastCinemaFrame<(mobile?1000/30:32)) { invalidate(); return; }
     const cameraDelta=lastCinemaFrame?Math.min(now-lastCinemaFrame,64):16;
     lastCinemaFrame=now; scrollDirty=false;
     if(options.cinematic && tracking) advanceScroll(now,cameraDelta);
@@ -423,7 +429,14 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   function resizeScene() {
     const width = host.clientWidth, height = host.clientHeight;
     if (!width || !height) return false;
-    renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix();
+    const ratio=mobile?Math.min(pixelRatio,Math.sqrt(900000/(width*height))):pixelRatio;
+    if(width!==sizedWidth || height!==sizedHeight || ratio!==sizedRatio) {
+      // Resize once at the capped pixel count; avoid a transient full-DPR allocation.
+      if(mobile) renderer.setDrawingBufferSize(width,height,ratio);
+      else renderer.setSize(width,height,false);
+      sizedWidth=width;sizedHeight=height;sizedRatio=ratio;
+    }
+    camera.aspect = width / height; camera.updateProjectionMatrix();
     const nextFit = Math.max(1, (options.cinematic ? 1.5 : 1.25) / camera.aspect);
     camera.position.sub(controls.target).multiplyScalar(nextFit / fit).add(controls.target);
     fit = nextFit; controls.minDistance = 2.8 * fit; controls.maxDistance = 18 * fit;
@@ -458,7 +471,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   const contextLost = (event: Event) => { event.preventDefault(); reportFailure(); if(preparing) disposeScene(); };
   canvas.addEventListener('keydown', keyboard); canvas.addEventListener('webglcontextlost', contextLost);
   finish('titanium');
-  for(const texture of textures) texture.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy());
+  for(const texture of textures) texture.anisotropy=Math.min(mobile?4:16,renderer.capabilities.getMaxAnisotropy());
 
   function assertPreparationActive() {
     if(disposed) throw new Error('The exhaust scene was disposed during preparation.');

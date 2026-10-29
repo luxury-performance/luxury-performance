@@ -9,7 +9,7 @@ import { exhaustScrollPose } from './valvetronic-exhaust-motion';
 import styles from './valvetronic-exhaust-cinema.module.css';
 
 export function ValvetronicExhaustCinema() {
-  const revision='broll-smooth-end-14';
+  const revision='broll-mobile-budget-15';
   const section=useRef<HTMLElement>(null);
   const pin=useRef<HTMLDivElement>(null);
   const mount=useRef<HTMLDivElement>(null);
@@ -19,8 +19,9 @@ export function ValvetronicExhaustCinema() {
   const [status,setStatus]=useState<'loading'|'ready'|'unavailable'>('loading');
 
   useEffect(() => {
-    let disposed=false,started=false,failed=false,frame=0;
-    const preloadDistance=2400;
+    let disposed=false,started=false,failed=false,frame=0,generation=0;
+    const mobile=matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
+    const preloadDistance=mobile?1600:2400;
     // Fetch the module ahead of the section; build the scene only when approaching it.
     const sceneModule=import('./valvetronic-exhaust-scene');
     void sceneModule.catch(()=>{});
@@ -30,7 +31,8 @@ export function ValvetronicExhaustCinema() {
       if(!section.current || !pin.current) return;
       // The final hold and the cover each have their own scroll space.
       const bounds=section.current.getBoundingClientRect();
-      if(!started && bounds.top<window.innerHeight+preloadDistance && bounds.bottom>-preloadDistance) start();
+      if(mobile && started && (bounds.bottom<-window.innerHeight*2 || bounds.top>window.innerHeight+preloadDistance*2)) release();
+      if(!started && approaching(bounds)) start();
       const hold=Number(getComputedStyle(section.current).getPropertyValue('--cinema-final-hold'));
       const length=section.current.offsetHeight-pin.current.offsetHeight*(2+hold);
       const progress=motion.matches ? 1 : Math.max(0,Math.min(1,-bounds.top/Math.max(1,length)));
@@ -42,23 +44,34 @@ export function ValvetronicExhaustCinema() {
       scene.current?.progress(progress);
     }
     function queue() { if(!frame) frame=requestAnimationFrame(update); }
+    function approaching(bounds:DOMRect) {
+      return bounds.top<window.innerHeight+preloadDistance && bounds.bottom>-(mobile?window.innerHeight:preloadDistance);
+    }
+    function release() {
+      if(!started) return;
+      generation++;started=false;failed=false;
+      scene.current?.dispose();scene.current=null;setStatus('loading');
+      if(section.current) observer.observe(section.current);
+    }
     function start() {
-      if(disposed || started || !mount.current) return;
+      if(disposed || started || document.hidden || !mount.current || !section.current || !approaching(section.current.getBoundingClientRect())) return;
+      const run=++generation;
       started=true; observer.disconnect();setStatus('loading');
       sceneModule.then(async ({createExhaustScene}) => {
-        if(disposed || !mount.current) return;
+        if(disposed || run!==generation || !mount.current) return;
         const next=createExhaustScene(mount.current,{
           cinematic:true,reducedMotion:motion.matches,
-          onInteract:()=>{}, onError:()=>{failed=true;if(!disposed) setStatus('unavailable');},
+          onInteract:()=>{}, onError:()=>{if(disposed || run!==generation) return;failed=true;setStatus('unavailable');},
         });
         scene.current=next;
         next.finish(selectedFinish.current);
         update();
         await next.prepare();
-        if(disposed || failed || scene.current!==next) return;
-        update(); setStatus('ready');
+        if(disposed || run!==generation || failed || scene.current!==next) return;
+        update();
+        if(!disposed && run===generation && !failed && scene.current===next) setStatus('ready');
       }).catch(()=>{
-        if(disposed) return;
+        if(disposed || run!==generation) return;
         failed=true;scene.current?.dispose();scene.current=null;setStatus('unavailable');
       });
     }
@@ -71,11 +84,14 @@ export function ValvetronicExhaustCinema() {
     window.addEventListener('scroll',queue,{passive:true});
     window.addEventListener('resize',queue);
     motion.addEventListener('change',queue);
+    const pageVisibility=()=>{if(mobile && document.hidden) release();else queue();};
+    document.addEventListener('visibilitychange',pageVisibility);
     update();
     return () => {
-      disposed=true; observer.disconnect(); resize.disconnect();cancelAnimationFrame(frame);
+      disposed=true;generation++; observer.disconnect(); resize.disconnect();cancelAnimationFrame(frame);
       window.removeEventListener('scroll',queue);window.removeEventListener('resize',queue);
       motion.removeEventListener('change',queue);
+      document.removeEventListener('visibilitychange',pageVisibility);
       scene.current?.dispose();scene.current=null;
     };
   },[revision]);

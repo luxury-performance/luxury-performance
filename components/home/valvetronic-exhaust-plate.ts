@@ -97,10 +97,10 @@ export function upperPlateGeometry(halfWidth: number, halfHeight: number, radius
 }
 
 /** Canvas typography stays crisp when zoomed; the plate is actual mesh geometry. */
-function inscriptionTexture() {
-  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 2048;
+function inscriptionTexture(textureSize = 2048) {
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = textureSize;
   const ctx = canvas.getContext('2d')!;
-  ctx.scale(2, 2); ctx.fillStyle = ctx.strokeStyle = EXHAUST_PLATE_ENGRAVING_COLOR;
+  ctx.scale(textureSize / 1024, textureSize / 1024); ctx.fillStyle = ctx.strokeStyle = EXHAUST_PLATE_ENGRAVING_COLOR;
   // Inset all artwork together so the small copy clears the plate's narrow waist.
   ctx.translate(512, 448); ctx.scale(.8, .8); ctx.translate(-512, -448);
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -138,14 +138,14 @@ function inscriptionTexture() {
   return texture;
 }
 
-export function createUpperPlate(bank: ExhaustBank, grain: THREE.Texture) {
+export function createUpperPlate(bank: ExhaustBank, grain: THREE.Texture, textureSize = 2048) {
   const frame = upperPlateFrame(bank), group = new THREE.Group();
   group.name = 'Upper inner turn — Special Ops plate';
   group.position.copy(frame.position); group.quaternion.copy(frame.quaternion);
   const bodyGeometry = upperPlateGeometry(frame.halfWidth, frame.halfHeight, frame.radius);
   const letteringGeometry = upperPlateGeometry(frame.halfWidth, frame.halfHeight, frame.radius, true);
   const material = createExhaustPlateMetal(grain, true);
-  const texture = inscriptionTexture();
+  const texture = inscriptionTexture(textureSize);
   const letteringMaterial = createExhaustPlateEngraving(texture);
   group.add(new THREE.Mesh(bodyGeometry, material), new THREE.Mesh(letteringGeometry, letteringMaterial));
   const weldMaterial = createExhaustMetal(grain, 'weld');

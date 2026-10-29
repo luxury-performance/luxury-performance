@@ -55,9 +55,9 @@ export function exhaustBadgeMountingTabs(frame: ReturnType<typeof exhaustBadgeFr
 }
 
 type VectorArt = { path: string; width: number; height: number };
-function badgeTexture(kind: ExhaustBadgeKind) {
-  const canvas = document.createElement('canvas'); canvas.width = 2048; canvas.height = 1024;
-  const ctx = canvas.getContext('2d')!; ctx.scale(2048 / 1200, 1024 / 600);
+function badgeTexture(kind: ExhaustBadgeKind, textureSize = 2048) {
+  const canvas = document.createElement('canvas'); canvas.width = textureSize; canvas.height = textureSize / 2;
+  const ctx = canvas.getContext('2d')!; ctx.scale(textureSize / 1200, textureSize / 1200);
   ctx.fillStyle = ctx.strokeStyle = EXHAUST_PLATE_ENGRAVING_COLOR;
   ctx.lineWidth = 2.5; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   function line(x1: number, y1: number, x2: number, y2: number) { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); }
@@ -122,14 +122,14 @@ function badgeTexture(kind: ExhaustBadgeKind) {
   texture.anisotropy = 8; return texture;
 }
 
-export function createExhaustBadge(bank: ExhaustBank, kind: ExhaustBadgeKind, grain: THREE.Texture) {
+export function createExhaustBadge(bank: ExhaustBank, kind: ExhaustBadgeKind, grain: THREE.Texture, textureSize = 2048) {
   const frame = exhaustBadgeFrame(bank), group = new THREE.Group();
   group.name = kind === 'special-ops' ? 'Left — Lamborghini Huracan STO F1 / Special Ops badge' : 'Right — Authenticity tag VD067-00259B';
   group.position.copy(frame.position); group.quaternion.copy(frame.quaternion);
   const bodyGeometry = new THREE.BoxGeometry(frame.width, frame.height, .014);
   const faceGeometry = new THREE.PlaneGeometry(frame.width, frame.height);
   const bodyMaterial = createExhaustPlateMetal(grain);
-  const texture = badgeTexture(kind);
+  const texture = badgeTexture(kind, textureSize);
   const faceMaterial = createExhaustPlateEngraving(texture);
   const face = new THREE.Mesh(faceGeometry, faceMaterial); face.position.z = .0076;
   group.add(new THREE.Mesh(bodyGeometry, bodyMaterial), face);
