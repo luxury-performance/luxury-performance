@@ -9,7 +9,7 @@ import { exhaustScrollPose } from './valvetronic-exhaust-motion';
 import styles from './valvetronic-exhaust-cinema.module.css';
 
 export function ValvetronicExhaustCinema() {
-  const revision='broll-cover-10';
+  const revision='broll-final-hold-11';
   const section=useRef<HTMLElement>(null);
   const pin=useRef<HTMLDivElement>(null);
   const mount=useRef<HTMLDivElement>(null);
@@ -24,7 +24,9 @@ export function ValvetronicExhaustCinema() {
     function update() {
       frame=0;
       if(!section.current || !pin.current) return;
-      const length=section.current.offsetHeight-pin.current.offsetHeight*2;
+      // The final hold and the cover each have their own scroll space.
+      const hold=Number(getComputedStyle(section.current).getPropertyValue('--cinema-final-hold'));
+      const length=section.current.offsetHeight-pin.current.offsetHeight*(2+hold);
       const progress=motion.matches ? 1 : Math.max(0,Math.min(1,-section.current.getBoundingClientRect().top/Math.max(1,length)));
       const pose=exhaustScrollPose(progress);
       pin.current.style.setProperty('--type-opacity',String(pose.typeOpacity));

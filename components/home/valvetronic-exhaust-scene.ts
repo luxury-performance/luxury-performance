@@ -434,7 +434,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   for(const texture of textures) texture.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy());
 
   return {
-    progress(value) { requestedProgress=THREE.MathUtils.clamp(value,0,1); if(firstProgress || options.reducedMotion) { scrollProgress=requestedProgress;firstProgress=false; } scrollDirty=true;invalidate(); },
+    progress(value) { requestedProgress=THREE.MathUtils.clamp(value,0,1); if(firstProgress || options.reducedMotion || requestedProgress===0 || requestedProgress===1) { scrollProgress=requestedProgress;firstProgress=false; } scrollDirty=true;invalidate(); },
     view, finish,
     routeColors(value) { routeColorsEnabled = value; applyAppearance(); },
     isolate(value) { isolated = value; rightBank.visible = !value; centre.visible = !value; invalidate(); },

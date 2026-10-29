@@ -1,4 +1,4 @@
-.section{position:relative;--cinema-runway:760svh;height:calc(var(--cinema-runway) + var(--exhaust-stage-height,100svh));margin:92px calc(50% - 50vw) 0;color:#eee;background:#0b0d0f;overflow-x:clip}
+.section{position:relative;--cinema-runway:760svh;--cinema-final-hold:.9;height:calc(var(--cinema-runway) + var(--exhaust-stage-height,100svh)*(1 + var(--cinema-final-hold)));margin:92px calc(50% - 50vw) 0;color:#eee;background:#0b0d0f;overflow-x:clip}
 .pin{position:sticky;top:0;height:var(--exhaust-stage-height,100svh);min-height:620px;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 55% 52%,#20212666,transparent 58%);--type-opacity:.74;--detail-opacity:0;--hint-opacity:1}
 .topline{position:absolute;z-index:3;inset:calc(112px + 4vh) var(--gutter) auto;display:flex;justify-content:space-between;gap:24px;font-size:9px;line-height:1.7;text-transform:uppercase;letter-spacing:.15em;color:#8d918f}
 .wordmark{position:absolute;z-index:0;left:5%;top:50%;transform:translateY(-50%);width:90%;height:auto;pointer-events:none;filter:grayscale(1);opacity:var(--type-opacity);user-select:none}
