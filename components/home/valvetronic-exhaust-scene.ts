@@ -18,6 +18,7 @@ import { createExhaustMetal, finishExhaustMetal, createExhaustPipeSurface, exhau
 export type ExhaustFinish = 'titanium' | 'stainless';
 export type ExhaustView = 'overview' | 'welds' | 'reverse' | 'front' | 'entry';
 export type ExhaustScene = {
+  prepare(): Promise<void>;
   progress(value: number): void;
   view(value: ExhaustView): void;
   finish(value: ExhaustFinish): void;
@@ -289,6 +290,8 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   function finish(value: ExhaustFinish) { selectedFinish = value; applyAppearance(); }
 
   let frame = 0, disposed = false, visible = true, autoRotate = false, interacting = false;
+  let prepared=!options.cinematic, preparing=false, failed=false;
+  let preparation:Promise<void>|null=null, cancelPreparation:((error:Error)=>void)|null=null;
   let isolated = options.initialIsolated ?? false, fit = 1, lastRenderTime = 0;
   rightBank.visible = !isolated; centre.visible = !isolated;
   const referenceOrbit: [number, number, number] = options.cinematic ? [Math.PI+.20,1.47,8.6] : [.65,1.00,11.2];
@@ -336,11 +339,11 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     key.position.set(pose.lightX,7,pose.lightZ); key.intensity=pose.key;
     rim.intensity=pose.rim;
   }
-  function invalidate() { if (!frame && !disposed && visible && !document.hidden) frame = requestAnimationFrame(render); }
+  function invalidate() { if (!frame && !disposed && prepared && !preparing && !failed && visible && !document.hidden) frame = requestAnimationFrame(render); }
   let lastCinemaFrame=0;
   function render(now: number) {
     frame = 0;
-    if (disposed || !visible || document.hidden) return;
+    if (disposed || !prepared || preparing || failed || !visible || document.hidden) return;
     const tracking=options.cinematic && Math.abs(requestedProgress-scrollProgress)>.00005;
     const floating=options.cinematic && !options.reducedMotion && !tracking && scrollProgress>.985;
     if(floating && !scrollDirty && now-lastCinemaFrame<32) { invalidate(); return; }
@@ -400,18 +403,21 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   controls.addEventListener('start', beginInteraction);
   controls.addEventListener('end', endInteraction);
   controls.addEventListener('change', invalidate);
-  const resize = new ResizeObserver(() => {
+  function resizeScene() {
     const width = host.clientWidth, height = host.clientHeight;
-    if (!width || !height) return;
+    if (!width || !height) return false;
     renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix();
     const nextFit = Math.max(1, (options.cinematic ? 1.5 : 1.25) / camera.aspect);
     camera.position.sub(controls.target).multiplyScalar(nextFit / fit).add(controls.target);
     fit = nextFit; controls.minDistance = 2.8 * fit; controls.maxDistance = 18 * fit;
-    controls.handleResize(); invalidate();
-  });
+    controls.handleResize(); invalidate(); return true;
+  }
+  const resize = new ResizeObserver(resizeScene);
   resize.observe(host);
   const intersection = new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
+    const latest=entries.at(-1);
+    if(!latest) return;
+    visible = latest.isIntersecting;
     if (!visible && frame) { cancelAnimationFrame(frame); frame = 0; } else invalidate();
   });
   intersection.observe(host);
@@ -428,12 +434,67 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     camera.position.sub(controls.target).applyQuaternion(rotation).add(controls.target);
     camera.up.applyQuaternion(rotation); invalidate();
   }
-  const contextLost = (event: Event) => { event.preventDefault(); autoRotate = false; cancelAnimationFrame(frame); frame = 0; options.onError(); };
+  function reportFailure() {
+    if(disposed || failed) return;
+    failed=true; autoRotate=false; cancelAnimationFrame(frame); frame=0; options.onError();
+  }
+  const contextLost = (event: Event) => { event.preventDefault(); reportFailure(); if(preparing) disposeScene(); };
   canvas.addEventListener('keydown', keyboard); canvas.addEventListener('webglcontextlost', contextLost);
   finish('titanium');
   for(const texture of textures) texture.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy());
 
+  function assertPreparationActive() {
+    if(disposed) throw new Error('The exhaust scene was disposed during preparation.');
+    if(failed || renderer.getContext().isContextLost()) throw new Error('The exhaust renderer is unavailable.');
+  }
+  /** Prepare offscreen while Cinema keeps the canvas hidden; Studio stays immediate. */
+  function prepare():Promise<void> {
+    if(preparation) return preparation;
+    preparation=(async () => {
+      preparing=true; cancelAnimationFrame(frame); frame=0;
+      try {
+        assertPreparationActive();
+        if(!resizeScene()) throw new Error('The exhaust stage has no renderable size.');
+        if(options.cinematic) { scrollProgress=1; applyScrollPose(); }
+        const interrupted=new Promise<never>((_,reject) => { cancelPreparation=reject; });
+        const compilation=Promise.resolve().then(() => {
+          assertPreparationActive();
+          // r186 uses KHR_parallel_shader_compile when available and handles its absence.
+          if(typeof renderer.compileAsync==='function') return renderer.compileAsync(scene,camera);
+          renderer.compile(scene,camera);
+        });
+        await Promise.race([compilation,interrupted]);
+        assertPreparationActive();
+        if(!resizeScene()) throw new Error('The exhaust stage lost its renderable size.');
+        if(options.cinematic) { scrollProgress=1; applyScrollPose(); }
+        for(const texture of textures) renderer.initTexture(texture);
+        // A complete hidden frame uploads the actual mesh buffers, including the joins.
+        renderer.render(scene,camera);
+        assertPreparationActive();
+        if(options.cinematic) { scrollProgress=requestedProgress; firstProgress=false; applyScrollPose(); }
+        controls.update(); renderer.render(scene,camera);
+        assertPreparationActive();
+        prepared=true; preparing=false; lastCinemaFrame=0; scrollDirty=true; invalidate();
+      } catch(error) {
+        if(!disposed) { reportFailure(); disposeScene(); }
+        throw error;
+      } finally { cancelPreparation=null; preparing=false; }
+    })();
+    return preparation;
+  }
+  function disposeScene() {
+    if(disposed) return;
+    disposed=true; cancelPreparation?.(new Error('The exhaust scene was disposed during preparation.'));
+    cancelAnimationFrame(frame); frame=0; resize.disconnect(); intersection.disconnect();
+    document.removeEventListener('visibilitychange', visibility);
+    controls.removeEventListener('start', beginInteraction); controls.removeEventListener('end', endInteraction); controls.removeEventListener('change', invalidate); controls.dispose();
+    canvas.removeEventListener('keydown', keyboard); canvas.removeEventListener('webglcontextlost', contextLost);
+    geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose()); textures.forEach(t => t.dispose());
+    environment.dispose(); renderer.dispose(); renderer.forceContextLoss(); canvas.remove();
+  }
+
   return {
+    prepare,
     progress(value) { requestedProgress=THREE.MathUtils.clamp(value,0,1); if(firstProgress || options.reducedMotion || requestedProgress===0 || requestedProgress===1) { scrollProgress=requestedProgress;firstProgress=false; } scrollDirty=true;invalidate(); },
     view, finish,
     routeColors(value) { routeColorsEnabled = value; applyAppearance(); },
@@ -445,13 +506,6 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
       camera.position.copy(controls.target).add(eye.setLength(THREE.MathUtils.clamp(eye.length() * (direction > 0 ? 1.15 : 1 / 1.15), controls.minDistance, controls.maxDistance)));
       invalidate();
     },
-    dispose() {
-      disposed = true; cancelAnimationFrame(frame); resize.disconnect(); intersection.disconnect();
-      document.removeEventListener('visibilitychange', visibility);
-      controls.removeEventListener('start', beginInteraction); controls.removeEventListener('end', endInteraction); controls.removeEventListener('change', invalidate); controls.dispose();
-      canvas.removeEventListener('keydown', keyboard); canvas.removeEventListener('webglcontextlost', contextLost);
-      geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose()); textures.forEach(t => t.dispose());
-      environment.dispose(); renderer.dispose(); renderer.forceContextLoss(); canvas.remove();
-    },
+    dispose: disposeScene,
   };
 }

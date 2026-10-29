@@ -9,7 +9,7 @@ import { exhaustScrollPose } from './valvetronic-exhaust-motion';
 import styles from './valvetronic-exhaust-cinema.module.css';
 
 export function ValvetronicExhaustCinema() {
-  const revision='broll-final-hold-11';
+  const revision='broll-first-pass-12';
   const section=useRef<HTMLElement>(null);
   const pin=useRef<HTMLDivElement>(null);
   const mount=useRef<HTMLDivElement>(null);
@@ -19,15 +19,21 @@ export function ValvetronicExhaustCinema() {
   const [status,setStatus]=useState<'loading'|'ready'|'unavailable'>('loading');
 
   useEffect(() => {
-    let disposed=false,started=false,frame=0;
+    let disposed=false,started=false,failed=false,frame=0;
+    const preloadDistance=2400;
+    // Fetch the module ahead of the section; build the scene only when approaching it.
+    const sceneModule=import('./valvetronic-exhaust-scene');
+    void sceneModule.catch(()=>{});
     const motion=matchMedia('(prefers-reduced-motion: reduce)');
     function update() {
       frame=0;
       if(!section.current || !pin.current) return;
       // The final hold and the cover each have their own scroll space.
+      const bounds=section.current.getBoundingClientRect();
+      if(!started && bounds.top<window.innerHeight+preloadDistance && bounds.bottom>-preloadDistance) start();
       const hold=Number(getComputedStyle(section.current).getPropertyValue('--cinema-final-hold'));
       const length=section.current.offsetHeight-pin.current.offsetHeight*(2+hold);
-      const progress=motion.matches ? 1 : Math.max(0,Math.min(1,-section.current.getBoundingClientRect().top/Math.max(1,length)));
+      const progress=motion.matches ? 1 : Math.max(0,Math.min(1,-bounds.top/Math.max(1,length)));
       const pose=exhaustScrollPose(progress);
       pin.current.style.setProperty('--type-opacity',String(pose.typeOpacity));
       pin.current.style.setProperty('--detail-opacity',String(pose.detailOpacity));
@@ -36,19 +42,29 @@ export function ValvetronicExhaustCinema() {
       scene.current?.progress(progress);
     }
     function queue() { if(!frame) frame=requestAnimationFrame(update); }
-    const observer=new IntersectionObserver(entries => {
-      if(started || !entries[0].isIntersecting || !mount.current) return;
+    function start() {
+      if(disposed || started || !mount.current) return;
       started=true; observer.disconnect();setStatus('loading');
-      import('./valvetronic-exhaust-scene').then(({createExhaustScene}) => {
+      sceneModule.then(async ({createExhaustScene}) => {
         if(disposed || !mount.current) return;
-        scene.current=createExhaustScene(mount.current,{
+        const next=createExhaustScene(mount.current,{
           cinematic:true,reducedMotion:motion.matches,
-          onInteract:()=>{}, onError:()=>{if(!disposed) setStatus('unavailable');},
+          onInteract:()=>{}, onError:()=>{failed=true;if(!disposed) setStatus('unavailable');},
         });
-        scene.current.finish(selectedFinish.current);
+        scene.current=next;
+        next.finish(selectedFinish.current);
+        update();
+        await next.prepare();
+        if(disposed || failed || scene.current!==next) return;
         update(); setStatus('ready');
-      }).catch(()=>{if(!disposed) setStatus('unavailable');});
-    },{rootMargin:'900px'});
+      }).catch(()=>{
+        if(disposed) return;
+        failed=true;scene.current?.dispose();scene.current=null;setStatus('unavailable');
+      });
+    }
+    const observer=new IntersectionObserver(entries => {
+      if(entries.some(entry=>entry.isIntersecting)) start();
+    },{rootMargin:`${preloadDistance}px 0px`});
     const resize=new ResizeObserver(queue);
     if(section.current) {observer.observe(section.current);resize.observe(section.current);}
     if(pin.current) resize.observe(pin.current);
@@ -66,7 +82,7 @@ export function ValvetronicExhaustCinema() {
 
   function chooseFinish(value: ExhaustFinish) { selectedFinish.current=value;setFinish(value);scene.current?.finish(value); }
 
-  return <section ref={section} id="valvetronic-exhaust" className={styles.section} aria-labelledby="exhaust-cinema-title" data-cinema-revision={revision}>
+  return <section ref={section} id="valvetronic-exhaust" className={styles.section} aria-labelledby="exhaust-cinema-title" data-cinema-revision={revision} data-scene-status={status}>
     <div ref={pin} className={styles.pin}>
       <div className={styles.topline}><span>Valvetronic Designs / True F1</span><span>Lamborghini Huracán</span></div>
       <h3 id="exhaust-cinema-title" className="sr-only">Valvetronic Designs — Huracán valved exhaust system</h3>
