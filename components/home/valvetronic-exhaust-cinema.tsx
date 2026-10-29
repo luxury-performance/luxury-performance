@@ -9,7 +9,7 @@ import { exhaustScrollPose } from './valvetronic-exhaust-motion';
 import styles from './valvetronic-exhaust-cinema.module.css';
 
 export function ValvetronicExhaustCinema() {
-  const revision='broll-mobile-sharpness-16';
+  const revision='broll-mobile-smooth-17';
   const section=useRef<HTMLElement>(null);
   const pin=useRef<HTMLDivElement>(null);
   const mount=useRef<HTMLDivElement>(null);

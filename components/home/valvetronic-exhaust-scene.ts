@@ -367,13 +367,18 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
     rim.intensity=pose.rim;
   }
   function invalidate() { if (!frame && !disposed && prepared && !preparing && !failed && visible && !document.hidden) frame = requestAnimationFrame(render); }
-  let lastCinemaFrame=0;
+  let lastCinemaFrame=0,mobileFrameDue=0;
   function render(now: number) {
     frame = 0;
     if (disposed || !prepared || preparing || failed || !visible || document.hidden) return;
     const tracking=options.cinematic && (scrollArrival!==null || Math.abs(requestedProgress-scrollProgress)>.00005);
     const floating=options.cinematic && !options.reducedMotion && !tracking && scrollProgress>.985;
-    if(lastCinemaFrame && (mobile || (floating && !scrollDirty)) && now-lastCinemaFrame<(mobile?1000/30:32)) { invalidate(); return; }
+    if(mobile) {
+      const interval=1000/60;
+      // Keep a 60 Hz phase so fractional RAF times do not halve the frame rate.
+      if(mobileFrameDue && now+.75<mobileFrameDue) { invalidate(); return; }
+      mobileFrameDue=mobileFrameDue && now-mobileFrameDue<interval ? mobileFrameDue+interval : now+interval;
+    } else if(lastCinemaFrame && floating && !scrollDirty && now-lastCinemaFrame<32) { invalidate(); return; }
     const cameraDelta=lastCinemaFrame?Math.min(now-lastCinemaFrame,64):16;
     lastCinemaFrame=now; scrollDirty=false;
     if(options.cinematic && tracking) advanceScroll(now,cameraDelta);
@@ -505,7 +510,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
         if(options.cinematic) { scrollProgress=requestedProgress; scrollVelocity=0; scrollArrival=null; firstProgress=false; applyScrollPose(); }
         controls.update(); renderer.render(scene,camera);
         assertPreparationActive();
-        prepared=true; preparing=false; lastCinemaFrame=0; scrollDirty=true; invalidate();
+        prepared=true; preparing=false; lastCinemaFrame=0; mobileFrameDue=0; scrollDirty=true; invalidate();
       } catch(error) {
         if(!disposed) { reportFailure(); disposeScene(); }
         throw error;
