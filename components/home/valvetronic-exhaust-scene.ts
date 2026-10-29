@@ -34,7 +34,8 @@ type Options = { cinematic?: boolean; initialIsolated?: boolean; initialRouteCol
 export function createExhaustScene(host: HTMLDivElement, options: Options): ExhaustScene {
   const mobile=matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
   const renderer = new THREE.WebGLRenderer({ antialias:!mobile,alpha:true,powerPreference:options.cinematic && !mobile ? 'high-performance' : 'low-power' });
-  const pixelRatio=options.cinematic && !mobile ? Math.min(2.5,Math.max(2,window.devicePixelRatio)) : Math.min(window.devicePixelRatio,mobile?1.5:2.5);
+  // Supersample phone edges without allocating multisampled color/depth buffers.
+  const pixelRatio=options.cinematic && !mobile ? Math.min(2.5,Math.max(2,window.devicePixelRatio)) : Math.min(window.devicePixelRatio,mobile?2.25:2.5);
   renderer.setPixelRatio(pixelRatio);
   renderer.setClearColor(0x101112, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -429,7 +430,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   function resizeScene() {
     const width = host.clientWidth, height = host.clientHeight;
     if (!width || !height) return false;
-    const ratio=mobile?Math.min(pixelRatio,Math.sqrt(900000/(width*height))):pixelRatio;
+    const ratio=mobile?Math.min(pixelRatio,Math.sqrt(1800000/(width*height))):pixelRatio;
     if(width!==sizedWidth || height!==sizedHeight || ratio!==sizedRatio) {
       // Resize once at the capped pixel count; avoid a transient full-DPR allocation.
       if(mobile) renderer.setDrawingBufferSize(width,height,ratio);
