@@ -320,6 +320,26 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   type Transition = { start: number; fromOrientation: THREE.Quaternion; toOrientation: THREE.Quaternion; fromRadius: number; toRadius: number; fromTarget: THREE.Vector3; toTarget: THREE.Vector3 };
   let transition: Transition | null = null;
   let scrollProgress = options.reducedMotion ? 1 : 0,requestedProgress=scrollProgress,firstProgress=true,scrollDirty=true;
+  let scrollVelocity=0;
+  type ScrollArrival={from:number;to:number;start:number;tangent:number};
+  let scrollArrival:ScrollArrival|null=null;
+  const arrivalDuration=mobile?180:300;
+  function advanceScroll(now:number,delta:number) {
+    if(scrollArrival) {
+      const {from,to,start,tangent}=scrollArrival;
+      const t=THREE.MathUtils.clamp((now-start)/arrivalDuration,0,1),t2=t*t,t3=t2*t;
+      // Match incoming velocity and arrive at rest, without skipping the last orbit.
+      const eased=-2*t3+3*t2+tangent*(t3-2*t2+t);
+      scrollProgress=THREE.MathUtils.lerp(from,to,eased);
+      scrollVelocity=(to-from)*(-6*t2+6*t+tangent*(3*t2-4*t+1))/arrivalDuration;
+      if(t===1) {scrollProgress=to;scrollVelocity=0;scrollArrival=null;}
+    } else {
+      const before=scrollProgress;
+      scrollProgress=THREE.MathUtils.lerp(scrollProgress,requestedProgress,1-Math.exp(-delta/(mobile?90:160)));
+      scrollVelocity=delta>0?(scrollProgress-before)/delta:0;
+      if(Math.abs(requestedProgress-scrollProgress)<.00005) {scrollProgress=requestedProgress;scrollVelocity=0;}
+    }
+  }
   const cinemaEye=new THREE.Vector3(),cinemaUp=new THREE.Vector3(0,0,1),cinemaScreenUp=new THREE.Vector3();
   function applyScrollPose() {
     const pose = exhaustScrollPose(options.reducedMotion ? 1 : scrollProgress);
@@ -344,15 +364,12 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
   function render(now: number) {
     frame = 0;
     if (disposed || !prepared || preparing || failed || !visible || document.hidden) return;
-    const tracking=options.cinematic && Math.abs(requestedProgress-scrollProgress)>.00005;
+    const tracking=options.cinematic && (scrollArrival!==null || Math.abs(requestedProgress-scrollProgress)>.00005);
     const floating=options.cinematic && !options.reducedMotion && !tracking && scrollProgress>.985;
     if(floating && !scrollDirty && now-lastCinemaFrame<32) { invalidate(); return; }
     const cameraDelta=lastCinemaFrame?Math.min(now-lastCinemaFrame,64):16;
     lastCinemaFrame=now; scrollDirty=false;
-    if(options.cinematic && tracking) {
-      scrollProgress=THREE.MathUtils.lerp(scrollProgress,requestedProgress,1-Math.exp(-cameraDelta/(mobile?90:160)));
-      if(Math.abs(requestedProgress-scrollProgress)<.00005) scrollProgress=requestedProgress;
-    }
+    if(options.cinematic && tracking) advanceScroll(now,cameraDelta);
     if(options.cinematic) {
       applyScrollPose();
       if(floating) {
@@ -471,7 +488,7 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
         // A complete hidden frame uploads the actual mesh buffers, including the joins.
         renderer.render(scene,camera);
         assertPreparationActive();
-        if(options.cinematic) { scrollProgress=requestedProgress; firstProgress=false; applyScrollPose(); }
+        if(options.cinematic) { scrollProgress=requestedProgress; scrollVelocity=0; scrollArrival=null; firstProgress=false; applyScrollPose(); }
         controls.update(); renderer.render(scene,camera);
         assertPreparationActive();
         prepared=true; preparing=false; lastCinemaFrame=0; scrollDirty=true; invalidate();
@@ -495,7 +512,21 @@ export function createExhaustScene(host: HTMLDivElement, options: Options): Exha
 
   return {
     prepare,
-    progress(value) { requestedProgress=THREE.MathUtils.clamp(value,0,1); if(firstProgress || options.reducedMotion || requestedProgress===0 || requestedProgress===1) { scrollProgress=requestedProgress;firstProgress=false; } scrollDirty=true;invalidate(); },
+    progress(value) {
+      const next=THREE.MathUtils.clamp(value,0,1),changed=next!==requestedProgress;
+      requestedProgress=next;
+      if(firstProgress || options.reducedMotion) {
+        scrollProgress=next;scrollVelocity=0;scrollArrival=null;firstProgress=false;
+      } else if(next!==0 && next!==1) {
+        scrollArrival=null;if(scrollProgress===next) scrollVelocity=0;
+      } else if(scrollProgress===next) {
+        scrollArrival=null;scrollVelocity=0;
+      } else if(changed) {
+        const tangent=THREE.MathUtils.clamp(scrollVelocity*arrivalDuration/(next-scrollProgress),0,3);
+        scrollArrival={from:scrollProgress,to:next,start:performance.now(),tangent};
+      }
+      scrollDirty=true;invalidate();
+    },
     view, finish,
     routeColors(value) { routeColorsEnabled = value; applyAppearance(); },
     isolate(value) { isolated = value; rightBank.visible = !value; centre.visible = !value; invalidate(); },
