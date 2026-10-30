@@ -22,9 +22,9 @@ export function ValvetronicExhaustCinema() {
     let disposed=false,started=false,failed=false,frame=0,generation=0;
     const mobile=matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
     const preloadDistance=mobile?1600:2400;
-    // Fetch the module ahead of the section; build the scene only when approaching it.
-    const sceneModule=import('./valvetronic-exhaust-scene');
-    void sceneModule.catch(()=>{});
+    // Download and build only when approaching the section; reuse the import after mobile release.
+    let sceneModule:Promise<typeof import('./valvetronic-exhaust-scene')>|undefined;
+    function loadScene() { return sceneModule??=import('./valvetronic-exhaust-scene'); }
     const motion=matchMedia('(prefers-reduced-motion: reduce)');
     function update() {
       frame=0;
@@ -57,7 +57,7 @@ export function ValvetronicExhaustCinema() {
       if(disposed || started || document.hidden || !mount.current || !section.current || !approaching(section.current.getBoundingClientRect())) return;
       const run=++generation;
       started=true; observer.disconnect();setStatus('loading');
-      sceneModule.then(async ({createExhaustScene}) => {
+      loadScene().then(async ({createExhaustScene}) => {
         if(disposed || run!==generation || !mount.current) return;
         const next=createExhaustScene(mount.current,{
           cinematic:true,reducedMotion:motion.matches,

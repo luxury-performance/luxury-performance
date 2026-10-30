@@ -47,6 +47,7 @@ export function BrandIntro() {
         pending.current = false;
         keepReloadAtTop();
         delete root.dataset.lxpReload;
+        if (resetReload) history.scrollRestoration = 'auto';
       }
       window.removeEventListener('scroll', keepReloadAtTop);
       if (introHadFocus) {

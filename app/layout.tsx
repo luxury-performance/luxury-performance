@@ -11,7 +11,7 @@ import { WhatsAppWidget } from '@/components/whatsapp-widget';
 import './globals.css';
 import './shop.css';
 import { CartProvider } from '@/components/shop/cart-provider';
-const montserrat = localFont({ src: './Montserrat-Variable.ttf', variable: '--font-montserrat', display: 'swap' });
+const montserrat = localFont({ src: './Montserrat-Variable.woff2', variable: '--font-montserrat', display: 'swap' });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3002'),
   title: { default: 'Luxury Performance — Beyond Ordinary', template: '%s | Luxury Performance' },
