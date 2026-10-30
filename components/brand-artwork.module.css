@@ -3,6 +3,7 @@
 .artwork[data-brand-artwork="novitec"] > img { width: 83%; }
 .artwork[data-brand-artwork="valvetronic"] > img { width: 93%; }
 .artwork[data-brand-artwork="techart"] > img { width: 95%; }
+.artwork[data-brand-artwork="capristo"] > img { width: 90%; filter: brightness(0) invert(1); }
 .artwork[data-brand-artwork="gintani"] > img { width: 78%; }
 .artwork[data-brand-artwork="voltrix"] > svg { width: 91%; }
 .artwork[data-brand-artwork="urban"] > img, .artwork[data-brand-artwork="lxp"] > img { width: 100%; }

@@ -17,3 +17,6 @@ Voltrix navigation rendering uses an SVG luminance-to-alpha filter on the unchan
 
 URBAN Automotive: transparent official SVG https://smgassets.blob.core.windows.net/customers/urban/dist/img/svgs/logo.svg, observed on https://www.urban-automotive.co.uk/. Saved unchanged as urban.svg (viewBox 643.6×101.8).
 LXP Used navigation: existing approved lettering-only lxp-white.svg, replacing the winged emblem at the owner's request.
+
+Capristo navigation artwork — 30 October 2026
+Original transparent vector used by the official German website header: https://www.capristo.de/wp-content/uploads/2019/10/capristo-logo-m-Automotive.svg, linked from https://www.capristo.de/. Saved unchanged as capristo.svg (viewBox 537.41×116.27); monochrome artwork displayed in white on dark glass using CSS.

@@ -4,6 +4,7 @@ export const brandMenu: ShopMenuItem[] = [
   { name: 'Valvetronic Designs', href: '/partners/valvetronic#top', artwork: 'valvetronic' },
   { name: 'TECHART', href: '/partners/techart#top', artwork: 'techart' },
   { name: 'FI Exhaust', href: '/partners/fi-exhaust#top', artwork: 'fi-exhaust' },
+  { name: 'Capristo', href: '/contact?programme=Capristo', artwork: 'capristo' },
   { name: 'Gintani', href: '/contact?programme=Gintani', artwork: 'gintani' },
   { name: 'Liberty Walk', href: '/contact?programme=Liberty%20Walk', artwork: 'liberty-walk' },
   { name: 'Voltrix', href: '/contact?programme=Voltrix', artwork: 'voltrix' },

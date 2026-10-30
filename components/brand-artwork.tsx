@@ -7,6 +7,7 @@ const artwork: Record<string, { name: string; src: string; width: number; height
   valvetronic: { name: 'Valvetronic Designs', src: '/brand/valvetronic.png', width: 1200, height: 304 },
   techart: { name: 'TECHART', src: '/brand/techart.svg', width: 487, height: 35 },
   'fi-exhaust': { name: 'FI Exhaust', src: '/brand/fi-exhaust.svg', width: 163, height: 64 },
+  capristo: { name: 'Capristo', src: '/brand/capristo.svg', width: 537, height: 116 },
   gintani: { name: 'Gintani', src: '/brand/gintani.png', width: 2193, height: 665 },
   'liberty-walk': { name: 'Liberty Walk', src: '/brand/liberty-walk-symbol.png', width: 163, height: 177 },
   voltrix: { name: 'Voltrix', src: '/brand/voltrix.jpg', width: 1600, height: 260 },
