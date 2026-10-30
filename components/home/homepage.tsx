@@ -105,7 +105,7 @@ export function Homepage() {
           <h2 id="techart-title">TECHART.<br />For your Porsche.</h2>
           <p>Choose your model, generation and body style. Then explore the exterior, wheel, interior and performance options that fit.</p>
           <Link className={styles.button} href="/partners/techart#vehicles">Choose your Porsche</Link>
-          <Link className={styles.textLink} href="/programmes/techart-porsche">Explore the Porsche programme</Link>
+          <Link className={styles.textLink} href="/partners/techart">Explore TECHART</Link>
         </div>
       </div>
     </section>
@@ -114,7 +114,7 @@ export function Homepage() {
       <Suspense fallback={<div className={styles.productGrid} aria-label="Loading products">{[0,1,2,3].map(index => <div key={index} className={styles.productImage} aria-hidden="true" />)}</div>}>
         <HomeProducts />
       </Suspense>
-      <div className={styles.modelLinks} aria-label="More NOVITEC programmes"><span>More from NOVITEC</span>{novitecModels.slice(1).map(([name,make,model]) => <Link key={model} href={`/shop?brand=novitec&make=${make}&model=${model}`}>{name}</Link>)}<Link href="/programmes/novitec-ferrari">Ferrari programme</Link><Link href="/programmes">All programmes</Link></div>
+      <div className={styles.modelLinks} aria-label="More NOVITEC parts"><span>More from NOVITEC</span>{novitecModels.slice(1).map(([name,make,model]) => <Link key={model} href={`/shop?brand=novitec&make=${make}&model=${model}`}>{name}</Link>)}<Link href="/shop?brand=novitec&make=ferrari">NOVITEC for Ferrari</Link><Link href="/partners/novitec">Explore NOVITEC</Link></div>
     </section>
     <section className={styles.dark} aria-labelledby="valvetronic-title">
       <div className={`${styles.container} ${styles.feature}`}>

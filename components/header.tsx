@@ -16,7 +16,7 @@ import { brandHeroImages } from '@/lib/brand-hero-images';
 
 type ShopMenu = 'brands' | 'vehicles';
 const menus = [{ key: 'brands' as const, label: 'By brand' }, { key: 'vehicles' as const, label: 'By vehicle' }];
-const links = [{ name: 'Home', href: '/' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Programmes', href: '/programmes' }, { name: 'Our partners', href: '/partners' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
+const links = [{ name: 'Home', href: '/' }, { name: 'Expertise', href: '/#expertise' }, { name: 'Our partners', href: '/partners' }, { name: 'Our world', href: '/about' }, { name: 'Let’s talk', href: '/contact' }];
 function BrandMenu({ close }: { close: () => void }) {
   return <>
     <MenuCards items={brandMenu} close={close} logoOnly />
@@ -134,7 +134,7 @@ export function Header() {
         </div>
       </nav>
       <Link inert={open} className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
-      <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/programmes" onClick={close}>Programmes</Link><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><HeaderSearch onOpen={close}/><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
+      <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><HeaderSearch onOpen={close}/><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
     </header>
     {shopMenu && <div ref={shopGlass} className="navigation-glass-surface navigation-shop-glass" aria-hidden="true" />}
     {open && <div className="navigation-glass-surface" aria-hidden="true" />}

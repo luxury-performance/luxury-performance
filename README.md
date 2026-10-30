@@ -22,9 +22,9 @@ npm start
 
 ## Pages and interactions
 
-- Home: editorial introduction, keyboard-accessible expertise panels, selected programmes, company and contact sections.
-- `/programmes`: filter by marque.
-- `/programmes/[slug]`: four brand programme pages with contextual enquiry links.
+- Home: editorial introduction, keyboard-accessible expertise panels, brand and model collections, company and contact sections.
+- `/partners` and `/partners/[slug]`: brand discovery and vehicle-specific catalogue links.
+- Legacy `/programmes` URLs permanently redirect to the relevant partner pages.
 - `/about`: company, approach and Dubai location.
 - `/contact`: vehicle enquiry builder. No database or email service is required. The user reviews the composed enquiry and chooses to send it in WhatsApp. The website does not store the form or automatically send a message.
 - Responsive navigation, keyboard focus, reduced-motion support, local font and optimised local photos.

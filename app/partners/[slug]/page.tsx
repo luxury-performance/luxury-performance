@@ -6,12 +6,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { partners } from '@/lib/partners';
-import { programmes } from '@/lib/content';
 import { getCatalog } from '@/lib/shop/storefront';
 import { categoryOf, filterUrl, label, supplierOf, tagsFor, suppliers } from '@/lib/shop/taxonomy';
 import { money } from '@/lib/shop/types';
 import { ArrowLink, Eyebrow } from '@/components/ui';
-import { ProgrammeCard } from '@/components/programme-card';
 import { BrandArtwork } from '@/components/brand-artwork';
 import { VehicleSelector } from '@/components/shop/vehicle-selector';
 import { is911Fit } from '@/lib/shop/techart-fitment';
@@ -40,7 +38,6 @@ export default async function PartnerPage({ params, searchParams }: Props) {
   const showCategories = p.slug !== 'valvetronic' && categories.length > 0;
   const selections = [...categories.flatMap(c => products.find(item => categoryOf(item) === c) || []), ...products];
   const featured = [...new Map(selections.map(item => [item.id, item])).values()].slice(0, 4);
-  const related = programmes.filter(item => item.brand.toLowerCase() === p.name.toLowerCase());
   const heroAsset = brandHeroImages[p.slug];
   const mobileHero = heroAsset ? getImageProps({ ...heroAsset.mobile, alt: '', sizes: '100vw', quality: 95 }).props : null;
   const vehicleFirst = p.slug === 'techart' && vehicles.includes('911');
@@ -72,7 +69,6 @@ export default async function PartnerPage({ params, searchParams }: Props) {
     {!vehicleFirst && vehicleSection}
     {showCategories && <section id="departments" className={styles.departments}><div className={styles.sectionHeading}><div><Eyebrow>The collection</Eyebrow><h2>Details that define it.</h2></div><ArrowLink href={shop}>View all parts</ArrowLink></div><div className={styles.categoryGrid}>{categories.map((category, i) => { const items = products.filter(item => categoryOf(item) === category); const image = items.find(item => item.featuredImage)?.featuredImage; return <Link key={category} className={styles.categoryCard} href={filterUrl('/shop', { brand: p.supplier, category })}><div className={styles.categoryImage}>{image && <img src={`${image.url}${image.url.includes('?') ? '&' : '?'}width=700`} alt={image.altText || `${p.name} ${category}`} loading="lazy"/>}<span>{String(i + 1).padStart(2, '0')}</span></div><div><h3>{category}</h3><ArrowUpRight size={20}/></div><p>{items.length} {items.length === 1 ? 'part' : 'parts'}{p.stockOnly ? ' · limited stock' : ''}</p></Link>; })}</div></section>}
     {featured.length > 0 && <section id="selected" className={styles.selected}><div className={styles.sectionHeading}><div><Eyebrow>A closer look</Eyebrow><h2>Explore the range.</h2></div><ArrowLink href={shop}>{p.slug === 'valvetronic' ? 'View all exhausts' : 'Shop the collection'}</ArrowLink></div><div className={styles.productGrid}>{featured.map(item => <Link className="shop-product-card" key={item.id} href={`/products/${item.handle}`}><div className="shop-product-image">{item.featuredImage && <img src={`${item.featuredImage.url}${item.featuredImage.url.includes('?') ? '&' : '?'}width=700`} alt={item.featuredImage.altText || item.title} loading="lazy"/>}<span className="shop-product-arrow"><ArrowUpRight size={18}/></span>{item.tags.includes('condition_used') && <span className="shop-used">Used</span>}</div><div className="shop-card-meta"><span>{p.name}</span><span>{categoryOf(item)}</span></div><h3>{item.title.replace(/^(TECHART|Valvetronic Designs)\s*[-–]\s*/i, '')}</h3><p className="shop-price">From {money(item.priceRange.minVariantPrice)}</p></Link>)}</div></section>}
-    {related.length > 0 && <section className={styles.programmes}><div className={styles.sectionHeading}><div><Eyebrow>The bigger picture</Eyebrow><h2>Beyond a single part.</h2></div></div><div className="programme-grid">{related.map((item, i) => <ProgrammeCard key={item.slug} programme={item} index={i}/>)}</div></section>}
     <section className={styles.support}><div><Eyebrow dark>Luxury Performance / Dubai</Eyebrow><h2>Your car.<br/>Your next chapter.</h2></div><div><p>{p.stockOnly ? 'Need a closer look at one of the kits? Ask us about its condition, included parts and fitment.' : 'From the first component to a complete specification, our team can help with compatibility, product choices and installation.'}</p><ArrowLink href={enquiry} light>Discuss your {p.slug === 'fi-exhaust' ? 'exhaust' : 'specification'}</ArrowLink></div></section>
     <nav className={styles.otherPartners} aria-label="Explore other partners"><span className="tiny-label">Another perspective</span>{partners.filter(item => item.slug !== p.slug && !item.stockOnly).map(item => <Link key={item.slug} href={`/partners/${item.slug}#top`}>{item.name}<ArrowUpRight size={15}/></Link>)}</nav>
   </div>;

@@ -319,7 +319,7 @@ export function PurosangueFilm() {
         <nav className={styles.chapters} aria-label="Transformation chapters">
           {filmChapters.map((item, index) => <button type="button" key={item.name} aria-current={chapter === index ? 'step' : undefined} onClick={() => seek(index)}><span className={styles.chapterNumber}>0{index + 1}</span><span>{item.name}</span><span className={styles.chapterDot} /></button>)}
         </nav>
-        <div className={styles.footline}><span>Illustrative visualisation. Final specification confirmed with our team.</span><Link href="/programmes/novitec-ferrari">Explore the NOVITEC programme <ArrowUpRight size={12} /></Link></div>
+        <div className={styles.footline}><span>Illustrative visualisation. Final specification confirmed with our team.</span><Link href="/partners/novitec">Explore NOVITEC <ArrowUpRight size={12} /></Link></div>
       </div>
     </div>
   </section>;
