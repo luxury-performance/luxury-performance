@@ -9,7 +9,7 @@ export const brandMenu: ShopMenuItem[] = [
   { name: 'Liberty Walk', href: '/contact?programme=Liberty%20Walk', artwork: 'liberty-walk' },
   { name: 'Voltrix', href: '/contact?programme=Voltrix', artwork: 'voltrix' },
 ];
-export const usedParts: ShopMenuItem = { name: 'Used parts', href: '/collections/lxp-used', artwork: 'lxp', note: 'Previously owned components' };
+export const usedParts: ShopMenuItem = { name: 'Used parts', href: '/collections/used-parts', artwork: 'lxp', note: 'Previously owned components' };
 export const vehicleMenu: ShopMenuItem[] = [
   { name: 'Ferrari', href: '/shop?make=ferrari', wordmark: 'ferrari.svg', logoClass: 'ferrariWordmark' },
   { name: 'Lamborghini', href: '/shop?make=lamborghini', wordmark: 'lamborghini.svg', logoClass: 'lamborghiniWordmark' },

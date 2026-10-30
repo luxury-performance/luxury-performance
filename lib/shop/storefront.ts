@@ -1,6 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { formatDescription } from './description';
+import { approvedWheelOffers, applyWheelOffer, wheelOfferCard } from './used-wheel-offers';
 import type { CatalogProduct, Product } from './types';
 import { CATALOG_QUERY, COLLECTION_QUERY, COLLECTIONS_QUERY, PRODUCT_QUERY } from './queries';
 const domain = process.env.SHOPIFY_STORE_DOMAIN || 'krtymq-v4.myshopify.com';
@@ -24,13 +25,18 @@ export const getCatalog = cache(async () => {
     products.push(...data.products.nodes);
     after = data.products.pageInfo.hasNextPage ? data.products.pageInfo.endCursor : null;
   } while (after);
-  return products.filter(p => p.productType !== 'Installation Service' && p.vendor !== 'Luxury Performance Parts');
+  return hydrateWheelCards(products.filter(p => p.productType !== 'Installation Service' && p.vendor !== 'Luxury Performance Parts' && !p.tags.includes('stockroom_set_components')));
 });
 export const getProduct = cache(async (handle: string, fresh = false) => {
   const product = (await storefront<{ product: Product | null }>(PRODUCT_QUERY, { handle }, fresh)).product;
   if (product?.descriptionHtml) product.descriptionHtml = formatDescription(product.descriptionHtml);
-  return product;
+  const offer = product ? applyWheelOffer(product) : null;
+  return offer?.variants.nodes.length ? offer : null;
 });
+async function hydrateWheelCards(products: CatalogProduct[]): Promise<CatalogProduct[]> {
+  const cards = await Promise.all(products.map(async p => approvedWheelOffers[p.id] ? wheelOfferCard(p, await getProduct(p.handle)) : p));
+  return cards.filter((p): p is CatalogProduct => p !== null);
+}
 type CollectionInfo = { title: string; description: string; seo: { title: string | null; description: string | null } };
 export const getCollection = cache(async (handle: string) => {
   let after: string | null = null; const products: CatalogProduct[] = [];
@@ -41,7 +47,7 @@ export const getCollection = cache(async (handle: string) => {
     const { products: page, ...rest } = data.collection; info = rest;
     products.push(...page.nodes); after = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
   } while (after);
-  return { ...info!, products };
+  return { ...info!, products: await hydrateWheelCards(products) };
 });
 export const getCollections = cache(async () => {
   const result: { handle: string; title: string }[] = []; let after: string | null = null;

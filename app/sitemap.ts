@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (process.env.SHOP_SEO_LIVE === 'true') {
     const [products, collections] = await Promise.all([getCatalog(), getCollections()]);
-    routes.push('/partners', ...partners.map(p => `/partners/${p.slug}`), '/shop', ...products.map(p => `/products/${p.handle}`), ...collections.map(c => `/collections/${c.handle}`));
+    routes.push('/collections/used-parts', '/partners', ...partners.map(p => `/partners/${p.slug}`), '/shop', ...products.map(p => `/products/${p.handle}`), ...collections.map(c => `/collections/${c.handle}`));
   }
 
   return routes.map(path => ({ url: new URL(path, origin).toString() }));

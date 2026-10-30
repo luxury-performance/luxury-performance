@@ -1,5 +1,6 @@
 import 'server-only';
 import type { Product, Variant } from './types';
+import { approvedWheelOffers } from './used-wheel-offers';
 export type StockVariant = { id: number; tracked: boolean; quantity: number; policy: 'continue' | 'deny'; shipping: boolean };
 // Temporary bridge to our existing theme's public stock metadata. This must be
 // replaced with scoped Storefront inventory access before the old domain moves.
@@ -18,7 +19,14 @@ export async function getStock(handle: string): Promise<StockVariant[]> {
 // Only NOVITEC supplier items with Shopify's explicit backorder confirmation may
 // use the API result instead of the public theme bridge. Never infer permission
 // from availability alone, and retain stock checks for used/unused one-off stock.
-export async function getVariantStock(product: Pick<Product, 'handle' | 'vendor' | 'tags'>, variant: Pick<Variant, 'id' | 'availableForSale' | 'currentlyNotInStock' | 'requiresShipping'>): Promise<StockVariant | undefined> {
+export async function getVariantStock(product: Pick<Product, 'handle' | 'vendor' | 'tags'> & { id?: string }, variant: Pick<Variant, 'id' | 'availableForSale' | 'currentlyNotInStock' | 'requiresShipping'>): Promise<StockVariant | undefined> {
+  const wheelOffer = product.id && approvedWheelOffers[product.id];
+  if (wheelOffer) {
+    if (variant.id !== wheelOffer.variantId) return undefined;
+    // Each approved one-off offer has at most one complete set/lot/pair/single.
+    // The caller reads fresh Shopify availability; checkout enforces component stock.
+    return { id: Number(variant.id.split('/').pop()), tracked: true, quantity: variant.availableForSale && !variant.currentlyNotInStock ? 1 : 0, policy: 'deny', shipping: variant.requiresShipping };
+  }
   const brands = product.tags.filter(tag => tag.startsWith('brand_'));
   const novitec = /^novitec$/i.test(product.vendor.trim()) && brands.length === 1 && brands[0] === 'brand_novitec';
   const stockOnly = product.tags.some(tag => ['condition_used', 'condition_unused', 'stock_only', 'stock-only'].includes(tag));

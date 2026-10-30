@@ -5,11 +5,12 @@ import test from 'node:test';
 import ts from 'typescript';
 
 const require = createRequire(import.meta.url);
+const approvedWheelOffers = require('../lib/shop/used-wheel-offers.json');
 function inventory(fetch) {
   const source = readFileSync(new URL('../lib/shop/inventory.ts', import.meta.url), 'utf8');
   const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2021 } });
   const exports = {};
-  new Function('exports', 'require', 'fetch', outputText)(exports, name => name === 'server-only' ? {} : require(name), fetch);
+  new Function('exports', 'require', 'fetch', outputText)(exports, name => name === 'server-only' ? {} : name === './used-wheel-offers' ? { approvedWheelOffers } : require(name), fetch);
   return exports;
 }
 const product = { handle: 'novitec-race-exhaust-with-flap-ss-purosangue', vendor: 'NOVITEC', tags: ['brand_novitec'] };
@@ -55,4 +56,16 @@ test('a missing or failed stock bridge still blocks stock-only products', async 
     const { getVariantStock } = inventory(async () => response);
     await assert.rejects(getVariantStock({ ...product, tags: ['brand_novitec', 'condition_used'] }, variant), /Stock could not be checked/);
   }
+});
+
+test('approved wheel offers allow one live group, never individual components or backorders', async () => {
+  const { getVariantStock } = inventory(() => { throw new Error('Approved wheel offers do not depend on the old storefront'); });
+  const [id, offer] = Object.entries(approvedWheelOffers)[0];
+  const wheel = { id, handle: 'wheel-set', vendor: 'Bentley', tags: ['condition_used'] };
+  const option = { ...variant, id: offer.variantId, currentlyNotInStock: false };
+  assert.equal((await getVariantStock(wheel, option)).quantity, 1);
+  assert.equal((await getVariantStock(wheel, option)).policy, 'deny');
+  assert.equal((await getVariantStock(wheel, { ...option, availableForSale: false })).quantity, 0);
+  assert.equal((await getVariantStock(wheel, { ...option, currentlyNotInStock: true })).quantity, 0);
+  assert.equal(await getVariantStock(wheel, { ...option, id: 'gid://shopify/ProductVariant/999' }), undefined);
 });
