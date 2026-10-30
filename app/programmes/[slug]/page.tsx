@@ -10,7 +10,7 @@ export function generateStaticParams() { return programmes.map(p => ({ slug: p.s
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const p = programmes.find(item => item.slug === slug);
-  return { title: p ? `${p.brand} ${p.marque}` : 'Programme not found', description: p?.intro };
+  return { title: p ? `${p.brand} ${p.marque}` : 'Programme not found', description: p?.intro, alternates: p ? { canonical: `/programmes/${p.slug}` } : undefined };
 }
 export default async function Programme({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

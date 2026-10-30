@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Eyebrow, ArrowLink } from '@/components/ui';
 import { EnquiryForm } from '@/components/enquiry-form';
 import { contact, expertise } from '@/lib/content';
-export const metadata: Metadata = { title: 'Let’s Talk', description: 'Discuss your next automotive upgrade with Luxury Performance Dubai. Call, email or start a vehicle enquiry on WhatsApp.' };
+export const metadata: Metadata = { title: 'Let’s Talk', description: 'Discuss your next automotive upgrade with Luxury Performance Dubai. Call, email or start a vehicle enquiry on WhatsApp.', alternates: { canonical: '/contact' } };
 export default async function Contact({ searchParams }: { searchParams: Promise<{ interest?: string; vehicle?: string; programme?: string }> }) {
   const query = await searchParams;
   const interest = [...expertise.map(item => item.title), 'A complete programme', 'Help me decide'].some(title => title === query.interest) ? query.interest : '';
