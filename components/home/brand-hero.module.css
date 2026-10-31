@@ -1,6 +1,11 @@
 .hero { position: relative; isolation: isolate; height: 100svh; min-height: 740px; max-height: 1100px; overflow: clip; background: #151617; color: #fff; }
 .context { position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); top: 145px; font-size: 11px; line-height: 1.7; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; }
 .context span { margin-inline: 10px; color: #ffffff80; }
+/* Reveal the copy and navigation as the existing logo flight begins; leave the photograph painted. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(html[data-lxp-intro="tracing"]:has([data-home-hero])) :is(.context, .copy, .controls),
+  :global(html[data-lxp-intro="formed"]:has([data-home-hero])) :is(.context, .copy, .controls) { visibility: hidden; }
+}
 .stage, .layer, .slide { position: absolute; inset: 0; }
 .layer { opacity: 0; pointer-events: none; transition: opacity 700ms ease; }
 .layer[data-active="true"] { opacity: 1; z-index: 1; pointer-events: auto; }
