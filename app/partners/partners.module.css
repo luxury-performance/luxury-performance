@@ -39,3 +39,21 @@
   .fullBleedHero[data-brand="techart"] .heroImage { object-position: 70% center; }
   .fullBleedHero[data-brand="valvetronic"] .heroImage { object-position: center; }
 }
+
+/* NOVITEC: a compact introduction beside its vehicle wordmarks. */
+.vehicles.novitecVehicles { padding-block: 80px; grid-template-columns: minmax(0, .8fr) minmax(0, 1.5fr); gap: 48px; border-top: 0; }
+.novitecVehicles header { scroll-margin-top: 120px; }
+.novitecVehicles header > p { max-width: 370px; line-height: 1.8; }
+.novitecWordmarks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; align-items: center; }
+.novitecWordmarks a { display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 120px; padding: 20px; color: #181818; }
+.novitecWordmarks img { display: block; width: min(100%, 210px); height: 68px; object-fit: contain; transition: transform 180ms ease, opacity 180ms ease; }
+.novitecWordmarks a[data-make="ferrari"] img { width: min(100%, 180px); }
+.novitecWordmarks a:focus-visible { outline: 2px solid #887652; outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .novitecWordmarks a:hover img { transform: scale(1.035); } }
+@media (max-width: 700px) {
+ .vehicles.novitecVehicles { padding-block: 48px; grid-template-columns: 1fr; gap: 24px; }
+ .novitecWordmarks { gap: 4px 12px; }
+ .novitecWordmarks a { min-height: 92px; padding: 12px; }
+ .novitecWordmarks img { height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) { .novitecWordmarks img { transition: none; } .novitecWordmarks a:hover img { transform: none; } }
