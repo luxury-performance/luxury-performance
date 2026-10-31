@@ -3,7 +3,7 @@
 .context span { margin-inline: 10px; color: #ffffff80; }
 /* Keep the photograph painted while the copy waits for the full intro to finish. */
 @media (prefers-reduced-motion: no-preference) {
-  .context, .controls, .layer:first-child .copy > * { animation: hero-copy-arrive 520ms cubic-bezier(.22,.75,.24,1) both; }
+  .context, .controls, .layer:first-child .copy > * { animation: hero-copy-arrive 520ms cubic-bezier(.22,.75,.24,1) backwards; }
   .layer:first-child .copy > h2 { animation-delay: 50ms; }
   .layer:first-child .copy > p { animation-delay: 100ms; }
   .layer:first-child .copy > .cta { animation-delay: 150ms; }
@@ -13,7 +13,7 @@
   :global(html[data-lxp-intro]) .controls,
   :global(html[data-lxp-intro]) .layer:first-child .copy > * { animation-play-state: paused; }
 }
-@keyframes hero-copy-arrive { from { transform: translateY(14px); } to { transform: none; } }
+@keyframes hero-copy-arrive { from { clip-path: inset(0 0 100% 0); transform: translateY(14px); } to { clip-path: inset(0 0 0 0); transform: none; } }
 .stage, .layer, .slide { position: absolute; inset: 0; }
 .layer { opacity: 0; pointer-events: none; transition: opacity 700ms ease; }
 .layer[data-active="true"] { opacity: 1; z-index: 1; pointer-events: auto; }
