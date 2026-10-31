@@ -63,7 +63,6 @@ export default async function PartnerPage({ params, searchParams }: Props) {
         <div className={styles.heroFoot}><span>{p.focus}</span><a href="#discover">Discover {p.name} <ArrowDown size={17}/></a></div>
       </div>
     </section>
-    <nav className={styles.jumpLinks} aria-label={`${p.name} page sections`}>{vehicleFirst && <a href="#vehicles">Choose your Porsche</a>}<a href="#discover">The approach</a>{!vehicleFirst && vehicles.length > 0 && <a href="#vehicles">Your vehicle</a>}{showCategories && <a href="#departments">The collection</a>}{featured.length > 0 && <a href="#selected">Selected parts</a>}<Link href="/partners">All partners <ArrowUpRight size={14}/></Link></nav>
     {vehicleFirst && vehicleSection}
     <section id="discover" className={styles.introduction}><Eyebrow number={vehicleFirst ? "02" : "01"}>{p.stockOnly ? 'From our stock' : `The ${p.name} approach`}</Eyebrow><div><h2>{p.intro}</h2><p>{p.detail}</p>{p.stockOnly && <span className={styles.conditionNote}>Limited stock · 2 kits</span>}{p.supplier && !products.length && <p>No parts are currently listed online. <Link href={enquiry}>Ask our team about current availability.</Link></p>}</div></section>
     {!vehicleFirst && vehicleSection}
