@@ -22,21 +22,21 @@ const heroSlides = [
       <span className={`${heroStyles.glitchWord} ${heroStyles.glitchAlternate}`} data-text="in style" aria-hidden="true">in style</span>
     </span></>,
     description: 'NOVITEC carbon aerodynamics, forged wheels and performance exhausts for Ferrari, Lamborghini, McLaren and Rolls-Royce.',
-    href: '/shop?brand=novitec', cta: 'Shop NOVITEC',
+    href: '/partners/novitec', cta: 'Explore NOVITEC',
   },
   {
     slug: 'valvetronic', name: 'Valvetronic Designs', logo: '/brand/valvetronic.png', logoWidth: 1200, logoHeight: 304,
     ...brandHeroImages.valvetronic!,
     title: <ValvetronicSoundHeadline />,
     description: 'Explore Valvetronic Designs valved exhaust systems, downpipes and components, with vehicle fitment advice from Dubai.',
-    href: '/shop?brand=valvetronic', cta: 'Shop Valvetronic',
+    href: '/partners/valvetronic', cta: 'Explore Valvetronic',
   },
   {
     slug: 'techart', name: 'TECHART', logo: '/brand/techart.svg', logoWidth: 487, logoHeight: 35,
     ...brandHeroImages.techart!,
     title: <TechartPersonalHeadline />,
     description: 'TECHART aerodynamics, wheels, interior and performance upgrades. Start with your Porsche to find the parts that fit.',
-    href: '/partners/techart#vehicles', cta: 'Choose your Porsche',
+    href: '/partners/techart', cta: 'Explore TECHART',
   },
 ];
 
