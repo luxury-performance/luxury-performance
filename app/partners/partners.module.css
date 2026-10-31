@@ -65,3 +65,6 @@
 @media (min-width: 701px) and (max-width: 900px) {
  .categoryGrid:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* A quiet concrete grain on the NOVITEC page's light surfaces. */
+.page[data-partner="novitec"] { background-color: var(--paper); background-image: url('/images/concrete-grain.svg'); background-size: 320px 320px; }
