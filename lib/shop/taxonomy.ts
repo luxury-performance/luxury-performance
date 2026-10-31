@@ -1,4 +1,5 @@
 import { matchesSearch } from './search';
+import { f8BodyMatch, isF8Body, isF8Selection } from './novitec-f8-fitment';
 import type { CatalogProduct } from './types';
 export const suppliers = [
   { slug: 'novitec', name: 'NOVITEC', image: 'ferrari', line: 'Individuality, without compromise.', description: 'Explore by vehicle, then discover the exhaust, aerodynamic, wheel and suspension programme.', categories: ['Aerodynamics', 'Exhaust', 'Wheels', 'Suspension', 'Performance'] },
@@ -46,7 +47,8 @@ export function categoryOf(p: CatalogProduct) {
 }
 export type Filters = { brand?: string; make?: string; model?: string; fit?: string; body?: string; category?: string; q?: string; sort?: string; page?: string };
 export function filterProducts(products: CatalogProduct[], f: Filters) {
-  const result = products.filter(p => (!f.brand || supplierOf(p) === f.brand) && (!f.make || tagsFor(p, 'make').includes(f.make)) && (!f.model || tagsFor(p, 'model').includes(f.model)) && (!f.fit || tagsFor(p, 'fit').includes(f.fit)) && (!f.category || categoryOf(p) === f.category) && (!f.q || matchesSearch(p, f.q)));
+  const f8Body = isF8Selection(f) && isF8Body(f.body) ? f.body : undefined;
+  const result = products.filter(p => (!f.brand || supplierOf(p) === f.brand) && (!f.make || tagsFor(p, 'make').includes(f.make)) && (!f.model || tagsFor(p, 'model').includes(f.model)) && (!f.fit || tagsFor(p, 'fit').includes(f.fit)) && (!f8Body || f8BodyMatch(p, f8Body) === 'allowed') && (!f.category || categoryOf(p) === f.category) && (!f.q || matchesSearch(p, f.q)));
   if (f.sort === 'price-up') result.sort((a,b) => Number(a.priceRange.minVariantPrice.amount) - Number(b.priceRange.minVariantPrice.amount));
   if (f.sort === 'price-down') result.sort((a,b) => Number(b.priceRange.minVariantPrice.amount) - Number(a.priceRange.minVariantPrice.amount));
   if (f.sort === 'name') result.sort((a,b) => a.title.localeCompare(b.title));

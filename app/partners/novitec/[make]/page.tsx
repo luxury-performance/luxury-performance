@@ -62,7 +62,7 @@ export default async function NovitecModelsForMake({ params }: Props) {
         <Link href={filterUrl('/shop', { brand: 'novitec', make: brand.tag })} className={styles.all}>Shop all {brand.name} parts <ArrowUpRight size={17} aria-hidden="true" /></Link>
       </header>
       {models.length ? <ul className={styles.grid} aria-label={`${brand.name} models`}>
-        {models.map(model => <li key={model}><Link className={styles.card} href={filterUrl('/shop', { brand: 'novitec', make: brand.tag, model })}>
+        {models.map(model => <li key={model}><Link className={styles.card} href={make === 'ferrari' && model === 'f8' ? '/partners/novitec/ferrari/f8' : filterUrl('/shop', { brand: 'novitec', make: brand.tag, model })}>
           <span className={styles.picture}>{covers[model] ? <Image src={`/images/novitec-models/${covers[model]}`} alt="" fill sizes="(max-width: 700px) 45vw, (max-width: 1100px) 45vw, 30vw" quality={90} className={styles.image} /> : <Image src="/brand/novitec.svg" alt="" width={160} height={32} className={styles.placeholder} />}</span>
           <span className={styles.cardLabel}><span><small>{brand.name}</small><strong>{modelLabel(model)}</strong></span><ArrowUpRight size={20} aria-hidden="true" /></span>
         </Link></li>)}
