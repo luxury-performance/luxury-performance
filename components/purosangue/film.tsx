@@ -22,10 +22,44 @@ export function PurosangueFilm() {
   const [split, setSplit] = useState(50);
   const [reduced, setReduced] = useState(false);
   const [loaded, setLoaded] = useState({ stock: false, novitec: false, spoilers: false, roof: false });
+  const [mediaNear, setMediaNear] = useState(false);
   const titleId = useId();
   const imageReady = loaded.stock && loaded.novitec && loaded.spoilers && loaded.roof;
   const current = filmChapters[chapter];
   const complete = chapter === filmChapters.length - 1;
+
+  useEffect(() => {
+    const section = root.current;
+    if (!section) return;
+    let frame = 0;
+    let disposed = false;
+    let ready = false;
+    let observer: IntersectionObserver | null = null;
+    const schedule = () => { if (!disposed && !ready && !frame) frame = requestAnimationFrame(prepare); };
+    const stopWatching = () => {
+      observer?.disconnect();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+    function prepare() {
+      frame = 0;
+      if (disposed || ready) return;
+      const bounds = section!.getBoundingClientRect();
+      if (bounds.top > window.innerHeight + 1000 || bounds.bottom < -1000) return;
+      // Clipped upgrade layers cannot rely on native lazy visibility to become ready.
+      ready = true;
+      setMediaNear(true);
+      stopWatching();
+    }
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) schedule(); }, { rootMargin: '1000px 0px' });
+      observer.observe(section);
+    }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    schedule();
+    return () => { disposed = true; cancelAnimationFrame(frame); stopWatching(); };
+  }, []);
 
   useEffect(() => {
     const section = root.current;
@@ -284,12 +318,12 @@ export function PurosangueFilm() {
         <div ref={rig} className={styles.carRig}>
           <div className={styles.camera}>
             <div className={styles.carShadow} aria-hidden="true" />
-            <Image className={`${styles.carImage} ${styles.original}`} style={comparing ? { clipPath: `inset(0 0 0 ${split}%)` } : undefined} src="/images/purosangue-film/stock.png" alt="Original red Ferrari Purosangue, shown from the rear left" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, stock: true }))} />
+            <Image className={`${styles.carImage} ${styles.original}`} style={comparing ? { clipPath: `inset(0 0 0 ${split}%)` } : undefined} src="/images/purosangue-film/stock.png" alt="Original red Ferrari Purosangue, shown from the rear left" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading={mediaNear ? 'eager' : 'lazy'} draggable={false} onLoad={() => setLoaded(s => ({ ...s, stock: true }))} />
             <div className={styles.upgraded} style={comparing ? { clipPath: `inset(0 ${100 - split}% 0 0)` } : undefined}>
-              <Image className={`${styles.carImage} ${styles.retainedBody}`} src="/images/purosangue-film/stock.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} />
-              <Image className={`${styles.carImage} ${styles.upgradeParts}`} src="/images/purosangue-film/novitec.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
-              <Image className={`${styles.carImage} ${styles.roofParts}`} src="/images/purosangue-film/roof-user-selected.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, roof: true }))} />
-              <Image className={`${styles.carImage} ${styles.spoilerParts}`} src="/images/purosangue-film/rear-lip-fitted.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading="eager" draggable={false} onLoad={() => setLoaded(s => ({ ...s, spoilers: true }))} />
+              <Image className={`${styles.carImage} ${styles.retainedBody}`} src="/images/purosangue-film/stock.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading={mediaNear ? 'eager' : 'lazy'} draggable={false} />
+              <Image className={`${styles.carImage} ${styles.upgradeParts}`} src="/images/purosangue-film/novitec.png" alt="Illustrative NOVITEC ESTESO build with painted widebody arches, NF10 wheels, carbon details and black tailpipes" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading={mediaNear ? 'eager' : 'lazy'} draggable={false} onLoad={() => setLoaded(s => ({ ...s, novitec: true }))} />
+              <Image className={`${styles.carImage} ${styles.roofParts}`} src="/images/purosangue-film/roof-user-selected.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading={mediaNear ? 'eager' : 'lazy'} draggable={false} onLoad={() => setLoaded(s => ({ ...s, roof: true }))} />
+              <Image className={`${styles.carImage} ${styles.spoilerParts}`} src="/images/purosangue-film/rear-lip-fitted.png" alt="" aria-hidden="true" width={1672} height={941} sizes="(max-width: 700px) 260vw, 180vw" quality={90} loading={mediaNear ? 'eager' : 'lazy'} draggable={false} onLoad={() => setLoaded(s => ({ ...s, spoilers: true }))} />
             </div>
             <div className={styles.lightMask} aria-hidden="true"><span /></div>
             <span className={styles.revealLine} aria-hidden="true" />

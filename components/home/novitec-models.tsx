@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import styles from './novitec-models.module.css';
-import { ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
+import { DeferredModelImage, ModelPreviewCard, type ModelPreviewImage } from './novitec-model-preview';
 import { additionalModelGalleries } from './novitec-model-galleries';
 
 const purosangueImages: readonly ModelPreviewImage[] = [
@@ -40,6 +40,14 @@ const models: Model[] = [
 export function NovitecModels() {
   const rail = useRef<HTMLUListElement>(null);
   const [ends, setEnds] = useState({ start: true, end: false });
+  const warmedMedia = useRef(new Set<number>());
+  const [media, setMedia] = useState<readonly number[]>([]);
+
+  function allowMedia(index: number) {
+    if (warmedMedia.current.has(index)) return;
+    warmedMedia.current.add(index);
+    setMedia([...warmedMedia.current]);
+  }
 
   useEffect(() => {
     const track = rail.current;
@@ -50,13 +58,35 @@ export function NovitecModels() {
       const start = track.scrollLeft < 2;
       const end = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
       setEnds(previous => previous.start === start && previous.end === end ? previous : { start, end });
+      if (warmedMedia.current.size === track.children.length) return;
+      const bounds = track.getBoundingClientRect();
+      if (bounds.top > window.innerHeight + 500 || bounds.bottom < -500) return;
+      let changed = false;
+      Array.from(track.children).forEach((card, index) => {
+        if (warmedMedia.current.has(index)) return;
+        const cardBounds = card.getBoundingClientRect();
+        if (cardBounds.right < bounds.left - 600 || cardBounds.left > bounds.right + 600) return;
+        warmedMedia.current.add(index);
+        changed = true;
+      });
+      if (changed) setMedia([...warmedMedia.current]);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
     track.addEventListener('scroll', schedule, { passive: true });
     const observer = new ResizeObserver(schedule);
     observer.observe(track);
-    return () => { cancelAnimationFrame(frame); track.removeEventListener('scroll', schedule); observer.disconnect(); };
+    const visibility = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(schedule, { rootMargin: '500px 0px' });
+    visibility?.observe(track);
+    // Scroll bounds also cover restored positions and browsers without IntersectionObserver.
+    window.addEventListener('scroll', schedule, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      track.removeEventListener('scroll', schedule);
+      window.removeEventListener('scroll', schedule);
+      observer.disconnect();
+      visibility?.disconnect();
+    };
   }, []);
 
   function move(direction: number) {
@@ -76,13 +106,13 @@ export function NovitecModels() {
       </div>
     </div>
     <ul ref={rail} id="novitec-model-cards" className={styles.rail} aria-label="NOVITEC vehicle programmes">
-      <li className={styles.item}><Link href="/shop?brand=novitec" className={`${styles.card} ${styles.all}`} aria-label="Shop all NOVITEC parts">
-        <div className={styles.image}><Image src="/images/novitec-models/all-novitec-purosangue-esteso-original.jpg" alt="Grey NOVITEC Ferrari Purosangue ESTESO outside NOVITEC headquarters" fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
+      <li className={styles.item}><Link href="/shop?brand=novitec" className={`${styles.card} ${styles.all}`} aria-label="Shop all NOVITEC parts" onPointerEnter={() => allowMedia(0)} onFocus={() => allowMedia(0)}>
+        <div className={styles.image}><DeferredModelImage enabled={media.includes(0)} src="/images/novitec-models/all-novitec-purosangue-esteso-original.jpg" alt="Grey NOVITEC Ferrari Purosangue ESTESO outside NOVITEC headquarters" fallback/></div>
         <div className={styles.caption}><div><h3>All NOVITEC</h3><p>Explore all parts</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
       </Link></li>
-      {models.map(model => <li key={model.name} className={styles.item}>
-        {model.preview ? <ModelPreviewCard href={model.href || `/collections/${model.collection}?brand=novitec`} name={model.name} make={model.make} images={model.preview} effect={model.previewEffect}/> : <Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`}>
-          <div className={styles.image}><Image src={`/images/novitec-models/${model.image}`} alt={`NOVITEC ${model.make} ${model.name}`} fill quality={90} sizes="(max-width:700px) 76vw, (max-width:1100px) 42vw, 25vw"/></div>
+      {models.map((model, index) => <li key={model.name} className={styles.item}>
+        {model.preview ? <ModelPreviewCard href={model.href || `/collections/${model.collection}?brand=novitec`} name={model.name} make={model.make} images={model.preview} effect={model.previewEffect} mediaReady={media.includes(index + 1)} onMediaIntent={() => allowMedia(index + 1)}/> : <Link href={model.href || `/collections/${model.collection}?brand=novitec`} className={styles.card} aria-label={`Shop NOVITEC for ${model.make} ${model.name}`} onPointerEnter={() => allowMedia(index + 1)} onFocus={() => allowMedia(index + 1)}>
+          <div className={styles.image}><DeferredModelImage enabled={media.includes(index + 1)} src={`/images/novitec-models/${model.image}`} alt={`NOVITEC ${model.make} ${model.name}`} fallback/></div>
           <div className={styles.caption}><div><h3>{model.name}</h3><p>{model.make}</p></div><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true"/></div>
         </Link>}
       </li>)}
