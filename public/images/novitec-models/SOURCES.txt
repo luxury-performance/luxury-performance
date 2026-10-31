@@ -199,3 +199,15 @@ https://www.instagram.com/p/DDcVkCCoO4Y/?img_index=8
 SF90 Spider official model selection image, retrieved 2026-10-31.
 official-covers/sf90-spider.jpg
 https://www.novitecgroup.com/en/brands/ferrari/sf90/
+
+NOVITEC partner hero mobile image, retrieved 2026-10-31.
+novitec-partner-hero.jpg
+https://www.novitecgroup.com/assets/images/news/ferrari/Purosangue-2/16__FitMaxWzEyODAsMTAyNF0.jpg
+
+NOVITEC partner hero wide image, retrieved 2026-10-31.
+novitec-partner-hero-wide.jpg
+https://www.novitecgroup.com/en/brands/ferrari/purosangue/lazyyamlimages//5805/UGFnZVNsaWRlNpemVN&2x=1
+
+NOVITEC partner hero mobile image, retrieved 2026-10-31.
+novitec-partner-hero-mobile.jpg
+https://www.novitecgroup.com/assets/images/news/ferrari/Purosangue-2/6__FitMaxWzEyODAsMTAyNF0.jpg

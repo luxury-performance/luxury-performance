@@ -4,7 +4,7 @@ import Image, { getImageProps } from 'next/image';
 import { brandHeroImages } from '@/lib/brand-hero-images';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { partners } from '@/lib/partners';
 import { getCatalog } from '@/lib/shop/storefront';
 import { categoryOf, filterUrl, label, supplierOf, tagsFor, suppliers } from '@/lib/shop/taxonomy';
@@ -21,12 +21,18 @@ const novitecWordmarks: Record<string, string> = {
   mclaren: '/brand/navigation/wordmarks/mclaren-dark.svg',
   rolls_royce: '/brand/navigation/wordmarks/rolls-royce.svg',
 };
+const novitecHero = {
+  image: '/images/novitec-models/novitec-partner-hero-wide.jpg',
+  mobile: { src: '/images/novitec-models/novitec-partner-hero-mobile.jpg', width: 687, height: 1024 },
+  alt: 'NOVITEC Ferrari Purosangue in a dark studio',
+};
 export function generateStaticParams() { return partners.map(p => ({ slug: p.slug })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = partners.find(p => p.slug === slug);
   if (!p) return { title: 'Partner not found' };
-  return { title: `${p.name} in Dubai`, description: p.intro + ' ' + p.detail, alternates: { canonical: `/partners/${p.slug}` }, robots: { index: process.env.SHOP_SEO_LIVE === 'true', follow: true }, openGraph: { title: `${p.name} | Luxury Performance`, description: p.intro, images: [{ url: brandHeroImages[p.slug]?.image || p.image, alt: brandHeroImages[p.slug]?.alt || p.imageAlt }] } };
+  const heroAsset = p.slug === 'novitec' ? novitecHero : brandHeroImages[p.slug];
+  return { title: `${p.name} in Dubai`, description: p.intro + ' ' + p.detail, alternates: { canonical: `/partners/${p.slug}` }, robots: { index: process.env.SHOP_SEO_LIVE === 'true', follow: true }, openGraph: { title: `${p.name} | Luxury Performance`, description: p.intro, images: [{ url: heroAsset?.image || p.image, alt: heroAsset?.alt || p.imageAlt }] } };
 }
 export default async function PartnerPage({ params, searchParams }: Props) {
   const [{ slug }, query] = await Promise.all([params, searchParams]);
@@ -44,7 +50,7 @@ export default async function PartnerPage({ params, searchParams }: Props) {
   const showCategories = p.slug !== 'valvetronic' && categories.length > 0;
   const selections = [...categories.flatMap(c => products.find(item => categoryOf(item) === c) || []), ...products];
   const featured = [...new Map(selections.map(item => [item.id, item])).values()].slice(0, 4);
-  const heroAsset = brandHeroImages[p.slug];
+  const heroAsset = p.slug === 'novitec' ? novitecHero : brandHeroImages[p.slug];
   const mobileHero = heroAsset ? getImageProps({ ...heroAsset.mobile, alt: '', sizes: '100vw', quality: 95 }).props : null;
   const vehicleFirst = p.slug === 'techart' && vehicles.includes('911');
   const compactNovitec = p.slug === 'novitec' && vehicles.length > 0;
@@ -65,9 +71,8 @@ export default async function PartnerPage({ params, searchParams }: Props) {
       </picture> : <img className={styles.heroImage} src={p.image} alt={p.imageAlt} fetchPriority="high"/>}
       <div className={styles.heroShade}/>
       <div className={styles.heroContent}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href={p.stockOnly ? "/shop" : "/partners"}>{p.stockOnly ? "The collection" : "Our partners"}</Link><span>/</span><span>{p.name}</span></nav>
-        <div className={styles.heroBody}><span className="tiny-label">{p.label}</span><h1 id="partner-title" className={styles.brandHeading}><span className="sr-only">{p.name}</span><BrandArtwork brand={p.slug} labelled={false} className={styles.heroBrand} /></h1><p>{p.headline}</p><ArrowLink href={vehicleFirst ? "#vehicles" : products.length ? shop : enquiry} light>{vehicleFirst ? 'Choose your Porsche' : products.length ? `Shop ${p.stockOnly ? 'URBAN kits' : p.name}` : p.slug === 'fi-exhaust' ? 'Discuss your exhaust' : 'Ask about availability'}</ArrowLink></div>
-        <div className={styles.heroFoot}><span>{p.focus}</span><a href="#discover">Discover {p.name} <ArrowDown size={17}/></a></div>
+        <div className={styles.heroBody}><h1 id="partner-title" className={styles.brandHeading}><span className="sr-only">{p.name}</span><BrandArtwork brand={p.slug} labelled={false} className={styles.heroBrand} /></h1></div>
+        <div className={styles.heroFoot}><ArrowLink href={vehicleFirst ? "#vehicles" : products.length ? shop : enquiry} light>{vehicleFirst ? 'Choose your Porsche' : products.length ? `Shop ${p.stockOnly ? 'URBAN kits' : p.name}` : p.slug === 'fi-exhaust' ? 'Discuss your exhaust' : 'Ask about availability'}</ArrowLink></div>
       </div>
     </section>
     {vehicleFirst && vehicleSection}

@@ -27,15 +27,30 @@
 @media (max-width: 700px) { .heroBody .heroBrand { width: min(250px, 100%); min-height: 48px; } .heroBody .heroBrand[data-brand-artwork="techart"] { width: min(290px, 100%); } }
 
 /* The three main partner pages share the homepage artwork and overlay navigation. */
-.fullBleedHero { --partner-header-height: 112px; height: 100svh; min-height: 740px; max-height: 1100px; }
+.hero { height: auto; min-height: max(430px, 68svh); }
+.fullBleedHero { --partner-header-height: 112px; min-height: clamp(440px, 46vw, 68svh); max-height: none; }
+.heroContent { height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; column-gap: 24px; }
+.heroBody { grid-column: 1; grid-row: 2; padding: 24px 0 0; }
+.heroBody h1 { margin: 0; }
+.heroFoot { grid-column: 2; grid-row: 2; align-self: end; }
 .heroPicture { display: block; position: absolute; inset: 0; }
 .fullBleedHero .heroContent { padding-top: calc(var(--partner-header-height) + 30px); }
 .fullBleedHero .heroImage { object-position: 65% 55%; }
-.fullBleedHero[data-brand="novitec"] .heroImage { object-position: 58% 60%; }
+.fullBleedHero[data-brand="novitec"] .heroImage { object-position: center 58%; }
+.heroFoot { justify-content: flex-end; }
+.heroFoot a { gap: 12px; min-height: 44px; font-size: 11px; letter-spacing: .03em; text-transform: none; }
+.heroFoot :global(.arrow-disc) { width: 19px; height: 19px; border: 0; background: transparent; color: inherit; }
+.heroFoot a:hover :global(.arrow-disc) { background: transparent; color: inherit; }
 @media(max-width:900px) { .fullBleedHero { --partner-header-height: 102px; } }
 @media(max-width:700px) {
-  .fullBleedHero { --partner-header-height: 100px; min-height: 800px; max-height: 980px; }
+  .hero { min-height: 65svh; }
+  .fullBleedHero { --partner-header-height: 100px; min-height: min(68svh, 145vw); }
   .fullBleedHero .heroContent { padding-top: calc(var(--partner-header-height) + 24px); }
+  .heroContent { grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto auto; }
+  .heroBody { padding: 20px 0 0; }
+  .heroFoot { grid-column: 1; grid-row: 3; align-items: flex-end; margin: 12px 0 0; }
+  .heroFoot a { gap: 10px; font-size: 11px; line-height: 1.4; }
+  .fullBleedHero[data-brand="novitec"] .heroImage { object-position: center 50%; }
   .fullBleedHero[data-brand="techart"] .heroImage { object-position: 70% center; }
   .fullBleedHero[data-brand="valvetronic"] .heroImage { object-position: center; }
 }
