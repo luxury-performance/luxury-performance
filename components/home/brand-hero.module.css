@@ -1,11 +1,19 @@
 .hero { position: relative; isolation: isolate; height: 100svh; min-height: 740px; max-height: 1100px; overflow: clip; background: #151617; color: #fff; }
 .context { position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); top: 145px; font-size: 11px; line-height: 1.7; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; }
 .context span { margin-inline: 10px; color: #ffffff80; }
-/* Reveal the copy and navigation as the existing logo flight begins; leave the photograph painted. */
+/* Keep the photograph painted while the copy waits for the full intro to finish. */
 @media (prefers-reduced-motion: no-preference) {
-  :global(html[data-lxp-intro="tracing"]:has([data-home-hero])) :is(.context, .copy, .controls),
-  :global(html[data-lxp-intro="formed"]:has([data-home-hero])) :is(.context, .copy, .controls) { visibility: hidden; }
+  .context, .controls, .layer:first-child .copy > * { animation: hero-copy-arrive 520ms cubic-bezier(.22,.75,.24,1) both; }
+  .layer:first-child .copy > h2 { animation-delay: 50ms; }
+  .layer:first-child .copy > p { animation-delay: 100ms; }
+  .layer:first-child .copy > .cta { animation-delay: 150ms; }
+  .controls { animation-delay: 180ms; }
+  :global(html[data-lxp-intro]) :is(.context, .copy, .controls) { visibility: hidden; }
+  :global(html[data-lxp-intro]) .context,
+  :global(html[data-lxp-intro]) .controls,
+  :global(html[data-lxp-intro]) .layer:first-child .copy > * { animation-play-state: paused; }
 }
+@keyframes hero-copy-arrive { from { transform: translateY(14px); } to { transform: none; } }
 .stage, .layer, .slide { position: absolute; inset: 0; }
 .layer { opacity: 0; pointer-events: none; transition: opacity 700ms ease; }
 .layer[data-active="true"] { opacity: 1; z-index: 1; pointer-events: auto; }
