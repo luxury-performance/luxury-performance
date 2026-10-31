@@ -133,7 +133,7 @@ export function Header() {
           </div>}
         </div>
       </nav>
-      <Link inert={open} className="brand" href="/" onClick={close} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
+      <Link inert={open} className="brand" href="/#top" onClick={event => { close(); if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && window.location.pathname === '/') window.scrollTo({ top: 0, behavior: 'instant' }); }} aria-label="Luxury Performance home"><BrandLogo priority wordmark={false}/></Link>
       <div inert={open} className={`header-shop-actions ${styles.actions}`}><Link className={styles.secondary} href="/about" onClick={close}>Our world</Link><HeaderSearch onOpen={close}/><span onClick={close}><CartButton/></span><Link className="header-contact" href="/contact" onClick={close}>Let’s talk <ArrowUpRight size={16}/></Link></div>
     </header>
     {shopMenu && <div ref={shopGlass} className="navigation-glass-surface navigation-shop-glass" aria-hidden="true" />}
