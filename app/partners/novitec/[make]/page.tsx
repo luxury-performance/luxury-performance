@@ -53,7 +53,7 @@ export default async function NovitecModelsForMake({ params }: Props) {
   const brand = makes[make];
   if (!brand) notFound();
   const products = (await getCatalog()).filter(product => supplierOf(product) === 'novitec' && tagsFor(product, 'make').includes(brand.tag));
-  const models = [...new Set(products.flatMap(product => tagsFor(product, 'model')))].sort((a, b) => modelLabel(a).localeCompare(modelLabel(b), 'en', { numeric: true }));
+  const models = [...new Set(products.flatMap(product => tagsFor(product, 'model')).map(model => make === 'ferrari' && ['812_gts', '812_superfast'].includes(model) ? '812' : model))].sort((a, b) => modelLabel(a).localeCompare(modelLabel(b), 'en', { numeric: true }));
   return <div className={styles.page}>
     <div className={styles.inner}>
       <Link href="/partners/novitec#vehicles" className={styles.back}><ArrowLeft size={16} aria-hidden="true" /> All marques</Link>
@@ -62,7 +62,7 @@ export default async function NovitecModelsForMake({ params }: Props) {
         <Link href={filterUrl('/shop', { brand: 'novitec', make: brand.tag })} className={styles.all}>Shop all {brand.name} parts <ArrowUpRight size={17} aria-hidden="true" /></Link>
       </header>
       {models.length ? <ul className={styles.grid} aria-label={`${brand.name} models`}>
-        {models.map(model => <li key={model}><Link className={styles.card} href={make === 'ferrari' && model === 'f8' ? '/partners/novitec/ferrari/f8' : filterUrl('/shop', { brand: 'novitec', make: brand.tag, model })}>
+        {models.map(model => <li key={model}><Link className={styles.card} href={make === 'ferrari' && ['f8', '812', 'sf90'].includes(model) ? `/partners/novitec/ferrari/${model}` : filterUrl('/shop', { brand: 'novitec', make: brand.tag, model })}>
           <span className={styles.picture}>{covers[model] ? <Image src={`/images/novitec-models/${covers[model]}`} alt="" fill sizes="(max-width: 700px) 45vw, (max-width: 1100px) 45vw, 30vw" quality={90} className={styles.image} /> : <Image src="/brand/novitec.svg" alt="" width={160} height={32} className={styles.placeholder} />}</span>
           <span className={styles.cardLabel}><span><small>{brand.name}</small><strong>{modelLabel(model)}</strong></span><ArrowUpRight size={20} aria-hidden="true" /></span>
         </Link></li>)}

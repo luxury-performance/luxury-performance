@@ -1,3 +1,4 @@
+import { ferrariVersionMatch, is812Selection, isSF90Body, isSF90Selection } from './novitec-ferrari-fitment';
 import { matchesSearch } from './search';
 import { f8BodyMatch, isF8Body, isF8Selection } from './novitec-f8-fitment';
 import type { CatalogProduct } from './types';
@@ -48,7 +49,9 @@ export function categoryOf(p: CatalogProduct) {
 export type Filters = { brand?: string; make?: string; model?: string; fit?: string; body?: string; category?: string; q?: string; sort?: string; page?: string };
 export function filterProducts(products: CatalogProduct[], f: Filters) {
   const f8Body = isF8Selection(f) && isF8Body(f.body) ? f.body : undefined;
-  const result = products.filter(p => (!f.brand || supplierOf(p) === f.brand) && (!f.make || tagsFor(p, 'make').includes(f.make)) && (!f.model || tagsFor(p, 'model').includes(f.model)) && (!f.fit || tagsFor(p, 'fit').includes(f.fit)) && (!f8Body || f8BodyMatch(p, f8Body) === 'allowed') && (!f.category || categoryOf(p) === f.category) && (!f.q || matchesSearch(p, f.q)));
+  const sf90Body = isSF90Selection(f) && isSF90Body(f.body) ? f.body : undefined;
+  const version812 = is812Selection(f) ? (f.model === '812_gts' ? 'gts' : 'superfast') : undefined;
+  const result = products.filter(p => (!f.brand || supplierOf(p) === f.brand) && (!f.make || tagsFor(p, 'make').includes(f.make)) && (!f.model || tagsFor(p, 'model').includes(f.model)) && (!f.fit || tagsFor(p, 'fit').includes(f.fit)) && (!f8Body || f8BodyMatch(p, f8Body) === 'allowed') && (!sf90Body || ferrariVersionMatch(p, sf90Body) === 'allowed') && (!version812 || ferrariVersionMatch(p, version812) === 'allowed') && (!f.category || categoryOf(p) === f.category) && (!f.q || matchesSearch(p, f.q)));
   if (f.sort === 'price-up') result.sort((a,b) => Number(a.priceRange.minVariantPrice.amount) - Number(b.priceRange.minVariantPrice.amount));
   if (f.sort === 'price-down') result.sort((a,b) => Number(b.priceRange.minVariantPrice.amount) - Number(a.priceRange.minVariantPrice.amount));
   if (f.sort === 'name') result.sort((a,b) => a.title.localeCompare(b.title));

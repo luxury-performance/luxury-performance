@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (process.env.SHOP_SEO_LIVE === 'true') {
     const [products, collections] = await Promise.all([getCatalog(), getCollections()]);
-    routes.push('/collections/used-parts', '/partners', ...partners.map(p => `/partners/${p.slug}`), ...['ferrari', 'lamborghini', 'mclaren', 'rolls-royce'].map(make => `/partners/novitec/${make}`), '/partners/novitec/ferrari/f8', '/shop', ...products.map(p => `/products/${p.handle}`), ...collections.map(c => `/collections/${c.handle}`));
+    routes.push('/collections/used-parts', '/partners', ...partners.map(p => `/partners/${p.slug}`), ...['ferrari', 'lamborghini', 'mclaren', 'rolls-royce'].map(make => `/partners/novitec/${make}`), ...['f8', '812', 'sf90'].map(model => `/partners/novitec/ferrari/${model}`), '/shop', ...products.map(p => `/products/${p.handle}`), ...collections.map(c => `/collections/${c.handle}`));
   }
 
   return routes.map(path => ({ url: new URL(path, origin).toString() }));
